@@ -55,12 +55,12 @@
     top: 0;
     right: 6px;
     font-size: 12px;
-    color: #009688;
+    color: #7d32a7;
     display: none;
     z-index: 999999;
 }
 .build-panel .build-item .control a{
-    color: #009688;
+    color: #7d32a7;
 }
 .build-item-edit .build-edit-box{
     position: relative;
@@ -92,7 +92,7 @@
     border: none;
     color: #ffffff;
     border-radius: 2px;
-    background-color: #009688;
+    background-color: #7d32a7;
     cursor: pointer;
 }
 .build-item-edit .build-edit-btn:hover{
@@ -102,10 +102,10 @@
     float: right;
     margin-top: 6px;
     margin-right: 2px;
-    color: #009688;
-    border-color: #009688;
+    color: #7d32a7;
+    border-color: #7d32a7;
 }
 .build-generate:hover{
-    background-color: #009688;
+    background-color: #7d32a7;
     color: #FFFFFF;
 }
