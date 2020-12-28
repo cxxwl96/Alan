@@ -1,15 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
-    <title>alan登录</title>
+    <title>登录</title>
+    <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+    <style>
+        .login-cover{
+            width:100%;
+            color: #FFF;
+            text-align:center;
+            position:absolute;
+            top: 10%;
+        }
+    </style>
 </head>
 <body class="layui-layout-login">
 <div class="login-bg">
-    <div class="cover"></div>
+    <div class="cover">
+        <div class="login-cover">
+            <img th:src="@{/logo-2.png}" height="150px"/>
+        </div>
+    </div>
 </div>
-<div class="login-content" th:th:classappend="${isCaptcha} ? 'captcha'">
-    <h1 class="login-box-title"><i class="fa fa-fw fa-user"></i>登录</h1>
+<div class="login-content" th:classappend="${isCaptcha} ? 'captcha'">
+    <h1 class="login-box-title"><img th:src="@{/logo-3.png}" height="30px">登录</h1>
     <form class="layui-form" th:action="@{/login}" method="post">
         <div class="layui-form-item">
             <label class="layui-icon layui-icon-username" for="username"></label>

@@ -30,7 +30,7 @@
     border-color: #cccccc;
 }
 .layui-form-item .layui-input-inline input:focus{
-    border-color: #009688!important;
+    border-color: #7d32a7!important;
 }
 .layui-elem-field .layui-field-box .more-field{
     border-top: 1px solid #cccccc;
@@ -78,7 +78,7 @@
     display: inline-block;
     width: 12px;
     height: 12px;
-    background-color: #1ab394;
+    background-color: #7d32a7;
     margin-left: 12px;
     margin-right: 4px;
     margin-bottom: -1px;
@@ -112,8 +112,8 @@
 }
 .float-label.active{
     color: #ffffff;
-    border: 1px solid #209684;
-    background-color: #1ab394;
+    border: 1px solid #7d32a7;
+    background-color: #7d32a7;
 }
 
 /*实体类面板*/
@@ -128,7 +128,7 @@
     margin-right: 6px;
 }
 .panel-header .control button.field-add .fa{
-    color: #228b22;
+    color: #7d32a7;
 }
 .panel-header .control button.field-del .fa{
     color: #ff4200;
@@ -138,7 +138,7 @@
     color: #005cff;
 }
 .panel-header .control button:hover{
-    border-color: #009688;
+    border-color: #7d32a7;
 }
 .panel-body-entity .layui-table{
     margin: 0;
@@ -193,7 +193,7 @@
 }
 .panel-body-entity .layui-table .entity-name input,
 .panel-body-entity .layui-table .entity-title input{
-    color: #228b22;
+    color: #7d32a7;
 }
 .panel-body-entity .layui-table .entity-type input{
     color: #0607ff;

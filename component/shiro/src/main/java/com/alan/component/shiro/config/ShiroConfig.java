@@ -57,7 +57,8 @@ public class ShiroConfig {
         filterMap.put("/js/**", "anon");
         filterMap.put("/images/**", "anon");
         filterMap.put("/lib/**", "anon");
-        filterMap.put("/favicon.ico", "anon");
+        filterMap.put("/favicon.*", "anon");
+        filterMap.put("/*.*", "anon");
         // 通过yml配置文件方式配置的[anon]忽略规则
         String[] excludes = properties.getExcludes().split(",");
         for (String exclude : excludes) {

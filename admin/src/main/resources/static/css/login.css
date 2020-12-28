@@ -9,7 +9,7 @@
     z-index: -1;
 }
 .layui-layout-login .login-bg .cover{
-    background-color: #009688;
+    background-color: #7d32a7;
     height: 50%;
 }
 .layui-layout-login .login-content{
@@ -78,14 +78,14 @@
     line-height: 14px;
 }
 .layui-layout-login .layui-form-item .layui-form-checkbox[lay-skin=primary]:hover i {
-    border-color: #009688;
+    border-color: #7d32a7;
 }
 .layui-layout-login .layui-form-item .layui-form-checked[lay-skin=primary] i{
-    border-color: #009688;
-    background-color: #009688;
+    border-color: #7d32a7;
+    background-color: #7d32a7;
 }
 .layui-layout-login .layui-form-item .forget-password{
-    color: #009688;
+    color: #7d32a7;
 }
 .layui-layout-login .login-page-loading {
     position: absolute;

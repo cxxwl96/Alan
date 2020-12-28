@@ -36,7 +36,7 @@ public class ProjectProperties {
         private String urlPatterns = "/*";
 
         /** 默认忽略规则（无需修改） */
-        private String defaultExcludes = "/favicon.ico,/img/*,/js/*,/css/*,/lib/*";
+        private String defaultExcludes = "/*.*,/favicon.*,/img/*,/js/*,/css/*,/lib/*";
 
         /** 忽略规则，可通过“,”隔开多个 */
         private String excludes = "";
