@@ -161,6 +161,7 @@ a{
     overflow: hidden;
     border: 4px solid #d9dde1;
     cursor: pointer;
+	background: #7d32a7;
 }
 .user-info-page .user-info .user-avatar-box .user-avatar{
     width: 100%;

@@ -9,8 +9,8 @@
     <!-- 导航栏 -->
     <div class="layui-header">
         <a href="#" class="layui-logo">
-            <span class="layui-logo-mini"><img th:src="@{/logo-4.png}" height="50px"></span>
-            <span class="layui-logo-lg"><img th:src="@{/logo-2.png}" height="50px"/></span>
+            <span class="layui-logo-mini"><img th:src="@{/logo-4.png}" height="50px" oncontextmenu="return false;" ondragstart="return false;"/></span>
+            <span class="layui-logo-lg"><img th:src="@{/logo-2.png}" height="50px" oncontextmenu="return false;" ondragstart="return false;"/></span>
         </a>
         <a class="side-toggle layui-layout-left" href="#">
             <i class="layui-icon layui-icon-shrink-right"></i>
@@ -53,7 +53,7 @@
         <div class="layui-side-scroll">
             <div class="layui-side-user">
                 <img class="layui-side-user-avatar open-popup" th:attr="data-url=@{/userInfo}" data-size="680,464"
-                     th:src="@{'/system/user/picture?p='+${user.picture}}" alt="头像">
+                     th:src="@{'/system/user/picture?p='+${user.picture}}" alt="头像" oncontextmenu="return false;" ondragstart="return false;">
                 <div>
                     <p class="layui-side-user-name" th:text="${user.nickname}">alan</p>
                     <p class="layui-side-user-designation">在线</p>

@@ -255,7 +255,7 @@ public class UserController {
      */
     @GetMapping("/picture")
     public void picture(String p, HttpServletResponse response) throws IOException {
-        String defaultPath = "/images/user-picture.jpg";
+        String defaultPath = "/images/user-picture.png";
         if (!(StringUtils.isEmpty(p) || p.equals(defaultPath))) {
             UploadProjectProperties properties = SpringContextUtil.getBean(UploadProjectProperties.class);
             String fuPath = properties.getFilePath();

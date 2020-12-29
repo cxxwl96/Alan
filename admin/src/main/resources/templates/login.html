@@ -18,12 +18,12 @@
 <div class="login-bg">
     <div class="cover">
         <div class="login-cover">
-            <img th:src="@{/logo-2.png}" height="150px"/>
+            <img th:src="@{/logo-2.png}" height="150px" oncontextmenu="return false;" ondragstart="return false;"/>
         </div>
     </div>
 </div>
 <div class="login-content" th:classappend="${isCaptcha} ? 'captcha'">
-    <h1 class="login-box-title"><img th:src="@{/logo-3.png}" height="30px">登录</h1>
+    <h1 class="login-box-title"><img th:src="@{/logo-3.png}" height="30px" oncontextmenu="return false;" ondragstart="return false;" style="transform: translateY(-2px);">登录</h1>
     <form class="layui-form" th:action="@{/login}" method="post">
         <div class="layui-form-item">
             <label class="layui-icon layui-icon-username" for="username"></label>
