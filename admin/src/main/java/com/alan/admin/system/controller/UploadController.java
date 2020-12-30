@@ -32,7 +32,7 @@ public class UploadController {
      */
     @PostMapping("/upload/image")
     @ResponseBody
-    public ResultVo uploadImage(@RequestParam("image") MultipartFile multipartFile) {
+    public ResultVo uploadImage(@RequestParam(value = "image") MultipartFile multipartFile) {
 
         // 创建Upload实体对象
         Upload upload = FileUpload.getFile(multipartFile, "/images");

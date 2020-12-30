@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+<div class="layui-form">
+    <form th:action="@{/system/student/save}" class="layui-form-pane alan-form-pane">
+        <input type="hidden" name="id" th:if="${student}" th:value="${student.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">照片</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="photo" th:value="${student?.photo}">
+                <div class="layui-upload-drag" id="button-photo">
+                    <i class="layui-icon"></i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                    <div class="layui-hide" id="uploadDemoView">
+                        <hr>
+                        <img src="" alt="上传成功后渲染" style="max-width: 196px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">学号</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="stuNo" placeholder="请输入学号"
+                           th:value="${student?.stuNo}">
+                </div>
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="names" placeholder="请输入姓名"
+                           th:value="${student?.names}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="sex" placeholder="请输入性别" th:value="${student?.sex}">
+                </div>
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="phone" placeholder="请输入手机号"
+                           th:value="${student?.phone}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">出生年月</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="birthday" placeholder="请输入出生年月"
+                           th:value="${student?.birthday}">
+                </div>
+                <label class="layui-form-label">学籍号</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="stuNumber" placeholder="请输入学籍号"
+                           th:value="${student?.stuNumber}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">身份证类型</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="idType" placeholder="请输入身份证类型"
+                           th:value="${student?.idType}">
+                </div>
+                <label class="layui-form-label">证件号</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="idNo" placeholder="请输入证件号" th:value="${student?.idNo}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">曾用名</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="formerNames" placeholder="请输入曾用名"
+                           th:value="${student?.formerNames}">
+                </div>
+                <label class="layui-form-label">民族</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="nation" placeholder="请输入民族"
+                           th:value="${student?.nation}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">户籍所在地</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="domicile" placeholder="请输入户籍所在地"
+                           th:value="${student?.domicile}">
+                </div>
+                <label class="layui-form-label">就学方式</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="wayOfStudying" placeholder="请输入就学方式"
+                           th:value="${student?.wayOfStudying}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">入学年月</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="admissionTime" placeholder="请输入入学年月"
+                           th:value="${student?.admissionTime}">
+                </div>
+                <label class="layui-form-label">人学方式</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="anthropology" placeholder="请输入人学方式"
+                           th:value="${student?.anthropology}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">健康状况</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="healthStatus" placeholder="请输入健康状况"
+                           th:value="${student?.healthStatus}">
+                </div>
+                <label class="layui-form-label">身高</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="height" placeholder="请输入身高"
+                           th:value="${student?.height}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">体重</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="weight" placeholder="请输入体重"
+                           th:value="${student?.weight}">
+                </div>
+                <label class="layui-form-label">是否为留守儿童</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="isLBC" placeholder="请输入是否为留守儿童"
+                           th:value="${student?.isLBC}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">是否外来务工人员子女</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="isCOMW" placeholder="请输入是否外来务工人员子女"
+                           th:value="${student?.isCOMW}">
+                </div>
+                <label class="layui-form-label">是否享受“一 补”</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="isEOS" placeholder="请输入是否享受“一 补”"
+                           th:value="${student?.isEOS}">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">家庭地址</label>
+            <div class="layui-input-block">
+                <input class="layui-input" type="text" name="familyAddress" placeholder="请输入家庭地址"
+                       th:value="${student?.familyAddress}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">现住址</label>
+            <div class="layui-input-block">
+                <input class="layui-input" type="text" name="currentAddress" placeholder="请输入现住址"
+                       th:value="${student?.currentAddress}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">监护人姓名</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="guardianNames" placeholder="请输入监护人姓名"
+                           th:value="${student?.guardianNames}">
+                </div>
+                <label class="layui-form-label">监护人电话</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="guardianPhone" placeholder="请输入监护人电话"
+                           th:value="${student?.guardianPhone}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">院系id</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="collegeId" placeholder="请输入院系id"
+                           th:value="${student?.collegeId}">
+                </div>
+                <label class="layui-form-label">专业id</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="specialtyId" placeholder="请输入专业id"
+                           th:value="${student?.specialtyId}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">年级id</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="gradeId" placeholder="请输入年级id"
+                           th:value="${student?.gradeId}">
+                </div>
+                <label class="layui-form-label">班级id</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="clazzId" placeholder="请输入班级id"
+                           th:value="${student?.clazzId}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="remark">[[${student?.remark}]]</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item alan-finally alan-form-button">
+            <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script>
+    layui.use('upload', function () {
+        var $ = layui.jquery;
+        var upload = layui.upload;
+        //拖拽上传
+        upload.render({
+            elem: '#button-photo'
+            , url: '/upload/image'
+            , field: 'image'
+            , exts: 'jpg|png|gif|jpeg'
+            , done: function (res) {
+                //上传成功
+                if (res && res.code == 200) {
+                    layer.msg('上传成功');
+                    $("input[name='photo']").val(res.data.path);
+                    layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.data.path);
+                } else {
+                    layer.msg('上传失败');
+                }
+            }
+        });
+    })
+</script>
+</body>
+</html>
