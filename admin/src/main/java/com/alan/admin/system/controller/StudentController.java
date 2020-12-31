@@ -172,4 +172,9 @@ public class StudentController {
             return ResultVoUtil.error(statusEnum.getMessage() + "失败，请重新操作");
         }
     }
+
+    /**
+     * 跳转到个人信息页面
+     */
+
 }

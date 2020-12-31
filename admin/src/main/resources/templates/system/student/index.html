@@ -169,9 +169,9 @@
                             <i class="layui-icon layui-icon-ok"></i></label></td>
                         <td th:text="${item.stuNo}">学号</td>
                         <td th:text="${item.names}">姓名</td>
-                        <td th:text="${item.sex}">性别</td>
-                        <td th:text="${item.nation}">民族</td>
-                        <td th:text="${item.photo}">照片</td>
+                        <td th:text="${#dicts.keyValue('USER_SEX', item.sex)}">性别</td>
+                        <td th:text="${#dicts.keyValue('NATION', item.nation)}">民族</td>
+                        <td><img th:src="${item.photo}" height="100px"></td>
                         <td th:text="${item.collegeId}">院系id</td>
                         <td th:text="${item.specialtyId}">专业id</td>
                         <td th:text="${item.gradeId}">年级id</td>

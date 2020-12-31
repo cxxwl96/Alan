@@ -13,9 +13,9 @@
                 <div class="layui-upload-drag" id="button-photo">
                     <i class="layui-icon"></i>
                     <p>点击上传，或将文件拖拽到此处</p>
-                    <div class="layui-hide" id="uploadDemoView">
+                    <div th:class="${student.photo!=null && student.photo.length()>0}? '' : 'layui-hide'" id="uploadDemoView">
                         <hr>
-                        <img src="" alt="上传成功后渲染" style="max-width: 196px">
+                        <img th:src="${student?.photo}" alt="上传成功后渲染" style="max-width: 196px">
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                             class="layui-anim layui-icon"></i>
                         <div>男</div>
                     </div>
-                    <input type="radio" name="sex" value="2" title="女" th:checked="${user?.sex} eq 2">
+                    <input type="radio" name="sex" value="2" title="女" th:checked="${student?.sex} eq 2">
                     <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
                         <div>女</div>
                     </div>
@@ -59,7 +59,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label required">出生年月</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="birthday" th:value="${student?.birthday}" id="birthday" placeholder="yyyy-MM-dd" autocomplete="off">
+                    <input class="layui-input" type="text" name="birthday" th:value="${#dates.format(student.birthday, 'yyyy-MM-dd')}" id="birthday" placeholder="yyyy-MM-dd" autocomplete="off">
                 </div>
                 <label class="layui-form-label">学籍号</label>
                 <div class="layui-input-inline">
@@ -110,7 +110,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label required">入学年月</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="admissionTime" th:value="${student?.admissionTime}" id="admissionTime" placeholder="yyyy-MM-dd" autocomplete="off">
+                    <input class="layui-input" type="text" name="admissionTime" th:value="${#dates.format(student.admissionTime, 'yyyy-MM-dd')}" id="admissionTime" placeholder="yyyy-MM-dd" autocomplete="off">
                 </div>
                 <label class="layui-form-label required">人学方式</label>
                 <div class="layui-input-inline">
