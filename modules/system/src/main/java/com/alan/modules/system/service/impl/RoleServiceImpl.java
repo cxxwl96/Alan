@@ -3,13 +3,11 @@ package com.alan.modules.system.service.impl;
 import com.alan.common.data.PageSort;
 import com.alan.common.enums.StatusEnum;
 import com.alan.modules.system.domain.Role;
+import com.alan.modules.system.domain.Student;
 import com.alan.modules.system.repository.RoleRepository;
 import com.alan.modules.system.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -110,5 +108,25 @@ public class RoleServiceImpl implements RoleService {
             roleRepository.cancelMenuJoin(ids);
         }
         return roleRepository.updateStatus(statusEnum.getCode(), ids) > 0;
+    }
+
+    /**
+     * 根据角色名获取角色
+     *
+     * @param name
+     * @return
+     */
+    @Override
+    public Role getByName(String name) {
+        /*Role role = new Role();
+        role.setName(name);
+        // 创建匹配器，进行动态查询匹配
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("name", match -> match.equals(name));
+
+        // 获取数据列表
+        Example<Role> example = Example.of(role, matcher);
+        Page<Role> list = getPageList(example);*/
+        return roleRepository.findByName(name);
     }
 }

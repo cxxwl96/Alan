@@ -15,6 +15,8 @@ import javax.validation.constraints.Pattern;
  */
 @Data
 public class StudentValid implements Serializable {
+    @NotEmpty(message = "一寸半身照不能为空")
+    private String photo;
     @NotEmpty(message = "学号不能为空")
     private String stuNo;
     @NotEmpty(message = "姓名不能为空")
@@ -42,11 +44,6 @@ public class StudentValid implements Serializable {
     private Byte anthropology;
     @NotNull(message = "就学方式不能为空")
     private Byte wayOfStudying;
-    @NotNull(message = "是否为留守儿童不能为空")
-    private Byte isLBC;
-    @NotNull(message = "是否外来务工人员子女不能为空")
-    private Byte isCOMW;
-    @NotNull(message = "是否享受“一 补”不能为空")
     private Byte isEOS;
     @NotEmpty(message = "家庭地址不能为空")
     private String familyAddress;
@@ -57,12 +54,4 @@ public class StudentValid implements Serializable {
     @NotEmpty(message = "监护人电话不能为空")
     @Pattern(regexp = "^((17[0-9])|(14[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$", message = "手机号码格式不正确")
     private String guardianPhone;
-    @NotEmpty(message = "院系id不能为空")
-    private String collegeId;
-    @NotEmpty(message = "专业id不能为空")
-    private String specialtyId;
-    @NotEmpty(message = "年级id不能为空")
-    private String gradeId;
-    @NotEmpty(message = "班级id不能为空")
-    private String clazzId;
 }

@@ -6,19 +6,33 @@ import com.alan.common.utils.EntityBeanUtil;
 import com.alan.common.utils.ResultVoUtil;
 import com.alan.common.utils.StatusUtil;
 import com.alan.common.vo.ResultVo;
+import com.alan.component.shiro.ShiroUtil;
+import com.alan.modules.system.domain.Dept;
+import com.alan.modules.system.domain.Role;
 import com.alan.modules.system.domain.Student;
+import com.alan.modules.system.domain.User;
+import com.alan.modules.system.service.RoleService;
 import com.alan.modules.system.service.StudentService;
+import com.alan.modules.system.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author cxxwl96@sina.com
@@ -30,6 +44,19 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder, WebRequest request) {
+        //转换日期 注意这里的转化要和传进来的字符串的格式一直 如2015-9-9 就应该为yyyy-MM-dd
+        DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));// CustomDateEditor为自定义日期编辑器
+    }
 
     /**
      * 列表页面
@@ -91,12 +118,33 @@ public class StudentController {
             Student beStudent = studentService.getById(student.getId());
             EntityBeanUtil.copyProperties(beStudent, student);
         }
-
+        // 为学生创建账号
+        User user = new User();
+        user.setUsername(student.getStuNo());
+        user.setNickname(student.getNames());
+        String[] secret = createSecret();
+        user.setSalt(secret[0]);
+        user.setPassword(secret[1]);
+        user.setPicture(student.getPhoto());
+        user.setSex(student.getSex());
+        user.setPhone(student.getPhone());
+        user = userService.save(user);
+        // 为账号分配学生权限
+        Set<Role> roles = new HashSet<>(0);
+        Role role = roleService.getByName("student");
+        roles.add(role);
+        user.setRoles(roles);
         // 保存数据
+        student.setUserId(user);
         studentService.save(student);
         return ResultVoUtil.SAVE_SUCCESS;
     }
-
+    private String[] createSecret(){
+        String[] secret = new String[2];
+        secret[0] = ShiroUtil.getRandomSalt();
+        secret[1] = ShiroUtil.encrypt("123456", secret[0]);
+        return secret;
+    }
     /**
      * 跳转到详细页面
      */

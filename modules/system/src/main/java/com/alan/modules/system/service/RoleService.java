@@ -75,4 +75,11 @@ public interface RoleService {
      */
     @Transactional
     Boolean updateStatus(StatusEnum statusEnum, List<Long> idList);
+
+    /**
+     * 根据角色名获取角色
+     * @param name
+     * @return
+     */
+    Role getByName(String name);
 }

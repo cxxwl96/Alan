@@ -915,4 +915,5 @@ a{
 	padding: 10px 0 10px 10px;
 	background: #FFF;
 	box-shadow: 0px 0px 10px #b3b3b3;
+	z-index: 666666666;
 }

@@ -74,4 +74,7 @@ public interface RoleRepository extends BaseRepository<Role,Long> {
     @Query(value = "DELETE FROM sys_role_menu WHERE role_id in ?1", nativeQuery = true)
     public Integer cancelMenuJoin(List<Long> ids);
 
+    @Query(value = "SELECT * FROM sys_role WHERE name = ?", nativeQuery = true)
+    public Role findByName(String name);
+
 }

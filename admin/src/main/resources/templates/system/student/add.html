@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:mo="https://gitee.com/aun/alan">
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
 </head>
 <body>
@@ -7,9 +7,9 @@
     <form th:action="@{/system/student/save}" class="layui-form-pane alan-form-pane">
         <input type="hidden" name="id" th:if="${student}" th:value="${student.id}">
         <div class="layui-form-item">
-            <label class="layui-form-label">照片</label>
+            <label class="layui-form-label required">一寸半身照</label>
             <div class="layui-input-block">
-                <input type="hidden" name="photo" th:value="${student?.photo}">
+                <input class="layui-input" type="hidden" name="photo" id="photo" th:value="${student?.photo}">
                 <div class="layui-upload-drag" id="button-photo">
                     <i class="layui-icon"></i>
                     <p>点击上传，或将文件拖拽到此处</p>
@@ -22,12 +22,12 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">学号</label>
+                <label class="layui-form-label required">学号</label>
                 <div class="layui-input-inline">
                     <input class="layui-input" type="text" name="stuNo" placeholder="请输入学号"
                            th:value="${student?.stuNo}">
                 </div>
-                <label class="layui-form-label">姓名</label>
+                <label class="layui-form-label required">姓名</label>
                 <div class="layui-input-inline">
                     <input class="layui-input" type="text" name="names" placeholder="请输入姓名"
                            th:value="${student?.names}">
@@ -36,11 +36,19 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">性别</label>
+                <label class="layui-form-label required">性别</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="sex" placeholder="请输入性别" th:value="${student?.sex}">
+                    <input type="radio" name="sex" value="1" title="男" checked>
+                    <div class="layui-unselect layui-form-radio layui-form-radioed"><i
+                            class="layui-anim layui-icon"></i>
+                        <div>男</div>
+                    </div>
+                    <input type="radio" name="sex" value="2" title="女" th:checked="${user?.sex} eq 2">
+                    <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
+                        <div>女</div>
+                    </div>
                 </div>
-                <label class="layui-form-label">手机号</label>
+                <label class="layui-form-label required">手机号</label>
                 <div class="layui-input-inline">
                     <input class="layui-input" type="text" name="phone" placeholder="请输入手机号"
                            th:value="${student?.phone}">
@@ -49,10 +57,9 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">出生年月</label>
+                <label class="layui-form-label required">出生年月</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="birthday" placeholder="请输入出生年月"
-                           th:value="${student?.birthday}">
+                    <input class="layui-input" type="text" name="birthday" th:value="${student?.birthday}" id="birthday" placeholder="yyyy-MM-dd" autocomplete="off">
                 </div>
                 <label class="layui-form-label">学籍号</label>
                 <div class="layui-input-inline">
@@ -63,12 +70,11 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">身份证类型</label>
+                <label class="layui-form-label required">身份证类型</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="idType" placeholder="请输入身份证类型"
-                           th:value="${student?.idType}">
+                    <select name="idType" mo:dict="ID_TYPE" mo-selected="${student?.idType}" mo-empty="" lay-verify="idType"></select>
                 </div>
-                <label class="layui-form-label">证件号</label>
+                <label class="layui-form-label required">证件号</label>
                 <div class="layui-input-inline">
                     <input class="layui-input" type="text" name="idNo" placeholder="请输入证件号" th:value="${student?.idNo}">
                 </div>
@@ -81,38 +87,34 @@
                     <input class="layui-input" type="text" name="formerNames" placeholder="请输入曾用名"
                            th:value="${student?.formerNames}">
                 </div>
-                <label class="layui-form-label">民族</label>
+                <label class="layui-form-label required">民族</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="nation" placeholder="请输入民族"
-                           th:value="${student?.nation}">
+                    <select name="nation" mo:dict="NATION" mo-selected="${student?.idType}" mo-empty="" lay-verify="nation"></select>
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">户籍所在地</label>
+                <label class="layui-form-label required">户籍所在地</label>
                 <div class="layui-input-inline">
                     <input class="layui-input" type="text" name="domicile" placeholder="请输入户籍所在地"
                            th:value="${student?.domicile}">
                 </div>
-                <label class="layui-form-label">就学方式</label>
+                <label class="layui-form-label required">就学方式</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="wayOfStudying" placeholder="请输入就学方式"
-                           th:value="${student?.wayOfStudying}">
+                    <select name="wayOfStudying" mo:dict="WAY_OF_STUDYING" mo-selected="${student?.wayOfStudying}" mo-empty="" lay-verify="wayOfStudying"></select>
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">入学年月</label>
+                <label class="layui-form-label required">入学年月</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="admissionTime" placeholder="请输入入学年月"
-                           th:value="${student?.admissionTime}">
+                    <input class="layui-input" type="text" name="admissionTime" th:value="${student?.admissionTime}" id="admissionTime" placeholder="yyyy-MM-dd" autocomplete="off">
                 </div>
-                <label class="layui-form-label">人学方式</label>
+                <label class="layui-form-label required">人学方式</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="anthropology" placeholder="请输入人学方式"
-                           th:value="${student?.anthropology}">
+                    <select name="anthropology" mo:dict="ANTHROPOLOGY" mo-selected="${student?.anthropology}" mo-empty="" lay-verify="anthropology"></select>
                 </div>
             </div>
         </div>
@@ -125,7 +127,7 @@
                 </div>
                 <label class="layui-form-label">身高</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="height" placeholder="请输入身高"
+                    <input class="layui-input" type="number" name="height" placeholder="请输入身高"
                            th:value="${student?.height}">
                 </div>
             </div>
@@ -134,33 +136,30 @@
             <div class="layui-inline">
                 <label class="layui-form-label">体重</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="weight" placeholder="请输入体重"
+                    <input class="layui-input" type="number" name="weight" placeholder="请输入体重"
                            th:value="${student?.weight}">
                 </div>
-                <label class="layui-form-label">是否为留守儿童</label>
+                <label class="layui-form-label">留守儿童</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="isLBC" placeholder="请输入是否为留守儿童"
-                           th:value="${student?.isLBC}">
+                    <input type="checkbox" name="isLBC" id="isLBC" lay-skin="switch" lay-text="是|否" th:value="${student?.isLBC}" lay-filter="isLBC">
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">是否外来务工人员子女</label>
+                <label class="layui-form-label" title="外来务工人员子女">外来务工人员子女</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="isCOMW" placeholder="请输入是否外来务工人员子女"
-                           th:value="${student?.isCOMW}">
+                    <input type="checkbox" name="isCOMW" id="isCOMW" lay-skin="switch" lay-text="是|否" th:value="${student?.isCOMW}" lay-filter="isCOMW">
                 </div>
-                <label class="layui-form-label">是否享受“一 补”</label>
+                <label class="layui-form-label">享受“一 补”</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="isEOS" placeholder="请输入是否享受“一 补”"
-                           th:value="${student?.isEOS}">
+                    <input type="checkbox" name="isEOS" id="isEOS" lay-skin="switch" lay-text="是|否" th:value="${student?.isEOS}" lay-filter="isEOS">
                 </div>
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">家庭地址</label>
+            <label class="layui-form-label required">家庭地址</label>
             <div class="layui-input-block">
                 <input class="layui-input" type="text" name="familyAddress" placeholder="请输入家庭地址"
                        th:value="${student?.familyAddress}">
@@ -168,7 +167,7 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">现住址</label>
+            <label class="layui-form-label required">现住址</label>
             <div class="layui-input-block">
                 <input class="layui-input" type="text" name="currentAddress" placeholder="请输入现住址"
                        th:value="${student?.currentAddress}">
@@ -176,12 +175,12 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">监护人姓名</label>
+                <label class="layui-form-label required">监护人姓名</label>
                 <div class="layui-input-inline">
                     <input class="layui-input" type="text" name="guardianNames" placeholder="请输入监护人姓名"
                            th:value="${student?.guardianNames}">
                 </div>
-                <label class="layui-form-label">监护人电话</label>
+                <label class="layui-form-label required">监护人电话</label>
                 <div class="layui-input-inline">
                     <input class="layui-input" type="text" name="guardianPhone" placeholder="请输入监护人电话"
                            th:value="${student?.guardianPhone}">
@@ -230,10 +229,13 @@
 </div>
 <script th:replace="/common/template :: script"></script>
 <script>
-    layui.use('upload', function () {
+    layui.use(['form', 'upload', 'laydate'], function () {
         var $ = layui.jquery;
+        var form = layui.form;
         var upload = layui.upload;
-        //拖拽上传
+        var laydate = layui.laydate;
+        // 照片
+        // 拖拽上传图片
         upload.render({
             elem: '#button-photo'
             , url: '/upload/image'
@@ -243,11 +245,50 @@
                 //上传成功
                 if (res && res.code == 200) {
                     layer.msg('上传成功');
-                    $("input[name='photo']").val(res.data.path);
+                    $("#photo").val(res.data.path);
                     layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.data.path);
                 } else {
                     layer.msg('上传失败');
                 }
+            }
+        });
+
+        // 出生年月
+        laydate.render({
+            elem: '#birthday' //指定元素
+            ,calendar: true //是否显示公历节日
+            ,trigger: 'click' //采用click弹出
+        });
+
+        // 入学年月
+        laydate.render({
+            elem: '#admissionTime' //指定元素
+            ,calendar: true //是否显示公历节日
+            ,trigger: 'click' //采用click弹出
+        });
+
+        // 留守儿童
+        form.on('switch(isLBC)', function(data){
+            if(data.elem.checked){
+                $("#isLBC").val(1)
+            } else {
+                $("#isLBC").val(0)
+            }
+        });
+        // 留守儿童
+        form.on('switch(isCOMW)', function(data){
+            if(data.elem.checked){
+                $("#isCOMW").val(1)
+            } else {
+                $("#isCOMW").val(0)
+            }
+        });
+        // 留守儿童
+        form.on('switch(isEOS)', function(data){
+            if(data.elem.checked){
+                $("#isEOS").val(1)
+            } else {
+                $("#isEOS").val(0)
             }
         });
     })
