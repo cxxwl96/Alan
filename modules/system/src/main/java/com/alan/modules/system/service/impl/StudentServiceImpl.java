@@ -63,4 +63,14 @@ public class StudentServiceImpl implements StudentService {
     public Boolean updateStatus(StatusEnum statusEnum, List<Long> idList) {
         return studentRepository.updateStatus(statusEnum.getCode(), idList) > 0;
     }
+
+    /**
+     * 根据UserId查询数据
+     *
+     * @param userId 用户id
+     */
+    @Override
+    public Student getByUserId(Long userId) {
+        return studentRepository.getByUserId(userId);
+    }
 }

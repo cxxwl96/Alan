@@ -38,4 +38,10 @@ public interface StudentService {
      */
     @Transactional
     Boolean updateStatus(StatusEnum statusEnum, List<Long> idList);
+
+    /**
+     * 根据UserId查询数据
+     * @param userId 用户id
+     */
+    Student getByUserId(Long userId);
 }

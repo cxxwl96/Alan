@@ -7,7 +7,6 @@ import com.alan.common.utils.ResultVoUtil;
 import com.alan.common.utils.StatusUtil;
 import com.alan.common.vo.ResultVo;
 import com.alan.component.shiro.ShiroUtil;
-import com.alan.modules.system.domain.Dept;
 import com.alan.modules.system.domain.Role;
 import com.alan.modules.system.domain.Student;
 import com.alan.modules.system.domain.User;
@@ -54,7 +53,7 @@ public class StudentController {
     @InitBinder
     public void initBinder(WebDataBinder binder, WebRequest request) {
         //转换日期 注意这里的转化要和传进来的字符串的格式一直 如2015-9-9 就应该为yyyy-MM-dd
-        DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));// CustomDateEditor为自定义日期编辑器
     }
 
@@ -107,6 +106,7 @@ public class StudentController {
 
     /**
      * 保存添加/修改的数据
+     *
      * @param valid 验证对象
      */
     @PostMapping("/save")
@@ -117,41 +117,50 @@ public class StudentController {
         if (student.getId() != null) {
             Student beStudent = studentService.getById(student.getId());
             EntityBeanUtil.copyProperties(beStudent, student);
+
+            if (userService.getById(beStudent.getUserId().getId()) == null) {
+                // 为学生创建账号
+                User user = new User();
+                user.setUsername(student.getStuNo());
+                user.setNickname(student.getNames());
+                String[] secret = createSecret();
+                user.setSalt(secret[0]);
+                user.setPassword(secret[1]);
+                user.setPicture(student.getPhoto());
+                user.setSex(student.getSex());
+                user.setPhone(student.getPhone());
+                user = userService.save(user);
+                // 为账号分配学生权限
+                Set<Role> roles = new HashSet<>(0);
+                Role role = roleService.getByName("student");
+                roles.add(role);
+                user.setRoles(roles);
+                // 保存数据
+                student.setUserId(user);
+            }else{
+                User subUser = ShiroUtil.getSubject();
+                student.setUserId(subUser);
+            }
         }
-        // 为学生创建账号
-        User user = new User();
-        user.setUsername(student.getStuNo());
-        user.setNickname(student.getNames());
-        String[] secret = createSecret();
-        user.setSalt(secret[0]);
-        user.setPassword(secret[1]);
-        user.setPicture(student.getPhoto());
-        user.setSex(student.getSex());
-        user.setPhone(student.getPhone());
-        user = userService.save(user);
-        // 为账号分配学生权限
-        Set<Role> roles = new HashSet<>(0);
-        Role role = roleService.getByName("student");
-        roles.add(role);
-        user.setRoles(roles);
-        // 保存数据
-        student.setUserId(user);
+
         studentService.save(student);
         return ResultVoUtil.SAVE_SUCCESS;
     }
-    private String[] createSecret(){
+
+    private String[] createSecret() {
         String[] secret = new String[2];
         secret[0] = ShiroUtil.getRandomSalt();
         secret[1] = ShiroUtil.encrypt("123456", secret[0]);
         return secret;
     }
+
     /**
      * 跳转到详细页面
      */
     @GetMapping("/detail/{id}")
     @RequiresPermissions("system:student:detail")
     public String toDetail(@PathVariable("id") Student student, Model model) {
-        model.addAttribute("student",student);
+        model.addAttribute("student", student);
         return "/system/student/detail";
     }
 
@@ -176,5 +185,19 @@ public class StudentController {
     /**
      * 跳转到个人信息页面
      */
-
+    @GetMapping("/me")
+    @RequiresPermissions("system:student:me")
+    public String toMe(Model model) {
+        // 获取当前登录用户
+        User subUser = ShiroUtil.getSubject();
+        Student student = studentService.getByUserId(subUser.getId());
+        Role role = roleService.getByName("student");
+        if (student == null) {
+            student = new Student();
+            student.setUserId(subUser);
+            student.setStuNo(subUser.getUsername());
+        }
+        model.addAttribute("student", student);
+        return "/system/student/me";
+    }
 }
