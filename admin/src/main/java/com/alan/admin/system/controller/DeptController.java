@@ -11,6 +11,7 @@ import com.alan.component.actionLog.action.SaveAction;
 import com.alan.component.actionLog.action.StatusAction;
 import com.alan.component.actionLog.annotation.ActionLog;
 import com.alan.component.actionLog.annotation.EntityParam;
+import com.alan.devtools.generate.utils.jAngel.utils.StringUtil;
 import com.alan.modules.system.domain.Dept;
 import com.alan.modules.system.service.DeptService;
 import org.apache.shiro.authz.annotation.Logical;
@@ -76,7 +77,7 @@ public class DeptController {
     @ResponseBody
     public Map<Integer, String> sortList(
             @PathVariable(value = "pid", required = false) Long pid,
-            @PathVariable(value = "notId", required = false) Long notId){
+            @PathVariable(value = "notId", required = false) Long notId) {
         // 本级排序部门列表
         notId = notId != null ? notId : (long) 0;
         List<Dept> levelDept = deptService.getListByPid(pid, notId);
@@ -117,6 +118,7 @@ public class DeptController {
 
     /**
      * 保存添加/修改的数据
+     *
      * @param valid 表单验证对象
      */
     @PostMapping("/save")
@@ -126,9 +128,9 @@ public class DeptController {
     public ResultVo save(@Validated DeptValid valid, @EntityParam Dept dept) {
         if (dept.getId() == null) {
             // 排序为空时，添加到最后
-            if(dept.getSort() == null){
+            if (dept.getSort() == null) {
                 Integer sortMax = deptService.getSortMax(dept.getPid());
-                dept.setSort(sortMax !=null ? sortMax - 1 : 0);
+                dept.setSort(sortMax != null ? sortMax - 1 : 0);
             }
         }
 
@@ -165,7 +167,7 @@ public class DeptController {
      */
     @GetMapping("/detail/{id}")
     @RequiresPermissions("system:dept:detail")
-    public String toDetail(@PathVariable("id") Dept dept, Model model){
+    public String toDetail(@PathVariable("id") Dept dept, Model model) {
         model.addAttribute("dept", dept);
         return "/system/dept/detail";
     }
@@ -179,7 +181,7 @@ public class DeptController {
     @ActionLog(name = "部门状态", action = StatusAction.class)
     public ResultVo status(
             @PathVariable("param") String param,
-            @RequestParam(value = "ids", required = false) List<Long> ids){
+            @RequestParam(value = "ids", required = false) List<Long> ids) {
         // 更新状态
         StatusEnum statusEnum = StatusUtil.getStatusEnum(param);
         if (deptService.updateStatus(statusEnum, ids)) {
@@ -189,4 +191,19 @@ public class DeptController {
         }
     }
 
+    /**
+     * 获取子部门
+     *
+     * @param pid
+     * @return
+     */
+    @PostMapping("/getChilds")
+    @ResponseBody
+    public ResultVo getChilds(Long pid) {
+        if (pid == null || pid < 0) {
+            pid = 1L;
+        }
+        List<Dept> depts = deptService.findByPid(pid);
+        return ResultVoUtil.success("查询成功", depts);
+    }
 }

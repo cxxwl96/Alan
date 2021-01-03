@@ -125,5 +125,16 @@ public class DeptServiceImpl implements DeptService {
 
         return treeDepts.size() > 0;
     }
+
+    /**
+     * 获取子部门
+     *
+     * @param pid
+     * @return
+     */
+    @Override
+    public List<Dept> findByPid(Long pid) {
+        return deptRepository.findByPid(pid);
+    }
 }
 

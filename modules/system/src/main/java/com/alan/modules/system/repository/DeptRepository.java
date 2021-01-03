@@ -15,6 +15,7 @@ public interface DeptRepository extends BaseRepository<Dept, Long> {
 
     /**
      * 查找多个部门
+     *
      * @param ids id列表
      * @return 部门列表
      */
@@ -22,6 +23,7 @@ public interface DeptRepository extends BaseRepository<Dept, Long> {
 
     /**
      * 获取排序最大值
+     *
      * @param pid 父部门ID
      * @return 最大值
      */
@@ -30,7 +32,8 @@ public interface DeptRepository extends BaseRepository<Dept, Long> {
 
     /**
      * 根据父ID查找子孙部门
-     * @param pids pid列表
+     *
+     * @param pids   pid列表
      * @param status 数据状态
      * @return 部门列表
      */
@@ -38,11 +41,20 @@ public interface DeptRepository extends BaseRepository<Dept, Long> {
 
     /**
      * 根据父级部门ID获取本级全部部门
-     * @param sort 排序对象
-     * @param pid 父部门ID
+     *
+     * @param sort  排序对象
+     * @param pid   父部门ID
      * @param notId 需要排除的部门ID
      * @return 部门列表
      */
     public List<Dept> findByPidAndIdNot(Sort sort, long pid, long notId);
+
+    /**
+     * 获取子部门
+     *
+     * @param pid
+     * @return
+     */
+    public List<Dept> findByPid(long pid);
 }
 
