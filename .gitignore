@@ -24,3 +24,7 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
+
+
+
+upload/**/*.*
