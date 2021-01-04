@@ -24,7 +24,6 @@
         }
         .students div{
             display: inline-block;
-            width: 100px;
             height: 30px;
             line-height: 15px;
             color: #FFF;
@@ -59,7 +58,7 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">入住学生</label>
             <div class="layui-input-block">
-                <input type="text" name="students" th:value="${dormitory?.students}"/>
+                <input type="hidden" name="students" th:value="${dormitory?.students}"/>
                 <div class="students"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择学生</div>
             </div>
         </div>

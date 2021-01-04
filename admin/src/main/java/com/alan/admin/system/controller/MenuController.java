@@ -69,7 +69,7 @@ public class MenuController {
         // TODO: 2020/2/25 菜单类型处理方案
         list.forEach(editMenu -> {
             String type = String.valueOf(editMenu.getType());
-            editMenu.setRemark(DictUtil.keyValue("MENU_TYPE", type));
+            editMenu.setMenuType(DictUtil.keyValue("MENU_TYPE", type));
         });
         return ResultVoUtil.success(list);
     }

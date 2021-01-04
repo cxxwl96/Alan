@@ -39,6 +39,7 @@ public class Menu implements Serializable {
     private String perms;
     private String icon;
     private Byte type;
+    private String menuType;
     private Integer sort;
     private String remark;
     @CreatedDate
