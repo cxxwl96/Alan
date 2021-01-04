@@ -11,4 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface StudentRepository extends BaseRepository<Student, Long> {
     @Query(value = "SELECT * FROM sims_student WHERE user_id = ?", nativeQuery = true)
     Student getByUserId(Long userId);
+
+    @Query(value = "SELECT * FROM sims_student WHERE stu_no = ?", nativeQuery = true)
+    Student getByStuNo(String stuNo);
 }

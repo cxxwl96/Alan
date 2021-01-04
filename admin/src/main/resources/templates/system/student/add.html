@@ -7,6 +7,30 @@
     <form th:action="@{/system/student/save}" class="layui-form-pane alan-form-pane">
         <input type="hidden" name="id" th:if="${student}" th:value="${student.id}">
         <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">院系</label>
+                <div class="layui-input-inline">
+                    <select lay-ignore class="layui-input select-dept" name="collegeId" th:value="${student?.collegeId?.id}" data-url="/system/dept/getChilds" parend-id="1"></select>
+                </div>
+                <label class="layui-form-label required">专业</label>
+                <div class="layui-input-inline">
+                    <select lay-ignore class="layui-input select-dept" name="specialtyId" th:value="${student?.specialtyId?.id}" data-url="/system/dept/getChilds" parend-id=""></select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">年级</label>
+                <div class="layui-input-inline">
+                    <select lay-ignore class="layui-input select-dept" name="gradeId" th:value="${student?.gradeId?.id}" data-url="/system/dept/getChilds" parend-id=""></select>
+                </div>
+                <label class="layui-form-label required">班级</label>
+                <div class="layui-input-inline">
+                    <select lay-ignore class="layui-input select-dept" name="clazzId" th:value="${student?.clazzId?.id}" data-url="/system/dept/getChilds" parend-id=""></select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label required">一寸半身照</label>
             <div class="layui-input-block">
                 <input class="layui-input" type="hidden" name="photo" id="photo" th:value="${student?.photo}">
@@ -187,34 +211,6 @@
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">院系id</label>
-                <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="collegeId" placeholder="请输入院系id"
-                           th:value="${student?.collegeId}">
-                </div>
-                <label class="layui-form-label">专业id</label>
-                <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="specialtyId" placeholder="请输入专业id"
-                           th:value="${student?.specialtyId}">
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">年级id</label>
-                <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="gradeId" placeholder="请输入年级id"
-                           th:value="${student?.gradeId}">
-                </div>
-                <label class="layui-form-label">班级id</label>
-                <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="clazzId" placeholder="请输入班级id"
-                           th:value="${student?.clazzId}">
-                </div>
-            </div>
-        </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
@@ -234,6 +230,78 @@
         var form = layui.form;
         var upload = layui.upload;
         var laydate = layui.laydate;
+        // 院系、专业、年级、班级
+        $(".select-dept").css("min-width", "100px");
+        var _collegeId = $(".select-dept[name='collegeId']");
+        var _specialtyId = $(".select-dept[name='specialtyId']");
+        var _gradeId = $(".select-dept[name='gradeId']");
+        var _clazzId = $(".select-dept[name='clazzId']");
+        var setOption = function(el, pid){
+            var _this = $(el);
+            var _dataUrl = _this.attr('data-url');
+            var _value = _this.attr('value');
+            $.post(_dataUrl, {'pid': pid}, function(data, status){
+                var _data = data.data;
+                if(data && data.code==200){
+                    _this.html('');
+                    _this.attr('parend-id', pid);
+                    for(var i=0; i<_data.length; i++){
+                        _this.append('<option value='+_data[i].id+'>'+_data[i].title+'</option>')
+                    }
+                    $(_this).find("option[value='"+_value+"']").attr("selected",true);
+                }else{
+                    layer.msg(data.msg, {icon: 2});
+                }
+            });
+        }
+        // 设置选中
+        if(_collegeId.attr('value')){
+            setOption(_collegeId, 1);
+            if(_specialtyId.attr('value')){
+                setOption(_specialtyId, _collegeId.attr('value'));
+                if(_gradeId.attr('value')){
+                    setOption(_gradeId, _specialtyId.attr('value'));
+                    if(_clazzId.attr('value')){
+                        setOption(_clazzId, _gradeId.attr('value'));
+                    }
+                }
+            }
+        }
+
+        $(".select-dept").click(function(){
+            var _this = $(this);
+            var _name = _this.attr('name');
+            var _dataUrl = $(this).attr('data-url');
+            var _parendId = null;
+            var _val = $('.select-dept[name="'+_name+'"] option:selected').val();
+            if(_name=='collegeId'){
+                _parendId = $(this).attr('parend-id');
+                $(".select-dept[name='specialtyId']").html('');
+            }else if(_name=='specialtyId'){
+                _parendId = $(".select-dept[name='collegeId']").val();
+                $(".select-dept[name='gradeId']").html('');
+            }else if(_name=='gradeId'){
+                _parendId = $(".select-dept[name='specialtyId']").val();
+                $(".select-dept[name='clazzId']").html('');
+            }else if(_name=='clazzId'){
+                _parendId = $(".select-dept[name='gradeId']").val();
+            }
+            if(_parendId==null || _val!=null){
+                return;
+            }
+            $.post(_dataUrl, {'pid': _parendId}, function(data, status){
+                var _data = data.data;
+                if(data && data.code==200){
+                    _this.html('');
+                    _this.attr('parend-id', _parendId);
+                    for(var i=0; i<_data.length; i++){
+                        _this.append('<option value='+_data[i].id+'>'+_data[i].title+'</option>')
+                    }
+                }else{
+                    layer.msg(data.msg, {icon: 2});
+                }
+            });
+        });
         // 照片
         // 拖拽上传图片
         upload.render({

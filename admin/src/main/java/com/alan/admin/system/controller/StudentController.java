@@ -7,6 +7,7 @@ import com.alan.common.utils.ResultVoUtil;
 import com.alan.common.utils.StatusUtil;
 import com.alan.common.vo.ResultVo;
 import com.alan.component.shiro.ShiroUtil;
+import com.alan.modules.system.domain.Dept;
 import com.alan.modules.system.domain.Role;
 import com.alan.modules.system.domain.Student;
 import com.alan.modules.system.domain.User;
@@ -62,18 +63,44 @@ public class StudentController {
      */
     @GetMapping("/index")
     @RequiresPermissions("system:student:index")
-    public String index(Model model, Student student) {
-
+    public String index(Model model, Student student, String college, String specialty, String grade, String clazz) {
+        // 院系
+        if (college != null && !"null".equals(college)) {
+            Dept dept = new Dept();
+            dept.setId(Long.valueOf(college));
+            student.setCollegeId(dept);
+        }
+        // 专业
+        if (specialty != null && !"null".equals(specialty)) {
+            Dept dept = new Dept();
+            dept.setId(Long.valueOf(specialty));
+            student.setSpecialtyId(dept);
+        }
+        // 年级
+        if (grade != null && !"null".equals(grade)) {
+            Dept dept = new Dept();
+            dept.setId(Long.valueOf(grade));
+            student.setGradeId(dept);
+        }
+        // 班级
+        if (clazz != null && !"null".equals(clazz)) {
+            Dept dept = new Dept();
+            dept.setId(Long.valueOf(clazz));
+            student.setClazzId(dept);
+        }
         // 创建匹配器，进行动态查询匹配
         ExampleMatcher matcher = ExampleMatcher.matching()
-                .withMatcher("userId", match -> match.contains())
+                .withMatcher("collegeId", match -> match.contains())
+                .withMatcher("specialtyId", match -> match.contains())
+                .withMatcher("gradeId", match -> match.contains())
+                .withMatcher("clazzId", match -> match.contains())
                 .withMatcher("stuNo", match -> match.contains())
                 .withMatcher("stuNumber", match -> match.contains())
                 .withMatcher("names", match -> match.contains())
                 .withMatcher("idNo", match -> match.contains())
-                .withMatcher("domicile", match -> match.contains())
-                .withMatcher("familyAddress", match -> match.contains())
-                .withMatcher("currentAddress", match -> match.contains());
+                .withMatcher("anthropology", match -> match.contains())
+                .withMatcher("wayOfStudying", match -> match.contains())
+                .withMatcher("status", match -> match.contains());
 
         // 获取数据列表
         Example<Student> example = Example.of(student, matcher);
@@ -114,35 +141,37 @@ public class StudentController {
     @ResponseBody
     public ResultVo save(@Validated StudentValid valid, Student student) {
         // 复制保留无需修改的数据
+        Student beStudent = null;
         if (student.getId() != null) {
-            Student beStudent = studentService.getById(student.getId());
+            beStudent = studentService.getById(student.getId());
             EntityBeanUtil.copyProperties(beStudent, student);
-
-            if (userService.getById(beStudent.getUserId().getId()) == null) {
-                // 为学生创建账号
-                User user = new User();
-                user.setUsername(student.getStuNo());
-                user.setNickname(student.getNames());
-                String[] secret = createSecret();
-                user.setSalt(secret[0]);
-                user.setPassword(secret[1]);
-                user.setPicture(student.getPhoto());
-                user.setSex(student.getSex());
-                user.setPhone(student.getPhone());
-                user = userService.save(user);
-                // 为账号分配学生权限
-                Set<Role> roles = new HashSet<>(0);
-                Role role = roleService.getByName("student");
-                roles.add(role);
-                user.setRoles(roles);
-                // 保存数据
-                student.setUserId(user);
-            }else{
-                User subUser = ShiroUtil.getSubject();
-                student.setUserId(subUser);
-            }
         }
-
+        if (beStudent==null || beStudent.getUserId()==null) {
+            if(studentService.getByStuNo(student.getStuNo())!=null){
+                return ResultVoUtil.error("该学号已存在");
+            }
+            // 为学生创建账号
+            User user = new User();
+            user.setUsername(student.getStuNo());
+            user.setNickname(student.getNames());
+            String[] secret = createSecret();
+            user.setSalt(secret[0]);
+            user.setPassword(secret[1]);
+            user.setPicture(student.getPhoto());
+            user.setSex(student.getSex());
+            user.setPhone(student.getPhone());
+            user = userService.save(user);
+            // 为账号分配学生权限
+            Set<Role> roles = new HashSet<>(0);
+            Role role = roleService.getByName("student");
+            roles.add(role);
+            user.setRoles(roles);
+            // 保存数据
+            student.setUserId(user);
+        } else {
+            User subUser = ShiroUtil.getSubject();
+            student.setUserId(subUser);
+        }
         studentService.save(student);
         return ResultVoUtil.SAVE_SUCCESS;
     }

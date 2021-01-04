@@ -73,4 +73,14 @@ public class StudentServiceImpl implements StudentService {
     public Student getByUserId(Long userId) {
         return studentRepository.getByUserId(userId);
     }
+
+    /**
+     * 根据UserId查询数据
+     *
+     * @param stuNo 用户id
+     */
+    @Override
+    public Student getByStuNo(String stuNo) {
+        return studentRepository.getByStuNo(stuNo);
+    }
 }

@@ -44,4 +44,10 @@ public interface StudentService {
      * @param userId 用户id
      */
     Student getByUserId(Long userId);
+
+    /**
+     * 根据UserId查询数据
+     * @param stuNo 用户id
+     */
+    Student getByStuNo(String stuNo);
 }

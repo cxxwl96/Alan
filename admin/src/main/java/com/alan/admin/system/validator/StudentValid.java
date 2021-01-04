@@ -1,5 +1,6 @@
 package com.alan.admin.system.validator;
 
+import com.alan.modules.system.domain.Dept;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,6 +16,14 @@ import javax.validation.constraints.Pattern;
  */
 @Data
 public class StudentValid implements Serializable {
+    @NotNull(message = "请选择院系")
+    private Dept collegeId;
+    @NotNull(message = "请选择专业")
+    private Dept specialtyId;
+    @NotNull(message = "请选择年级")
+    private Dept gradeId;
+    @NotNull(message = "请选择班级")
+    private Dept clazzId;
     @NotEmpty(message = "一寸半身照不能为空")
     private String photo;
     @NotEmpty(message = "学号不能为空")

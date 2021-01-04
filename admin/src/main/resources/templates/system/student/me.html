@@ -114,7 +114,7 @@
                 </div>
                 <label class="layui-form-label required">人学方式</label>
                 <div class="layui-input-inline">
-                    <select name="anthropology" mo:dict="ANTHROPOLOGY" mo-selected="${student?.anthropology}" mo-empty="" lay-verify="anthropology"></select>
+                    <select class="layui-input" name="anthropology" mo:dict="ANTHROPOLOGY" mo-selected="${student?.anthropology}" mo-empty="" lay-verify="anthropology"></select>
                 </div>
             </div>
         </div>
@@ -128,7 +128,7 @@
                 <label class="layui-form-label">身高</label>
                 <div class="layui-input-inline">
                     <input class="layui-input" type="number" name="height" placeholder="请输入身高"
-                           th:value="${student?.height}">
+                           th:value="${student?.height}" readonly>
                 </div>
             </div>
         </div>
@@ -137,11 +137,11 @@
                 <label class="layui-form-label">体重</label>
                 <div class="layui-input-inline">
                     <input class="layui-input" type="number" name="weight" placeholder="请输入体重"
-                           th:value="${student?.weight}">
+                           th:value="${student?.weight}" readonly>
                 </div>
                 <label class="layui-form-label">留守儿童</label>
                 <div class="layui-input-inline">
-                    <input type="checkbox" name="isLBC" id="isLBC" lay-skin="switch" lay-text="是|否" th:value="${student?.isLBC}" th:checked="${student!=null && student.isLBC==1}" lay-filter="isLBC">
+                    <input type="checkbox" name="isLBC" id="isLBC" lay-skin="switch" lay-text="是|否" th:value="${student?.isLBC}" th:checked="${student!=null && student.isLBC==1}" lay-filter="isLBC" disabled>
                 </div>
             </div>
         </div>
@@ -149,11 +149,11 @@
             <div class="layui-inline">
                 <label class="layui-form-label" title="外来务工人员子女">外来务工人员子女</label>
                 <div class="layui-input-inline">
-                    <input type="checkbox" name="isCOMW" id="isCOMW" lay-skin="switch" lay-text="是|否" th:value="${student?.isCOMW}" th:checked="${student!=null && student.isCOMW==1}" lay-filter="isCOMW">
+                    <input type="checkbox" name="isCOMW" id="isCOMW" lay-skin="switch" lay-text="是|否" th:value="${student?.isCOMW}" th:checked="${student!=null && student.isCOMW==1}" lay-filter="isCOMW" disabled>
                 </div>
                 <label class="layui-form-label">享受“一 补”</label>
                 <div class="layui-input-inline">
-                    <input type="checkbox" name="isEOS" id="isEOS" lay-skin="switch" lay-text="是|否" th:value="${student?.isEOS}" th:checked="${student!=null && student.isEOS==1}" lay-filter="isEOS">
+                    <input type="checkbox" name="isEOS" id="isEOS" lay-skin="switch" lay-text="是|否" th:value="${student?.isEOS}" th:checked="${student!=null && student.isEOS==1}" lay-filter="isEOS" disabled>
                 </div>
             </div>
         </div>
@@ -178,49 +178,44 @@
                 <label class="layui-form-label required">监护人姓名</label>
                 <div class="layui-input-inline">
                     <input class="layui-input" type="text" name="guardianNames" placeholder="请输入监护人姓名"
-                           th:value="${student?.guardianNames}">
+                           th:value="${student?.guardianNames}" readonly>
                 </div>
                 <label class="layui-form-label required">监护人电话</label>
                 <div class="layui-input-inline">
                     <input class="layui-input" type="text" name="guardianPhone" placeholder="请输入监护人电话"
-                           th:value="${student?.guardianPhone}">
+                           th:value="${student?.guardianPhone}" readonly>
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">院系id</label>
+                <label class="layui-form-label">院系</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="collegeId" placeholder="请输入院系id"
-                           th:value="${student?.collegeId}">
+                    <input type="hidden" name="collegeId" th:value="${student?.collegeId?.id}">
+                    <input class="layui-input" type="text"  th:value="${student?.collegeId?.title}" readonly>
                 </div>
-                <label class="layui-form-label">专业id</label>
+                <label class="layui-form-label">专业</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="specialtyId" placeholder="请输入专业id"
-                           th:value="${student?.specialtyId}">
+                    <input type="hidden" name="specialtyId" th:value="${student?.specialtyId?.id}">
+                    <input class="layui-input" type="text"  th:value="${student?.specialtyId?.title}" readonly>
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">年级id</label>
+                <label class="layui-form-label">年级</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="gradeId" placeholder="请输入年级id"
-                           th:value="${student?.gradeId}">
+                    <input type="hidden" name="gradeId" th:value="${student?.gradeId?.id}">
+                    <input class="layui-input" type="text"  th:value="${student?.gradeId?.title}" readonly>
                 </div>
-                <label class="layui-form-label">班级id</label>
+                <label class="layui-form-label">班级</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" type="text" name="clazzId" placeholder="请输入班级id"
-                           th:value="${student?.clazzId}">
+                    <input type="hidden" name="clazzId" th:value="${student?.clazzId?.id}">
+                    <input class="layui-input" type="text"  th:value="${student?.clazzId?.title}" readonly>
                 </div>
             </div>
         </div>
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">备注</label>
-            <div class="layui-input-block">
-                <textarea placeholder="请输入内容" class="layui-textarea" name="remark">[[${student?.remark}]]</textarea>
-            </div>
-        </div>
+        <input type="hidden" name="remark" th:value="${student?.remark}">
         <div class="layui-form-item alan-finally alan-form-button">
             <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
             <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
