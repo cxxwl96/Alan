@@ -39,7 +39,8 @@ public class DormitoryController {
     public String index(Model model, Dormitory dormitory) {
 
         // 创建匹配器，进行动态查询匹配
-        ExampleMatcher matcher = ExampleMatcher.matching();
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("students", match -> match.contains());
 
         // 获取数据列表
         Example<Dormitory> example = Example.of(dormitory, matcher);

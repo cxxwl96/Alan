@@ -27,7 +27,6 @@
             width: 100px;
             height: 30px;
             line-height: 15px;
-            border: 1px solid #E6E6E6;
             color: #FFF;
             background: #7D32A7;
             margin: 5px;
@@ -80,6 +79,17 @@
 <script>
     layui.use(['form', 'upload', 'laydate'], function () {
         var $ = layui.jquery;
+        var _students = $("input[name='students']").val();
+        if(_students){
+            _students = JSON.parse(_students);
+            var _this = $(".students");
+            _this.html('');
+            var _html = ``;
+            for(var i=0; i<_students.length; i++){
+                _html += '<div><p>学号：'+_students[i].stuNo+'</p><p>姓名：'+_students[i].name+'</p></div>';
+            }
+            _this.html(_html);
+        }
         $(".students").click(function(){
             var _this = $(this);
             var _dataUrl = '/system/student/show';
@@ -108,26 +118,22 @@
                         return;
                     }
                     checkedEl.each(function () {
-                        studentIds.push(this.value);
-                    })
+                        var stu={
+                            id: this.value,
+                            name: this.name,
+                            stuNo: this.attributes['stuno'].value
+                        }
+                        studentIds.push(stu);
+                    });
                     // 处理学生id
                     if(checkedEl.length>0){
                         _this.html('');
                         var _html = ``;
                         for(var i=0; i<studentIds.length; i++){
-                            $.ajaxSettings.async = false;
-                            $.post("/system/student/detail/"+studentIds[i], function(data, status){
-                                var _data = data.data;
-                                if(data && data.code==200 && _data){
-                                    _html += '<div><p>'+_data.stuNo+'</p><p>'+_data.names+'</p></div>';
-                                }else{
-                                    layer.msg(data.msg, {icon: 2});
-                                }
-                            }, "json")
-                            $.ajaxSettings.async = true;
+                            _html += '<div><p>学号：'+studentIds[i].stuNo+'</p><p>姓名：'+studentIds[i].name+'</p></div>';
                         }
                         _this.html(_html);
-                        $("input[name='students']").val(studentIds);　　//查到目标页面的内容赋给当前页面元素
+                        $("input[name='students']").val(JSON.stringify(studentIds));　　//查到目标页面的内容赋给当前页面元素
                     }
                     layer.close(index);//这块是点击确定关闭这个弹出层
                 }
