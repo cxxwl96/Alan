@@ -40,7 +40,11 @@
         </div>
         <div class="layui-form-item">
             <input type="checkbox" name="rememberMe" title="记住我" lay-skin="primary">
-            <a class="layui-layout-right forget-password" href="javascript:alert('请联系超级管理员！')">忘记密码?</a>
+            <span class="layui-layout-right">
+				<a class="forget-password" href="#" id="tip-forget-password">忘记密码?</a>
+				<a class="forget-password" href="#" id="tip-doubt">有疑问?</a>
+			</span>
+
         </div>
         <button type="submit" class="layui-btn layui-btn-fluid ajax-login"><i class="fa fa-sign-in fa-lg fa-fw"></i> 登录</button>
     </form>
@@ -48,5 +52,24 @@
 </div>
 <script th:replace="/common/template :: script"></script>
 <script th:src="@{/js/login.js}" charset="utf-8"></script>
+<script>
+    layui.use('layer', function(){
+        var $ = layui.jquery, layer = layui.layer;
+        $('#tip-forget-password').on('click', function(){
+            var that = this;
+            layer.msg('请联系超级管理员', {
+                time: 10000,
+                btn: ['明白了', '知道了']
+            });
+        });
+        $('#tip-doubt').on('click', function(){
+            var that = this;
+            layer.msg('学生登录账号为学生学号<br />教师登录账号为教职工号<br />默认密码均为1-6', {
+                time: 10000,
+                btn: ['明白了', '知道了', '哦']
+            });
+        });
+    })
+</script>
 </body>
 </html>
