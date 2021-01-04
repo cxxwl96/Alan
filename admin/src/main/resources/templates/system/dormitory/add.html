@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:mo="https://gitee.com/aun/alan">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+        .students{
+            border: 1px solid #E6E6E6;
+            max-width: 360px;
+            min-height: 100px;
+            border-radius: 2px;
+            resize: vertical;
+            text-align: center;
+            line-height: 100px;
+            color: #757575;
+            transition: all .3s;
+            transition-property: all;
+            transition-duration: 0.3s;
+            transition-timing-function: ease;
+            transition-delay: 0s;
+            -webkit-transition: all .3s;
+        }
+        .students:hover{
+            border: 1px solid #7D32A7;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form alan-compile">
+    <form th:action="@{/system/dormitory/save}">
+        <input type="hidden" name="id" th:if="${dormitory}" th:value="${dormitory.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">宿舍类型</label>
+            <div class="layui-input-inline">
+                <select name="type" mo:dict="DORMITORY_TYPE" mo-selected="${dormitory?.type}" mo-empty="" lay-verify="type"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">宿舍楼</label>
+            <div class="layui-input-inline">
+                <select name="building" mo:dict="DORMITORY_BUILDING" mo-selected="${dormitory?.building}" mo-empty="" lay-verify="building"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">宿舍名</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="name" placeholder="请输入宿舍名" th:value="${dormitory?.name}">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">入住学生</label>
+            <div class="layui-input-block">
+                <input type="text" name="students" th:value="${dormitory?.students}"/>
+                <div class="students"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择学生</div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="remark">[[${dormitory?.remark}]]</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item alan-finally">
+            <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script>
+    layui.use(['form', 'upload', 'laydate'], function () {
+        var $ = layui.jquery;
+        $(".students").click(function(){
+            var _this = $(this);
+            var _dataUrl = '/system/student/show';
+            //通过这种方式弹出的层，每当它被选择，就会置顶。
+            layer.open({
+                title: '学生信息',
+                type: 2,
+                area: ['100%', '100%'],
+                maxmin: true,
+                content: _dataUrl,
+                btn: ['确定', '取消'],
+                zIndex: layer.zIndex,
+                success: function(layero, index){
+                    layer.setTop(layero);
+                },
+                yes: function (index, layero) {
+                    var studentIds=[];
+                    var body = layer.getChildFrame('body', index);  //此处我理解的是加载目标页面的内容
+                    var checkedEl = body.find("input[type='checkbox'][checked]");
+                    if(checkedEl.length>4){
+                        layer.close(index);//这块是点击确定关闭这个弹出层
+                        layer.msg('最多选择4个学生', {icon: 2});
+                        setTimeout(function(){
+
+                        }, 1500)
+                        return;
+                    }
+                    checkedEl.each(function () {
+                        studentIds.push(this.value);
+                    })
+                    // 处理学生id
+                    _this.html('');
+                    var _html = ``;
+                    for(var i=0; i<studentIds.length; i++){
+                        $.post("/system/student/detail/"+studentIds[i], function(data, status){
+                            html += '<p></p>';
+                            var _data = data.data;
+                            if(data && data.code==200 && _data){
+                                console.log(_data)
+                            }else{
+                                layer.msg(data.msg, {icon: 2});
+                            }
+                        })
+
+                    }
+                    $("input[name='students']").val(studentIds);　　//查到目标页面的内容赋给当前页面元素
+                    layer.close(index);//这块是点击确定关闭这个弹出层
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+    <div class="alan-detail-page">
+        <div class="alan-detail-title">基本信息</div>
+        <table class="layui-table alan-detail-table">
+            <colgroup>
+                <col width="100px"><col>
+                <col width="100px"><col>
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th>主键ID</th>
+                    <td th:text="${dormitory.id}"></td>
+                    <th>宿舍楼</th>
+                    <td th:text="${dormitory.building}"></td>
+                </tr>
+                <tr>
+                    <th>宿舍名</th>
+                    <td th:text="${dormitory.name}"></td>
+                    <th>入住学生</th>
+                    <td th:text="${dormitory.students}"></td>
+                </tr>
+                <tr>
+                    <th>创建者</th>
+                    <td th:text="${dormitory.createBy?.nickname}"></td>
+                    <th>更新者</th>
+                    <td th:text="${dormitory.updateBy?.nickname}"></td>
+                </tr>
+                <tr>
+                    <th>创建时间</th>
+                    <td th:text="${#dates.format(dormitory.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <th>更新时间</th>
+                    <td th:text="${#dates.format(dormitory.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+                <tr>
+                    <th>备注</th>
+                    <td th:text="${dormitory.remark}" colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>

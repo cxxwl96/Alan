@@ -194,6 +194,16 @@ public class StudentController {
     }
 
     /**
+     * 获取学生信息
+     */
+    @PostMapping("/detail/{id}")
+    @RequiresPermissions("system:student:detail")
+    @ResponseBody
+    public ResultVo detail(@PathVariable("id") Student student) {
+        return ResultVoUtil.success("查询成功", student);
+    }
+
+    /**
      * 设置一条或者多条数据的状态
      */
     @RequestMapping("/status/{param}")
@@ -229,4 +239,59 @@ public class StudentController {
         model.addAttribute("student", student);
         return "/system/student/me";
     }
+
+    /**
+     * 跳转到show页面
+     */
+    @GetMapping("/show")
+    @RequiresPermissions("system:student:show")
+    public String toShow(Model model, Student student, String college, String specialty, String grade, String clazz) {
+        // 院系
+        if (college != null && !"null".equals(college)) {
+            Dept dept = new Dept();
+            dept.setId(Long.valueOf(college));
+            student.setCollegeId(dept);
+        }
+        // 专业
+        if (specialty != null && !"null".equals(specialty)) {
+            Dept dept = new Dept();
+            dept.setId(Long.valueOf(specialty));
+            student.setSpecialtyId(dept);
+        }
+        // 年级
+        if (grade != null && !"null".equals(grade)) {
+            Dept dept = new Dept();
+            dept.setId(Long.valueOf(grade));
+            student.setGradeId(dept);
+        }
+        // 班级
+        if (clazz != null && !"null".equals(clazz)) {
+            Dept dept = new Dept();
+            dept.setId(Long.valueOf(clazz));
+            student.setClazzId(dept);
+        }
+        // 创建匹配器，进行动态查询匹配
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("collegeId", match -> match.contains())
+                .withMatcher("specialtyId", match -> match.contains())
+                .withMatcher("gradeId", match -> match.contains())
+                .withMatcher("clazzId", match -> match.contains())
+                .withMatcher("stuNo", match -> match.contains())
+                .withMatcher("stuNumber", match -> match.contains())
+                .withMatcher("names", match -> match.contains())
+                .withMatcher("idNo", match -> match.contains())
+                .withMatcher("anthropology", match -> match.contains())
+                .withMatcher("wayOfStudying", match -> match.contains())
+                .withMatcher("status", match -> match.contains());
+
+        // 获取数据列表
+        Example<Student> example = Example.of(student, matcher);
+        Page<Student> list = studentService.getPageList(example);
+
+        // 封装数据
+        model.addAttribute("list", list.getContent());
+        model.addAttribute("page", list);
+        return "/system/student/show";
+    }
+
 }

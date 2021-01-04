@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/alan">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body class="alan-layout-page">
+    <div class="layui-card">
+        <div class="layui-card-header alan-card-header">
+            <span><i class="fa fa-bars"></i> 宿舍管理</span>
+            <i class="layui-icon layui-icon-refresh refresh-btn"></i>
+        </div>
+        <div class="layui-card-body">
+            <div class="layui-row alan-card-screen">
+                <div class="pull-left layui-form-pane alan-search-box">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">宿舍类型</label>
+                        <div class="layui-input-block">
+                            <select class="layui-input" name="type" mo:dict="DORMITORY_TYPE" mo-selected="${student?.type}" mo-empty="" lay-verify="type"></select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">宿舍楼</label>
+                        <div class="layui-input-block">
+                            <select class="layui-input" name="building" mo:dict="DORMITORY_BUILDING" mo-selected="${student?.building}" mo-empty="" lay-verify="building"></select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">宿舍名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" th:value="${param.name}" placeholder="请输入宿舍名" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">学生</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="students" th:value="${param.name}" placeholder="请输入姓名、学号" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block alan-search-status">
+                            <select class="alan-search-select" name="status" mo:dict="SEARCH_STATUS" mo-selected="${param.status}"></select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn alan-search-btn">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="pull-right screen-btn-group">
+                    <button class="layui-btn open-popup" data-title="添加宿舍" th:attr="data-url=@{/system/dormitory/add}" data-size="auto">
+                        <i class="fa fa-plus"></i> 添加</button>
+                    <div class="btn-group">
+                        <button class="layui-btn">操作<span class="caret"></span></button>
+                        <dl class="layui-nav-child layui-anim layui-anim-upbit">
+                            <dd><a class="ajax-status" th:href="@{/system/dormitory/status/ok}">启用</a></dd>
+                            <dd><a class="ajax-status" th:href="@{/system/dormitory/status/freezed}">冻结</a></dd>
+                            <dd><a class="ajax-status" th:href="@{/system/dormitory/status/delete}">删除</a></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="alan-table-wrap">
+                <table class="layui-table alan-table">
+                    <thead>
+                    <tr>
+                        <th class="alan-table-checkbox">
+                            <label class="alan-checkbox"><input type="checkbox">
+                                <i class="layui-icon layui-icon-ok"></i></label>
+                        </th>
+                        <th>宿舍类型</th>
+                        <th>宿舍楼</th>
+                        <th>宿舍名</th>
+                        <th>入住学生</th>
+                        <th>创建时间</th>
+                        <th>更新时间</th>
+                        <th>数据状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item:${list}">
+                        <td><label class="alan-checkbox"><input type="checkbox" th:value="${item.id}">
+                            <i class="layui-icon layui-icon-ok"></i></label></td>
+                        <td th:text="${#dicts.keyValue('DORMITORY_TYPE', item.type)}">宿舍类型</td>
+                        <td th:text="${#dicts.keyValue('DORMITORY_BUILDING', item.building)}">宿舍楼</td>
+                        <td th:text="${item.name}">宿舍名</td>
+                        <td th:text="${item.students}">入住学生</td>
+                        <td th:text="${#dates.format(item.createDate, 'yyyy-MM-dd HH:mm:ss')}">创建时间</td>
+                        <td th:text="${#dates.format(item.updateDate, 'yyyy-MM-dd HH:mm:ss')}">更新时间</td>
+                        <td th:text="${#dicts.dataStatus(item.status)}">数据状态</td>
+                        <td>
+                            <a class="open-popup" data-title="编辑宿舍" th:attr="data-url=@{'/system/dormitory/edit/'+${item.id}}" data-size="auto" href="#">编辑</a>
+                            <a class="open-popup" data-title="详细信息" th:attr="data-url=@{'/system/dormitory/detail/'+${item.id}}" data-size="800,600" href="#">详细</a>
+                            <a class="ajax-get" data-msg="您是否确认删除" th:href="@{/system/dormitory/status/delete(ids=${item.id})}">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="/common/fragment :: page"></div>
+        </div>
+    </div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>
