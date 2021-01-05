@@ -112,10 +112,10 @@
                     <th>专业</th>
                     <th>年级</th>
                     <th>班级</th>
+                    <th>照片</th>
                     <th>学号</th>
                     <th>姓名</th>
                     <th>性别</th>
-                    <th>照片</th>
                     <th>数据状态</th>
                     <th>操作</th>
                 </tr>
@@ -128,10 +128,10 @@
                     <td th:text="${item.specialtyId?.title}">专业</td>
                     <td th:text="${item.gradeId?.title}">年级</td>
                     <td th:text="${item.clazzId?.title}">班级</td>
+                    <td><img th:src="${item.photo}" height="100px"></td>
                     <td th:text="${item.stuNo}">学号</td>
                     <td th:text="${item.names}">姓名</td>
                     <td th:text="${#dicts.keyValue('USER_SEX', item.sex)}">性别</td>
-                    <td><img th:src="${item.photo}" height="100px"></td>
                     <td th:text="${#dicts.dataStatus(item.status)}">数据状态</td>
                     <td>
                         <a class="open-popup" data-title="编辑学生信息" th:attr="data-url=@{'/system/student/edit/'+${item.id}}" data-size="auto" href="#">编辑</a>
