@@ -143,9 +143,9 @@ public class RoleController {
         // 融合两项数据
         list.forEach(menu -> {
             if(authMenus.contains(menu)){
-                menu.setRemark("auth:true");
+                menu.setAuth(true);
             }else {
-                menu.setRemark("");
+                menu.setAuth(false);
             }
         });
         return ResultVoUtil.success(list);

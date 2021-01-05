@@ -55,6 +55,13 @@
                     pId: item.pid,
                     name: item.title
                 };
+                if(item.remark){
+                    menu = {
+                        id: item.id,
+                        pId: item.pid,
+                        name: item.title + ' [' + item.remark + ']'
+                    };
+                }
                 if(item.pid === 0){
                     menu.open = true;
                 }
@@ -64,12 +71,12 @@
                         pId: item.id,
                         name: "列表"
                     };
-                    if(item.remark === "auth:true"){
+                    if(item.auth){
                         index.checked = true;
                     }
                     zNodes.push(index);
                 }
-                if(item.remark === "auth:true"){
+                if(item.auth){
                     menu.checked = true;
                 }
                 zNodes.push(menu);
