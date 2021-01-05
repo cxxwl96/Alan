@@ -34,8 +34,8 @@
     </style>
 </head>
 <body>
-<div class="layui-form alan-compile">
-    <form th:action="@{/system/dormitory/save}">
+<div class="layui-form">
+    <form th:action="@{/system/dormitory/save}" class="alan-form-pane">
         <input type="hidden" name="id" th:if="${dormitory}" th:value="${dormitory.id}">
         <div class="layui-form-item">
             <label class="layui-form-label required">宿舍类型</label>
@@ -53,6 +53,7 @@
             <label class="layui-form-label required">宿舍名</label>
             <div class="layui-input-inline">
                 <input class="layui-input" type="text" name="name" placeholder="请输入宿舍名" th:value="${dormitory?.name}">
+                <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 宿舍名为寝室号；例如：550</p>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -60,6 +61,7 @@
             <div class="layui-input-block">
                 <input type="hidden" name="students" th:value="${dormitory?.students}"/>
                 <div class="students"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择学生</div>
+                <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 入住学生最多4人</p>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -68,7 +70,7 @@
                 <textarea placeholder="请输入内容" class="layui-textarea" name="remark">[[${dormitory?.remark}]]</textarea>
             </div>
         </div>
-        <div class="layui-form-item alan-finally">
+        <div class="layui-form-item alan-finally alan-form-button">
             <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
             <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
         </div>

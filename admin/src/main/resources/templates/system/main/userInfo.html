@@ -18,7 +18,7 @@
             <li>邮箱：<span th:text="${user.email}" th:title="${user.email}"></span></li>
         </ul>
     </div>
-    <form class="user-edit" th:action="@{/userInfo}">
+    <form class="user-edit alan-form-pane" th:action="@{/userInfo}">
         <input type="hidden" name="username" th:value="${user.username}"/>
         <input type="hidden" name="dept" th:value="${user.dept?.id}"/>
         <div class="layui-form-item">
@@ -52,7 +52,7 @@
                 <textarea placeholder="请输入内容" class="layui-textarea" name="remark">[[${user.remark}]]</textarea>
             </div>
         </div>
-        <div class="layui-form-item alan-finally">
+        <div class="layui-form-item alan-finally-old">
             <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
             <a class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</a>
         </div>

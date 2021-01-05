@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="layui-form alan-compile">
-    <form th:action="@{/system/menu/save}">
+    <form th:action="@{/system/menu/save}" class="alan-form-pane">
         <input type="hidden" name="id" th:if="${menu}" th:value="${menu.id}"/>
         <div class="layui-form-item">
             <label class="layui-form-label required">标题</label>
