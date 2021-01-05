@@ -4,7 +4,7 @@
 </head>
 <body>
 <div class="layui-form alan-compile">
-    <form th:action="@{#{baseUrl}/save}">
+    <form th:action="@{#{baseUrl}/save}" class="alan-form-pane">
         <input type="hidden" name="id" th:if="${#{var}}" th:value="${#{var}.id}"/>
         <div jsoup="field" class="layui-form-item">
             <label class="layui-form-label">#{field.title}</label>
