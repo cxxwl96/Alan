@@ -5,6 +5,15 @@
     <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
     <style>
+        *{
+            moz-user-select: -moz-none;
+            -moz-user-select: none;
+            -o-user-select:none;
+            -khtml-user-select:none;
+            -webkit-user-select:none;
+            -ms-user-select:none;
+            user-select:none;
+        }
         .login-cover{
             width:100%;
             color: #FFF;
@@ -57,15 +66,15 @@
         var $ = layui.jquery, layer = layui.layer;
         $('#tip-forget-password').on('click', function(){
             var that = this;
-            layer.msg('请联系超级管理员', {
-                time: 10000,
+            layer.msg('<div style="text-align: left;">请联系超级管理员<br /><font color="red">Email：</font>cxxwl96@sina.com<br /><font color="red">QQ：</font>397936661<br /><font color="red">Phone：</font>180****1234</div>', {
+                time: 0,
                 btn: ['明白了', '知道了']
             });
         });
         $('#tip-doubt').on('click', function(){
             var that = this;
             layer.msg('学生登录账号为学生学号<br />教师登录账号为教职工号<br />默认密码均为1-6', {
-                time: 10000,
+                time: 0,
                 btn: ['明白了', '知道了', '哦']
             });
         });
