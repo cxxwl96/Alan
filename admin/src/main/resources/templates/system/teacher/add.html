@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+<div class="layui-form alan-compile">
+    <form th:action="@{/system/teacher/save}" class="layui-form-pane alan-form-pane">
+        <input type="hidden" name="id" th:if="${teacher}" th:value="${teacher.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">照片</label>
+            <div class="layui-input-block">
+                <input class="layui-input" type="hidden" name="photo" id="photo" th:value="${teacher?.photo}">
+                <div class="layui-upload-drag" id="button-photo">
+                    <i class="layui-icon"></i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                    <div th:class="${teacher!=null && teacher.photo!=null && teacher.photo.length()>0}? '' : 'layui-hide'" id="uploadDemoView">
+                        <hr>
+                        <img th:src="${teacher?.photo}" alt="上传成功后渲染" style="max-width: 196px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">教师名称</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="names" placeholder="请输入教师名称" th:value="${teacher?.names}">
+                </div>
+                <label class="layui-form-label required">性别</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="sex" placeholder="请输入性别" th:value="${teacher?.sex}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">联系电话</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="phone" placeholder="请输入联系电话" th:value="${teacher?.phone}">
+                </div>
+                <label class="layui-form-label">电子信箱</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="email" placeholder="请输入电子信箱" th:value="${teacher?.email}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">出生年月</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="birthday" placeholder="请输入出生年月" th:value="${teacher?.birthday}">
+                </div>
+                <label class="layui-form-label required">民族</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="nation" placeholder="请输入民族" th:value="${teacher?.nation}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">身份证类型</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="idType" placeholder="请输入身份证类型" th:value="${teacher?.idType}">
+                </div>
+                <label class="layui-form-label required">证件号</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="idNo" placeholder="请输入证件号" th:value="${teacher?.idNo}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">院系</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="collegeId" placeholder="请输入院系" th:value="${teacher?.collegeId}">
+                </div>
+                <label class="layui-form-label required">教职工号</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="no" placeholder="请输入教职工号" th:value="${teacher?.no}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">职称</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="professionalTitle" placeholder="请输入职称" th:value="${teacher?.professionalTitle}">
+                </div>
+                <label class="layui-form-label required">学位</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="academicDegree" placeholder="请输入学位" th:value="${teacher?.academicDegree}">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">现任职务</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="post" placeholder="请输入现任职务" th:value="${teacher?.post}">
+                </div>
+            </div>
+            <label class="layui-form-label required">入校年月</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="enrollmentTime" placeholder="请输入入校年月" th:value="${teacher?.enrollmentTime}">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">补充信息</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入补充信息" class="layui-textarea" name="additionalInfo">[[${teacher?.additionalInfo}]]</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="remark">[[${teacher?.remark}]]</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item alan-finally">
+            <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>
