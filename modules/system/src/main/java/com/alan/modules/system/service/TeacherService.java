@@ -16,6 +16,7 @@ public interface TeacherService {
 
     /**
      * 获取分页列表数据
+     *
      * @param example 查询实例
      * @return 返回分页数据
      */
@@ -23,12 +24,14 @@ public interface TeacherService {
 
     /**
      * 根据ID查询数据
+     *
      * @param id 主键ID
      */
     Teacher getById(Long id);
 
     /**
      * 保存数据
+     *
      * @param teacher 实体对象
      */
     Teacher save(Teacher teacher);
@@ -38,4 +41,19 @@ public interface TeacherService {
      */
     @Transactional
     Boolean updateStatus(StatusEnum statusEnum, List<Long> idList);
+
+    /**
+     * 根据UserId查询数据
+     *
+     * @param userId 用户id
+     */
+    Teacher getByUserId(Long userId);
+
+    /**
+     * 根据NO查找
+     *
+     * @param no
+     * @return
+     */
+    Teacher getByNo(String no);
 }

@@ -6,9 +6,11 @@ import com.alan.common.utils.EntityBeanUtil;
 import com.alan.common.utils.ResultVoUtil;
 import com.alan.common.utils.StatusUtil;
 import com.alan.common.vo.ResultVo;
-import com.alan.modules.system.domain.Dept;
-import com.alan.modules.system.domain.Teacher;
+import com.alan.component.shiro.ShiroUtil;
+import com.alan.modules.system.domain.*;
+import com.alan.modules.system.service.RoleService;
 import com.alan.modules.system.service.TeacherService;
+import com.alan.modules.system.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -25,7 +27,9 @@ import org.springframework.web.context.request.WebRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author cxxwl96@sina.com
@@ -37,6 +41,12 @@ public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder, WebRequest request) {
@@ -94,6 +104,7 @@ public class TeacherController {
 
     /**
      * 保存添加/修改的数据
+     *
      * @param valid 验证对象
      */
     @PostMapping("/save")
@@ -101,14 +112,47 @@ public class TeacherController {
     @ResponseBody
     public ResultVo save(@Validated TeacherValid valid, Teacher teacher) {
         // 复制保留无需修改的数据
+        Teacher beTeacher = null;
         if (teacher.getId() != null) {
-            Teacher beTeacher = teacherService.getById(teacher.getId());
+            beTeacher = teacherService.getById(teacher.getId());
             EntityBeanUtil.copyProperties(beTeacher, teacher);
         }
-
+        if (beTeacher == null || beTeacher.getUserId() == null) {
+            if (teacherService.getByNo(teacher.getNo()) != null) {
+                return ResultVoUtil.error("该教职工号已存在");
+            }
+            // 为学生创建账号
+            User user = new User();
+            user.setUsername(teacher.getNo());
+            user.setNickname(teacher.getNames());
+            String[] secret = createSecret();
+            user.setSalt(secret[0]);
+            user.setPassword(secret[1]);
+            user.setPicture(teacher.getPhoto());
+            user.setSex(teacher.getSex());
+            user.setPhone(teacher.getPhone());
+            user = userService.save(user);
+            // 为账号分配学生权限
+            Set<Role> roles = new HashSet<>(0);
+            Role role = roleService.getByName("teacher");
+            roles.add(role);
+            user.setRoles(roles);
+            // 保存数据
+            teacher.setUserId(user);
+        } else {
+            User subUser = ShiroUtil.getSubject();
+            teacher.setUserId(subUser);
+        }
         // 保存数据
         teacherService.save(teacher);
         return ResultVoUtil.SAVE_SUCCESS;
+    }
+
+    private String[] createSecret() {
+        String[] secret = new String[2];
+        secret[0] = ShiroUtil.getRandomSalt();
+        secret[1] = ShiroUtil.encrypt("123456", secret[0]);
+        return secret;
     }
 
     /**
@@ -117,8 +161,18 @@ public class TeacherController {
     @GetMapping("/detail/{id}")
     @RequiresPermissions("system:teacher:detail")
     public String toDetail(@PathVariable("id") Teacher teacher, Model model) {
-        model.addAttribute("teacher",teacher);
+        model.addAttribute("teacher", teacher);
         return "/system/teacher/detail";
+    }
+
+    /**
+     * 获取学生信息
+     */
+    @PostMapping("/detail/{id}")
+    @RequiresPermissions("system:teacher:detail")
+    @ResponseBody
+    public ResultVo detail(@PathVariable("id") Teacher teacher) {
+        return ResultVoUtil.success("查询成功", teacher);
     }
 
     /**
@@ -137,5 +191,24 @@ public class TeacherController {
         } else {
             return ResultVoUtil.error(statusEnum.getMessage() + "失败，请重新操作");
         }
+    }
+
+    /**
+     * 跳转到个人信息页面
+     */
+    @GetMapping("/me")
+    @RequiresPermissions("system:teacher:me")
+    public String toMe(Model model) {
+        // 获取当前登录用户
+        User subUser = ShiroUtil.getSubject();
+        Teacher teacher = teacherService.getByUserId(subUser.getId());
+        Role role = roleService.getByName("teacher");
+        if (teacher == null) {
+            teacher = new Teacher();
+            teacher.setUserId(subUser);
+            teacher.setNo(subUser.getUsername());
+        }
+        model.addAttribute("teacher", teacher);
+        return "/system/teacher/me";
     }
 }

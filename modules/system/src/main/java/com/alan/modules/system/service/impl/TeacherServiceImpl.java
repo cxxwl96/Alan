@@ -2,6 +2,7 @@ package com.alan.modules.system.service.impl;
 
 import com.alan.common.data.PageSort;
 import com.alan.common.enums.StatusEnum;
+import com.alan.modules.system.domain.Student;
 import com.alan.modules.system.domain.Teacher;
 import com.alan.modules.system.repository.TeacherRepository;
 import com.alan.modules.system.service.TeacherService;
@@ -62,5 +63,26 @@ public class TeacherServiceImpl implements TeacherService {
     @Transactional
     public Boolean updateStatus(StatusEnum statusEnum, List<Long> idList) {
         return teacherRepository.updateStatus(statusEnum.getCode(), idList) > 0;
+    }
+
+    /**
+     * 根据UserId查询数据
+     *
+     * @param userId 用户id
+     */
+    @Override
+    public Teacher getByUserId(Long userId) {
+        return teacherRepository.getByUserId(userId);
+    }
+
+    /**
+     * 根据NO查找
+     *
+     * @param no
+     * @return
+     */
+    @Override
+    public Teacher getByNo(String no) {
+        return teacherRepository.getByNo(no);
     }
 }

@@ -42,6 +42,11 @@ public class Teacher implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    // 系统用户
+    private User userId;
     // 院系
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "college_id")
