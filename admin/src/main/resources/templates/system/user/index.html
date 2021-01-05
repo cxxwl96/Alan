@@ -4,6 +4,12 @@
       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
     <link rel="stylesheet" th:href="@{/lib/zTree_v3/css/zTreeStyle/zTreeStyle.css}" type="text/css">
+    <style>
+        .roles a{
+            margin: 5px;
+            padding: 5px;
+        }
+    </style>
 </head>
 <body class="alan-layout-page">
 <div class="layui-card">
@@ -89,9 +95,7 @@
                     <th class="sortable" data-field="username">用户名</th>
                     <th class="sortable" data-field="nickname">用户昵称</th>
                     <th class="sortable" data-field="dept">所在部门</th>
-                    <th class="sortable" data-field="sex">性别</th>
-                    <th class="sortable" data-field="phone">电话</th>
-                    <th class="sortable" data-field="email">邮箱</th>
+                    <th class="sortable" data-field="roles">角色</th>
                     <th class="sortable" data-field="createDate">创建时间</th>
                     <th>状态</th>
                     <th>操作</th>
@@ -104,9 +108,11 @@
                     <td th:text="${item.username}">用户名</td>
                     <td th:text="${item.nickname}">用户昵称</td>
                     <td th:text="${item.dept?.title}">用户昵称</td>
-                    <td th:text="${#dicts.keyValue('USER_SEX', item.sex)}">性别</td>
-                    <td th:text="${item.phone}">电话</td>
-                    <td th:text="${item.email}">邮箱</td>
+                    <td th:value="${item.roles}">
+                        <div class="roles" th:each="role:${item.roles}">
+                            <a th:text="${role.title}" th:title="${role.name}" th:onclick="showRoleInfo([[${role.id}]], [[${role.title}]], [[${role.name}]])"></a>
+                        </div>
+                    </td>
                     <td th:text="${#dates.format(item.createDate, 'yyyy-MM-dd HH:mm:ss')}">创建时间</td>
                     <td th:text="${#dicts.dataStatus(item.status)}">状态</td>
                     <td>
@@ -140,6 +146,15 @@
             local.setItem('deptTitle', treeNode.name);
         }
     });
+    var showRoleInfo = function(id, title, name){
+        layui.use('layer', function(){
+            var $ = layui.jquery, layer = layui.layer;
+            layer.msg('<div style="text-align: left;"><font color="red">ID：</font>'+id+'<br /><font color="red">角色标识：</font>'+name+'<br /><font color="red">角色名称：</font>'+title+'</div>', {
+                time: 0,
+                btn: ['关闭', '知道了', '哦']
+            });
+        })
+    }
 </script>
 </body>
 </html>
