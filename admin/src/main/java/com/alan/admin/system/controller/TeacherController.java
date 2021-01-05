@@ -6,6 +6,7 @@ import com.alan.common.utils.EntityBeanUtil;
 import com.alan.common.utils.ResultVoUtil;
 import com.alan.common.utils.StatusUtil;
 import com.alan.common.vo.ResultVo;
+import com.alan.modules.system.domain.Dept;
 import com.alan.modules.system.domain.Teacher;
 import com.alan.modules.system.service.TeacherService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -49,8 +50,13 @@ public class TeacherController {
      */
     @GetMapping("/index")
     @RequiresPermissions("system:teacher:index")
-    public String index(Model model, Teacher teacher) {
-
+    public String index(Model model, Teacher teacher, String college) {
+        // 院系
+        if (college != null) {
+            Dept dept = new Dept();
+            dept.setId(Long.valueOf(college));
+            teacher.setCollegeId(dept);
+        }
         // 创建匹配器，进行动态查询匹配
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withMatcher("names", match -> match.contains())

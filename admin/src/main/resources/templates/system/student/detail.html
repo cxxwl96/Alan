@@ -3,127 +3,127 @@
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
 </head>
 <body>
-    <div class="alan-detail-page">
-        <div class="alan-detail-title">基本信息</div>
-        <table class="layui-table alan-detail-table">
-            <colgroup>
-                <col width="100px"><col>
-                <col width="100px"><col>
-            </colgroup>
-            <tbody>
-                <tr>
-                    <th>主键ID</th>
-                    <td th:text="${student.id}"></td>
-                    <th>系统用户</th>
-                    <td th:text="${student.userId}"></td>
-                </tr>
-                <tr>
-                    <th>学号</th>
-                    <td th:text="${student.stuNo}"></td>
-                    <th>学籍号</th>
-                    <td th:text="${student.stuNumber}"></td>
-                </tr>
-                <tr>
-                    <th>姓名</th>
-                    <td th:text="${student.names}"></td>
-                    <th>曾用名</th>
-                    <td th:text="${student.formerNames}"></td>
-                </tr>
-                <tr>
-                    <th>手机号</th>
-                    <td th:text="${student.phone}"></td>
-                    <th>性别</th>
-                    <td th:text="${student.sex}"></td>
-                </tr>
-                <tr>
-                    <th>出生年月</th>
-                    <td th:text="${student.birthday}"></td>
-                    <th>身份证类型</th>
-                    <td th:text="${student.idType}"></td>
-                </tr>
-                <tr>
-                    <th>证件号</th>
-                    <td th:text="${student.idNo}"></td>
-                    <th>民族</th>
-                    <td th:text="${student.nation}"></td>
-                </tr>
-                <tr>
-                    <th>户籍所在地</th>
-                    <td th:text="${student.domicile}"></td>
-                    <th>入学年月</th>
-                    <td th:text="${student.admissionTime}"></td>
-                </tr>
-                <tr>
-                    <th>人学方式</th>
-                    <td th:text="${student.anthropology}"></td>
-                    <th>就学方式</th>
-                    <td th:text="${student.wayOfStudying}"></td>
-                </tr>
-                <tr>
-                    <th>健康状况</th>
-                    <td th:text="${student.healthStatus}"></td>
-                    <th>身高</th>
-                    <td th:text="${student.height}"></td>
-                </tr>
-                <tr>
-                    <th>体重</th>
-                    <td th:text="${student.weight}"></td>
-                    <th>是否为留守儿童</th>
-                    <td th:text="${student.isLBC}"></td>
-                </tr>
-                <tr>
-                    <th>是否外来务工人员子女</th>
-                    <td th:text="${student.isCOMW}"></td>
-                    <th>是否享受“一 补”</th>
-                    <td th:text="${student.isEOS}"></td>
-                </tr>
-                <tr>
-                    <th>家庭地址</th>
-                    <td th:text="${student.familyAddress}"></td>
-                    <th>现住址</th>
-                    <td th:text="${student.currentAddress}"></td>
-                </tr>
-                <tr>
-                    <th>监护人姓名</th>
-                    <td th:text="${student.guardianNames}"></td>
-                    <th>监护人电话</th>
-                    <td th:text="${student.guardianPhone}"></td>
-                </tr>
-                <tr>
-                    <th>照片</th>
-                    <td th:text="${student.photo}"></td>
-                    <th>院系id</th>
-                    <td th:text="${student.collegeId}"></td>
-                </tr>
-                <tr>
-                    <th>专业id</th>
-                    <td th:text="${student.specialtyId}"></td>
-                    <th>年级id</th>
-                    <td th:text="${student.gradeId}"></td>
-                </tr>
-                <tr>
-                    <th>班级id</th>
-                    <td th:text="${student.clazzId}" colspan="3"></td>
-                </tr>
-                <tr>
-                    <th>创建者</th>
-                    <td th:text="${student.createBy?.nickname}"></td>
-                    <th>更新者</th>
-                    <td th:text="${student.updateBy?.nickname}"></td>
-                </tr>
-                <tr>
-                    <th>创建时间</th>
-                    <td th:text="${#dates.format(student.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <th>更新时间</th>
-                    <td th:text="${#dates.format(student.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                </tr>
-                <tr>
-                    <th>备注</th>
-                    <td th:text="${student.remark}" colspan="3"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="alan-detail-page">
+    <div class="alan-detail-title">基本信息</div>
+    <table class="layui-table alan-detail-table">
+        <colgroup>
+            <col width="100px"><col>
+            <col width="100px"><col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <th>主键ID</th>
+            <td th:text="${student.id}"></td>
+            <th>系统用户</th>
+            <td th:text="${student.userId?.username}"></td>
+        </tr>
+        <tr>
+            <th>学号</th>
+            <td th:text="${student.stuNo}"></td>
+            <th>学籍号</th>
+            <td th:text="${student.stuNumber}"></td>
+        </tr>
+        <tr>
+            <th>姓名</th>
+            <td th:text="${student.names}"></td>
+            <th>曾用名</th>
+            <td th:text="${student.formerNames}"></td>
+        </tr>
+        <tr>
+            <th>手机号</th>
+            <td th:text="${student.phone}"></td>
+            <th>性别</th>
+            <td th:text="${#dicts.keyValue('USER_SEX', student.sex)}"></td>
+        </tr>
+        <tr>
+            <th>出生年月</th>
+            <td th:text="${#dates.format(student?.birthday, 'yyyy-MM-dd')}"></td>
+            <th>身份证类型</th>
+            <td th:text="${#dicts.keyValue('ID_TYPE', student.idType)}"></td>
+        </tr>
+        <tr>
+            <th>证件号</th>
+            <td th:text="${student.idNo}"></td>
+            <th>民族</th>
+            <td th:text="${#dicts.keyValue('NATION', student.nation)}"></td>
+        </tr>
+        <tr>
+            <th>户籍所在地</th>
+            <td th:text="${student.domicile}"></td>
+            <th>入学年月</th>
+            <td th:text="${#dates.format(student?.admissionTime, 'yyyy-MM-dd')}"></td>
+        </tr>
+        <tr>
+            <th>人学方式</th>
+            <td th:text="${#dicts.keyValue('ANTHROPOLOGY', student.anthropology)}"></td>
+            <th>就学方式</th>
+            <td th:text="${#dicts.keyValue('WAY_OF_STUDYING', student.wayOfStudying)}"></td>
+        </tr>
+        <tr>
+            <th>健康状况</th>
+            <td th:text="${student.healthStatus}"></td>
+            <th>身高</th>
+            <td th:text="${student.height}"></td>
+        </tr>
+        <tr>
+            <th>体重</th>
+            <td th:text="${student.weight}"></td>
+            <th>是否为留守儿童</th>
+            <td th:text="${student!=null && student.isLBC==1}?是:否"></td>
+        </tr>
+        <tr>
+            <th>是否外来务工人员子女</th>
+            <td th:text="${student!=null && student.isCOMW==1}?是:否"></td>
+            <th>是否享受“一 补”</th>
+            <td th:text="${student!=null && student.isEOS==1}?是:否"></td>
+        </tr>
+        <tr>
+            <th>家庭地址</th>
+            <td th:text="${student.familyAddress}"></td>
+            <th>现住址</th>
+            <td th:text="${student.currentAddress}"></td>
+        </tr>
+        <tr>
+            <th>监护人姓名</th>
+            <td th:text="${student.guardianNames}"></td>
+            <th>监护人电话</th>
+            <td th:text="${student.guardianPhone}"></td>
+        </tr>
+        <tr>
+            <th>照片</th>
+            <td><img th:src="${student.photo}" height="100px"></td>
+            <th>院系</th>
+            <td th:text="${student?.collegeId?.title}"></td>
+        </tr>
+        <tr>
+            <th>专业</th>
+            <td th:text="${student.specialtyId?.title}"></td>
+            <th>年级</th>
+            <td th:text="${student.gradeId?.title}"></td>
+        </tr>
+        <tr>
+            <th>班级</th>
+            <td th:text="${student.clazzId?.title}" colspan="3"></td>
+        </tr>
+        <tr>
+            <th>创建者</th>
+            <td th:text="${student.createBy?.nickname}"></td>
+            <th>更新者</th>
+            <td th:text="${student.updateBy?.nickname}"></td>
+        </tr>
+        <tr>
+            <th>创建时间</th>
+            <td th:text="${#dates.format(student.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <th>更新时间</th>
+            <td th:text="${#dates.format(student.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        </tr>
+        <tr>
+            <th>备注</th>
+            <td th:text="${student.remark}" colspan="3"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <script th:replace="/common/template :: script"></script>
 </body>
 </html>

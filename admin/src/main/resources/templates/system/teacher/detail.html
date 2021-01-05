@@ -3,85 +3,85 @@
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
 </head>
 <body>
-    <div class="alan-detail-page">
-        <div class="alan-detail-title">基本信息</div>
-        <table class="layui-table alan-detail-table">
-            <colgroup>
-                <col width="100px"><col>
-                <col width="100px"><col>
-            </colgroup>
-            <tbody>
-                <tr>
-                    <th>主键ID</th>
-                    <td th:text="${teacher.id}"></td>
-                    <th>院系</th>
-                    <td th:text="${teacher.collegeId}"></td>
-                </tr>
-                <tr>
-                    <th>教职工号</th>
-                    <td th:text="${teacher.no}"></td>
-                    <th>职称</th>
-                    <td th:text="${teacher.professionalTitle}"></td>
-                </tr>
-                <tr>
-                    <th>学位</th>
-                    <td th:text="${teacher.academicDegree}"></td>
-                    <th>照片</th>
-                    <td th:text="${teacher.photo}"></td>
-                </tr>
-                <tr>
-                    <th>教师名称</th>
-                    <td th:text="${teacher.names}"></td>
-                    <th>现任职务</th>
-                    <td th:text="${teacher.post}"></td>
-                </tr>
-                <tr>
-                    <th>联系电话</th>
-                    <td th:text="${teacher.phone}"></td>
-                    <th>电子信箱</th>
-                    <td th:text="${teacher.email}"></td>
-                </tr>
-                <tr>
-                    <th>性别</th>
-                    <td th:text="${teacher.sex}"></td>
-                    <th>出生年月</th>
-                    <td th:text="${teacher.birthday}"></td>
-                </tr>
-                <tr>
-                    <th>身份证类型</th>
-                    <td th:text="${teacher.idType}"></td>
-                    <th>证件号</th>
-                    <td th:text="${teacher.idNo}"></td>
-                </tr>
-                <tr>
-                    <th>民族</th>
-                    <td th:text="${teacher.nation}"></td>
-                    <th>入校年月</th>
-                    <td th:text="${teacher.enrollmentTime}"></td>
-                </tr>
-                <tr>
-                    <th>补充信息</th>
-                    <td th:text="${teacher.additionalInfo}" colspan="3"></td>
-                </tr>
-                <tr>
-                    <th>创建者</th>
-                    <td th:text="${teacher.createBy?.nickname}"></td>
-                    <th>更新者</th>
-                    <td th:text="${teacher.updateBy?.nickname}"></td>
-                </tr>
-                <tr>
-                    <th>创建时间</th>
-                    <td th:text="${#dates.format(teacher.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                    <th>更新时间</th>
-                    <td th:text="${#dates.format(teacher.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                </tr>
-                <tr>
-                    <th>备注</th>
-                    <td th:text="${teacher.remark}" colspan="3"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="alan-detail-page">
+    <div class="alan-detail-title">基本信息</div>
+    <table class="layui-table alan-detail-table">
+        <colgroup>
+            <col width="100px"><col>
+            <col width="100px"><col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <th>主键ID</th>
+            <td th:text="${teacher.id}"></td>
+            <th>院系</th>
+            <td th:text="${teacher.collegeId?.title}"></td>
+        </tr>
+        <tr>
+            <th>教职工号</th>
+            <td th:text="${teacher.no}"></td>
+            <th>职称</th>
+            <td th:text="${#dicts.keyValue('PROFESSIONAL_TITLE', teacher.professionalTitle)}"></td>
+        </tr>
+        <tr>
+            <th>学位</th>
+            <td th:text="${#dicts.keyValue('ACADEMIC_DEGREE', teacher.academicDegree)}"></td>
+            <th>照片</th>
+            <td><img th:src="${teacher.photo}" height="100px"></td>
+        </tr>
+        <tr>
+            <th>教师名称</th>
+            <td th:text="${teacher.names}"></td>
+            <th>现任职务</th>
+            <td th:text="${teacher.post}"></td>
+        </tr>
+        <tr>
+            <th>联系电话</th>
+            <td th:text="${teacher.phone}"></td>
+            <th>电子信箱</th>
+            <td th:text="${teacher.email}"></td>
+        </tr>
+        <tr>
+            <th>性别</th>
+            <td th:text="${#dicts.keyValue('USER_SEX', teacher.sex)}"></td>
+            <th>出生年月</th>
+            <td th:text="${#dates.format(teacher?.birthday, 'yyyy-MM-dd')}"></td>
+        </tr>
+        <tr>
+            <th>身份证类型</th>
+            <td th:text="${#dicts.keyValue('ID_TYPE', teacher.idType)}"></td>
+            <th>证件号</th>
+            <td th:text="${teacher.idNo}"></td>
+        </tr>
+        <tr>
+            <th>民族</th>
+            <td th:text="${#dicts.keyValue('NATION', teacher.nation)}"></td>
+            <th>入校年月</th>
+            <td th:text="${#dates.format(teacher?.enrollmentTime, 'yyyy-MM-dd')}"></td>
+        </tr>
+        <tr>
+            <th>补充信息</th>
+            <td th:text="${teacher.additionalInfo}" colspan="3"></td>
+        </tr>
+        <tr>
+            <th>创建者</th>
+            <td th:text="${teacher.createBy?.nickname}"></td>
+            <th>更新者</th>
+            <td th:text="${teacher.updateBy?.nickname}"></td>
+        </tr>
+        <tr>
+            <th>创建时间</th>
+            <td th:text="${#dates.format(teacher.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <th>更新时间</th>
+            <td th:text="${#dates.format(teacher.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        </tr>
+        <tr>
+            <th>备注</th>
+            <td th:text="${teacher.remark}" colspan="3"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <script th:replace="/common/template :: script"></script>
 </body>
 </html>

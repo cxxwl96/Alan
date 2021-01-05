@@ -21,7 +21,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">院系</label>
                     <div class="layui-input-block">
-                        <input type="text" name="collegeId" th:value="${param.collegeId}" placeholder="请输入院系" autocomplete="off" class="layui-input">
+                        <select class="layui-input select-dept" name="college" th:value="${param.college}" data-url="/system/dept/getChilds" parend-id="1"></select>
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -31,21 +31,21 @@
                     </div>
                 </div>
                 <div class="layui-inline">
+                    <label class="layui-form-label">教师名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="names" th:value="${param.names}" placeholder="请输入教师名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
                     <label class="layui-form-label">职称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="professionalTitle" th:value="${param.professionalTitle}" placeholder="请输入职称" autocomplete="off" class="layui-input">
+                        <select class="layui-input" name="professionalTitle" mo:dict="PROFESSIONAL_TITLE" mo-selected="${teacher?.professionalTitle}" mo-empty="" lay-verify="professionalTitle"></select>
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">学位</label>
                     <div class="layui-input-block">
-                        <input type="text" name="academicDegree" th:value="${param.academicDegree}" placeholder="请输入学位" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">教师名称</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="names" th:value="${param.names}" placeholder="请输入教师名称" autocomplete="off" class="layui-input">
+                        <select class="layui-input" name="academicDegree" mo:dict="ACADEMIC_DEGREE" mo-selected="${teacher?.academicDegree}" mo-empty="" lay-verify="academicDegree"></select>
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -129,5 +129,42 @@
     </div>
 </div>
 <script th:replace="/common/template :: script"></script>
+<script>
+    layui.use(['tree', 'util'], function(){
+        var $ = layui.jquery;
+        $(".select-dept").css("min-width", "100px");
+
+        // 院系
+        var selectDept = function(el){
+            var _this = $(el);
+            var _name = _this.attr('name');
+            var _dataUrl = _this.attr('data-url');
+            var _parendId = null;
+            var _val = _this.attr('value');
+            if(_name=='college'){
+                _parendId = _this.attr('parend-id');
+            }
+            if(_parendId==null){
+                return;
+            }
+            $.post(_dataUrl, {'pid': _parendId}, function(data, status){
+                var _data = data.data;
+                if(data && data.code==200){
+                    _this.html('<option></option>');
+                    _this.attr('parend-id', _parendId);
+                    for(var i=0; i<_data.length; i++){
+                        _this.append('<option value='+_data[i].id+'>'+_data[i].title+'</option>')
+                    }
+                    if(_val){
+                        _this.find("option[value='"+_val+"']").attr("selected",true);
+                    }
+                }else{
+                    layer.msg(data.msg, {icon: 2});
+                }
+            });
+        }
+        selectDept(".select-dept");
+    })
+</script>
 </body>
 </html>
