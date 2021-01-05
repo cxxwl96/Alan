@@ -140,17 +140,12 @@ public class StudentController {
     @RequiresPermissions({"system:student:add", "system:student:edit"})
     @ResponseBody
     public ResultVo save(@Validated StudentValid valid, Student student) {
-        // 复制保留无需修改的数据
-        Student beStudent = null;
-        if (student.getId() != null) {
-            beStudent = studentService.getById(student.getId());
-            EntityBeanUtil.copyProperties(beStudent, student);
-        }
-        if (beStudent==null || beStudent.getUserId()==null) {
-            if(studentService.getByStuNo(student.getStuNo())!=null){
+        if (student.getId() == null) {
+            if (studentService.getByStuNo(student.getStuNo()) != null) {
                 return ResultVoUtil.error("该学号已存在");
             }
-            // 为学生创建账号
+            // 添加学生
+            // 创建系统账户
             User user = new User();
             user.setUsername(student.getStuNo());
             user.setNickname(student.getNames());
@@ -169,8 +164,22 @@ public class StudentController {
             // 保存数据
             student.setUserId(user);
         } else {
-            User subUser = ShiroUtil.getSubject();
-            student.setUserId(subUser);
+            // 编辑学生
+            Student beStudent = studentService.getById(student.getId());
+            EntityBeanUtil.copyProperties(beStudent, student);
+            Student stu = studentService.getByStuNo(student.getStuNo());
+            if (stu != null && stu.getId() != student.getId()) {
+                return ResultVoUtil.error("该学号已存在");
+            }
+            student.setUserId(beStudent.getUserId());
+            // 编辑系统账户
+            User user = userService.getById(student.getUserId().getId());
+            user.setUsername(student.getStuNo());
+            user.setNickname(student.getNames());
+            user.setPicture(student.getPhoto());
+            user.setSex(student.getSex());
+            user.setPhone(student.getPhone());
+            userService.save(user);
         }
         studentService.save(student);
         return ResultVoUtil.SAVE_SUCCESS;

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:mo="https://gitee.com/aun/alan">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+<div class="layui-form alan-compile">
+    <form th:action="@{/system/teacher/save}" class="layui-form-pane alan-form-pane">
+        <input type="hidden" name="id" th:if="${teacher}" th:value="${teacher.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">照片</label>
+            <div class="layui-input-block">
+                <input class="layui-input" type="hidden" name="photo" id="photo" th:value="${teacher?.photo}">
+                <div th:class="${teacher!=null && teacher.photo!=null && teacher.photo.length()>0}? '' : 'layui-hide'" id="uploadDemoView">
+                    <img th:src="${teacher?.photo}" alt="上传成功后渲染" style="max-width: 196px; border: 1px solid #F0F0F0;">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">教师名称</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input layui-disabled" type="text" name="names" placeholder="请输入教师名称" th:value="${teacher?.names}" readonly>
+                </div>
+                <label class="layui-form-label required">性别</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="sex" value="1" title="男" checked>
+                    <div class="layui-unselect layui-form-radio layui-form-radioed"><i
+                            class="layui-anim layui-icon"></i>
+                        <div>男</div>
+                    </div>
+                    <input type="radio" name="sex" value="2" title="女" th:checked="${teacher?.sex} eq 2">
+                    <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
+                        <div>女</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">联系电话</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="phone" placeholder="请输入联系电话" th:value="${teacher?.phone}">
+                </div>
+                <label class="layui-form-label">电子信箱</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="email" placeholder="请输入电子信箱" th:value="${teacher?.email}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">出生年月</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="birthday" th:value="${#dates.format(teacher?.birthday, 'yyyy-MM-dd')}" id="birthday" placeholder="yyyy-MM-dd" autocomplete="off">
+                </div>
+                <label class="layui-form-label required">民族</label>
+                <div class="layui-input-inline">
+                    <select name="nation" mo:dict="NATION" mo-selected="${teacher?.idType}" mo-empty="" lay-verify="nation"></select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">身份证类型</label>
+                <div class="layui-input-inline">
+                    <select name="idType" mo:dict="ID_TYPE" mo-selected="${teacher?.idType}" mo-empty="" lay-verify="idType"></select>
+                </div>
+                <label class="layui-form-label required">证件号</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="idNo" placeholder="请输入证件号" th:value="${teacher?.idNo}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">院系</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="collegeId" th:value="${teacher?.collegeId?.id}">
+                    <input class="layui-input layui-disabled" type="text"  th:value="${teacher?.collegeId?.title}" readonly>
+                </div>
+                <label class="layui-form-label required">教职工号</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input layui-disabled" type="text" name="no" placeholder="请输入教职工号" th:value="${teacher?.no}" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label required">职称</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="professionalTitle" th:value="${teacher?.professionalTitle}">
+                    <select name="professionalTitle" mo:dict="PROFESSIONAL_TITLE" mo-selected="${teacher?.professionalTitle}" mo-empty="" lay-verify="professionalTitle" disabled></select>
+                </div>
+                <label class="layui-form-label required">学位</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="academicDegree" th:value="${teacher?.academicDegree}">
+                    <select name="academicDegree" mo:dict="ACADEMIC_DEGREE" mo-selected="${teacher?.academicDegree}" mo-empty="" lay-verify="academicDegree" disabled></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">现任职务</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="post" placeholder="请输入现任职务" th:value="${teacher?.post}">
+                </div>
+            </div>
+            <label class="layui-form-label required">入校年月</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="enrollmentTime" th:value="${teacher?.enrollmentTime}">
+                <input class="layui-input layui-disabled" type="text" name="enrollmentTime" th:value="${#dates.format(teacher?.enrollmentTime, 'yyyy-MM-dd')}" id="enrollmentTime" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">补充信息</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入补充信息" class="layui-textarea" name="additionalInfo">[[${teacher?.additionalInfo}]]</textarea>
+            </div>
+        </div>
+        <input type="hidden" name="remark" th:value="${student?.remark}">
+        <div class="layui-form-item alan-finally">
+            <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script>
+    layui.use(['form', 'upload', 'laydate'], function () {
+        var $ = layui.jquery;
+        var form = layui.form;
+        var upload = layui.upload;
+        var laydate = layui.laydate;
+        // 院系
+        var selectDept = function(el){
+            var _this = $(el);
+            var _name = _this.attr('name');
+            var _dataUrl = _this.attr('data-url');
+            var _parendId = null;
+            var _val = _this.attr('value');
+            if(_name=='collegeId'){
+                _parendId = _this.attr('parend-id');
+                $(".select-dept[name='specialtyId']").html('');
+            }
+            if(_parendId==null){
+                return;
+            }
+            $.post(_dataUrl, {'pid': _parendId}, function(data, status){
+                var _data = data.data;
+                if(data && data.code==200){
+                    _this.html('');
+                    _this.attr('parend-id', _parendId);
+                    for(var i=0; i<_data.length; i++){
+                        _this.append('<option value='+_data[i].id+'>'+_data[i].title+'</option>')
+                    }
+                    if(_val){
+                        _this.find("option[value='"+_val+"']").attr("selected",true);
+                    }
+                }else{
+                    layer.msg(data.msg, {icon: 2});
+                }
+            });
+        }
+        selectDept(".select-dept");
+        // 照片
+        // 拖拽上传图片
+        upload.render({
+            elem: '#button-photo'
+            , url: '/upload/image'
+            , field: 'image'
+            , exts: 'jpg|png|gif|jpeg'
+            , done: function (res) {
+                //上传成功
+                if (res && res.code == 200) {
+                    layer.msg('上传成功');
+                    $("#photo").val(res.data.path);
+                    layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.data.path);
+                } else {
+                    layer.msg('上传失败');
+                }
+            }
+        });
+
+        // 出生年月
+        laydate.render({
+            elem: '#birthday' //指定元素
+            ,calendar: true //是否显示公历节日
+            ,trigger: 'click' //采用click弹出
+        });
+
+        // 入校年月
+        laydate.render({
+            elem: '#enrollmentTime' //指定元素
+            ,calendar: true //是否显示公历节日
+            ,trigger: 'click' //采用click弹出
+        });
+    })
+</script>
+</body>
+</html>

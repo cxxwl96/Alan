@@ -111,17 +111,12 @@ public class TeacherController {
     @RequiresPermissions({"system:teacher:add", "system:teacher:edit"})
     @ResponseBody
     public ResultVo save(@Validated TeacherValid valid, Teacher teacher) {
-        // 复制保留无需修改的数据
-        Teacher beTeacher = null;
-        if (teacher.getId() != null) {
-            beTeacher = teacherService.getById(teacher.getId());
-            EntityBeanUtil.copyProperties(beTeacher, teacher);
-        }
-        if (beTeacher == null || beTeacher.getUserId() == null) {
+        if (teacher.getId() == null) {
             if (teacherService.getByNo(teacher.getNo()) != null) {
                 return ResultVoUtil.error("该教职工号已存在");
             }
-            // 为学生创建账号
+            // 添加教师
+            // 创建系统账户
             User user = new User();
             user.setUsername(teacher.getNo());
             user.setNickname(teacher.getNames());
@@ -132,7 +127,7 @@ public class TeacherController {
             user.setSex(teacher.getSex());
             user.setPhone(teacher.getPhone());
             user = userService.save(user);
-            // 为账号分配学生权限
+            // 为账号分配教师权限
             Set<Role> roles = new HashSet<>(0);
             Role role = roleService.getByName("teacher");
             roles.add(role);
@@ -140,10 +135,23 @@ public class TeacherController {
             // 保存数据
             teacher.setUserId(user);
         } else {
-            User subUser = ShiroUtil.getSubject();
-            teacher.setUserId(subUser);
+            // 编辑教师
+            Teacher beTeacher = teacherService.getById(teacher.getId());
+            EntityBeanUtil.copyProperties(beTeacher, teacher);
+            Teacher tea = teacherService.getByNo(teacher.getNo());
+            if (tea != null && tea.getId() != teacher.getId()) {
+                return ResultVoUtil.error("该教职工号已存在");
+            }
+            teacher.setUserId(beTeacher.getUserId());
+            // 编辑系统账户
+            User user = userService.getById(teacher.getUserId().getId());
+            user.setUsername(teacher.getNo());
+            user.setNickname(teacher.getNames());
+            user.setPicture(teacher.getPhoto());
+            user.setSex(teacher.getSex());
+            user.setPhone(teacher.getPhone());
+            userService.save(user);
         }
-        // 保存数据
         teacherService.save(teacher);
         return ResultVoUtil.SAVE_SUCCESS;
     }
@@ -166,7 +174,7 @@ public class TeacherController {
     }
 
     /**
-     * 获取学生信息
+     * 获取教师信息
      */
     @PostMapping("/detail/{id}")
     @RequiresPermissions("system:teacher:detail")
