@@ -3,7 +3,7 @@
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
 </head>
 <body>
-<div class="layui-form alan-compile">
+<div class="layui-form">
     <form th:action="@{#{baseUrl}/save}" class="layui-form-pane alan-form-pane">
         <input type="hidden" name="id" th:if="${#{var}}" th:value="${#{var}.id}"/>
         <div jsoup="field" class="layui-form-item">

@@ -727,7 +727,7 @@ a{
 	padding-top: 20px;
 }
 .alan-compile .layui-input-inline{
-	width: 240px;
+	/*width: 240px;*/
 }
 .alan-compile .layui-input-inline input:hover,
 .alan-compile .layui-input-block input:hover,
@@ -746,7 +746,7 @@ a{
 	padding-right: 20px;
 }
 .alan-compile .layui-form-text .layui-textarea{
-	max-width: 360px;
+	/*max-width: 360px;*/
 }
 .alan-compile .layui-form-text .layui-textarea.textarea-fill{
 	max-width: initial;
