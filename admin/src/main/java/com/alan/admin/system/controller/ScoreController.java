@@ -6,7 +6,9 @@ import com.alan.common.utils.EntityBeanUtil;
 import com.alan.common.utils.ResultVoUtil;
 import com.alan.common.utils.StatusUtil;
 import com.alan.common.vo.ResultVo;
+import com.alan.modules.system.domain.Course;
 import com.alan.modules.system.domain.Score;
+import com.alan.modules.system.domain.Student;
 import com.alan.modules.system.service.ScoreService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,17 @@ public class ScoreController {
     @GetMapping("/index")
     @RequiresPermissions("system:score:index")
     public String index(Model model, Score score) {
-
+        //
+        if (score.getStudentId() != null && score.getStudentId().getId() != null) {
+            Student student = new Student();
+            student.setId(score.getStudentId().getId());
+            score.setStudentId(student);
+        }
+        if (score.getCourseId() != null && score.getCourseId().getId() != null) {
+            Course course = new Course();
+            course.setId(score.getCourseId().getId());
+            score.setCourseId(course);
+        }
         // 创建匹配器，进行动态查询匹配
         ExampleMatcher matcher = ExampleMatcher.matching();
 
@@ -72,6 +84,7 @@ public class ScoreController {
 
     /**
      * 保存添加/修改的数据
+     *
      * @param valid 验证对象
      */
     @PostMapping("/save")
@@ -95,7 +108,7 @@ public class ScoreController {
     @GetMapping("/detail/{id}")
     @RequiresPermissions("system:score:detail")
     public String toDetail(@PathVariable("id") Score score, Model model) {
-        model.addAttribute("score",score);
+        model.addAttribute("score", score);
         return "/system/score/detail";
     }
 

@@ -48,7 +48,7 @@ public class Score implements Serializable {
     @JsonIgnore
     private Course courseId;
     // 分数
-    private Double score;
+    private Double fraction;
     // 成绩说明
     private String description;
     // 备注

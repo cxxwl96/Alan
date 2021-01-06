@@ -292,6 +292,7 @@ layui.use(['element', 'form', 'layer', 'upload'], function () {
         if (getSearch !== "") {
             getSearch = "?" + getSearch.substr(0, getSearch.length - 1);
         }
+        layer.load(0);
         window.location.href = window.location.pathname + getSearch;
     };
 

@@ -4,13 +4,13 @@
     <style>
         .students, .course{
             border: 1px solid #E6E6E6;
-            max-width: 360px;
-            min-height: 100px;
+            width: 190px;
+            height: 36px;
             border-radius: 2px;
-            resize: vertical;
-            text-align: center;
-            line-height: 100px;
-            color: #757575;
+            text-align: left;
+            color: -internal-light-dark(black, white);
+            line-height: 36px;
+            padding-left: 10px;
             transition: all .3s;
             transition-property: all;
             transition-duration: 0.3s;
@@ -22,16 +22,6 @@
             border: 1px solid #7D32A7;
             cursor: pointer;
         }
-        .students div, .course div{
-            display: inline-block;
-            height: 30px;
-            line-height: 15px;
-            color: #FFF;
-            background: #7D32A7;
-            margin: 5px;
-            padding: 5px;
-            text-align: left;
-        }
     </style>
 </head>
 <body>
@@ -39,23 +29,21 @@
     <form th:action="@{/system/score/save}" class="layui-form-pane alan-form-pane">
         <input type="hidden" name="id" th:if="${score}" th:value="${score?.id}">
         <div class="layui-form-item">
-            <label class="layui-form-label required">学年</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="academicYear" th:value="${score?.academicYear}" id="academicYear" placeholder="yyyy" autocomplete="off" readonly>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">学期</label>
-            <div class="layui-input-inline">
-                <select name="semester" mo:dict="SEMESTER" mo-selected="${score?.semester}" mo-empty="" lay-verify="semester"></select>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">学生</label>
-            <div class="layui-input-inline">
-                <input type="hidden" name="studentId" th:value="${score?.studentId?.id}" th:names="${score?.studentId?.names}" th:no="${score?.studentId?.stuNo}"/>
-                <div class="students"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择学生</div>
-                <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 只能选择一个学生</p>
+            <div class="layui-inline">
+                <label class="layui-form-label required">学年</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="academicYear" th:value="${score?.academicYear}" id="academicYear" placeholder="yyyy" autocomplete="off" readonly>
+                </div>
+                <label class="layui-form-label required">学期</label>
+                <div class="layui-input-inline">
+                    <select name="semester" mo:dict="SEMESTER" mo-selected="${score?.semester}" mo-empty="" lay-verify="semester"></select>
+                </div>
+                <label class="layui-form-label required">学生</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="studentId" th:value="${score?.studentId?.id}" th:names="${score?.studentId?.names}" th:no="${score?.studentId?.stuNo}"/>
+                    <div class="students"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择学生</div>
+                    <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 只能选择一个学生</p>
+                </div>
             </div>
         </div>
         <div class="layui-form-item">
@@ -67,9 +55,11 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label required">分数</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="number" name="score" placeholder="请输入分数" th:value="${score?.score}">
+            <div class="layui-inline">
+                <label class="layui-form-label required">分数</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="number" name="fraction" placeholder="请输入分数" th:value="${score?.fraction}">
+                </div>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -113,7 +103,7 @@
         if(_stuNames && _stuId && _stuNo){
             var _this = $(".students");
             _this.html('');
-            var _html = '<div><p>学号：'+_stuNo+'</p><p>姓名：'+_stuNames+'</p></div>';
+            var _html = _stuNames+'('+_stuNo+')';
             _this.html(_html);
         }
         $(".students").click(function(){
@@ -156,7 +146,7 @@
                         _this.html('');
                         var _html = ``;
                         for(var i=0; i<studentIds.length; i++){
-                            _html += '<div><p>学号：'+studentIds[i].stuNo+'</p><p>姓名：'+studentIds[i].name+'</p></div>';
+                            _html += _stuNames+'('+_stuNo+')';
                         }
                         _this.html(_html);
                         $("input[name='studentId']").val(studentIds[0].id);　　//查到目标页面的内容赋给当前页面元素
@@ -169,10 +159,10 @@
         var _courseIdEL = $("input[name='courseId']");
         var _courseNames = _courseIdEL.attr('names');
         var _courseId = _courseIdEL.val();
-        if(_stuNames && _stuId && _stuNo){
+        if(_courseNames && _courseId){
             var _this = $(".course");
             _this.html('');
-            var _html = '<div><p>课程名称：《'+_courseNames+'》</p></div>';
+            var _html = '《'+_courseNames+'》';
             _this.html(_html);
         }
         $(".course").click(function(){
@@ -204,7 +194,7 @@
                     // 处理课程id
                     if(checkedEl.length==1){
                         _this.html('');
-                        var _html = '<div><p>课程名称：《'+checkedEl[0].name+'》</p></div>';
+                        var _html = '《'+checkedEl[0].name+'》';
                         _this.html(_html);
                         $("input[name='courseId']").val(checkedEl[0].id);　　//查到目标页面的内容赋给当前页面元素
                     }

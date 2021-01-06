@@ -24,6 +24,6 @@ public class ScoreValid implements Serializable {
     @NotNull(message = "课程不能为空")
     private Course courseId;
     @NotNull(message = "分数不能为空")
-    @Digits(integer = 12, fraction = 2, message = "只保留小数点后两位")
-    private Double score;
+    @Digits(integer = 12, fraction = 2, message = "分数只保留小数点后两位")
+    private Double fraction;
 }
