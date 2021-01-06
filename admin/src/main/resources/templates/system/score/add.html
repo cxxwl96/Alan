@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:mo="https://gitee.com/aun/alan">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+        .students, .course{
+            border: 1px solid #E6E6E6;
+            max-width: 360px;
+            min-height: 100px;
+            border-radius: 2px;
+            resize: vertical;
+            text-align: center;
+            line-height: 100px;
+            color: #757575;
+            transition: all .3s;
+            transition-property: all;
+            transition-duration: 0.3s;
+            transition-timing-function: ease;
+            transition-delay: 0s;
+            -webkit-transition: all .3s;
+        }
+        .students:hover, .course:hover{
+            border: 1px solid #7D32A7;
+            cursor: pointer;
+        }
+        .students div, .course div{
+            display: inline-block;
+            height: 30px;
+            line-height: 15px;
+            color: #FFF;
+            background: #7D32A7;
+            margin: 5px;
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form alan-compile">
+    <form th:action="@{/system/score/save}" class="layui-form-pane alan-form-pane">
+        <input type="hidden" name="id" th:if="${score}" th:value="${score?.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">学年</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="academicYear" th:value="${score?.academicYear}" id="academicYear" placeholder="yyyy" autocomplete="off" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">学期</label>
+            <div class="layui-input-inline">
+                <select name="semester" mo:dict="SEMESTER" mo-selected="${score?.semester}" mo-empty="" lay-verify="semester"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">学生</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="studentId" th:value="${score?.studentId?.id}" th:names="${score?.studentId?.names}" th:no="${score?.studentId?.stuNo}"/>
+                <div class="students"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择学生</div>
+                <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 只能选择一个学生</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">课程</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="courseId" th:value="${score?.courseId?.id}" th:names="${score?.courseId?.names}"/>
+                <div class="course"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择课程</div>
+                <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 只能选择一门课程</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">分数</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="number" name="score" placeholder="请输入分数" th:value="${score?.score}">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">成绩说明</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="description">[[${score?.description}]]</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="remark">[[${score?.remark}]]</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item alan-finally">
+            <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script>
+    layui.use(['form', 'upload', 'laydate'], function () {
+        var $ = layui.jquery;
+        var form = layui.form;
+        var upload = layui.upload;
+        var laydate = layui.laydate;
+        // 学年
+        laydate.render({
+            elem: '#academicYear' //指定元素
+            ,type: 'year'
+            ,trigger: 'click' //采用click弹出
+            ,format: 'yyyy年'
+            ,max: 0
+        });
+        // 学生
+        var _studentIdEL = $("input[name='studentId']");
+        var _stuNames = _studentIdEL.attr('names');
+        var _stuId = _studentIdEL.val();
+        var _stuNo = _studentIdEL.attr('no');
+        if(_stuNames && _stuId && _stuNo){
+            var _this = $(".students");
+            _this.html('');
+            var _html = '<div><p>学号：'+_stuNo+'</p><p>姓名：'+_stuNames+'</p></div>';
+            _this.html(_html);
+        }
+        $(".students").click(function(){
+            var _this = $(this);
+            var _dataUrl = '/system/student/show';
+            //通过这种方式弹出的层，每当它被选择，就会置顶。
+            layer.open({
+                title: '学生信息',
+                type: 2,
+                area: ['80%', '80%'],
+                maxmin: true,
+                content: _dataUrl,
+                btn: ['确定', '取消'],
+                zIndex: layer.zIndex,
+                success: function(layero, index){
+                    layer.setTop(layero);
+                },
+                yes: function (index, layero) {
+                    var studentIds=[];
+                    var body = layer.getChildFrame('body', index);  //此处我理解的是加载目标页面的内容
+                    var checkedEl = body.find("input[type='checkbox'][checked]");
+                    if(checkedEl.length>1){
+                        layer.close(index);//这块是点击确定关闭这个弹出层
+                        layer.msg('只能选择一个学生', {icon: 2});
+                        setTimeout(function(){
+
+                        }, 1500)
+                        return;
+                    }
+                    checkedEl.each(function () {
+                        var stu={
+                            id: this.value,
+                            name: this.name,
+                            stuNo: this.attributes['stuno'].value
+                        }
+                        studentIds.push(stu);
+                    });
+                    // 处理学生id
+                    if(checkedEl.length==1){
+                        _this.html('');
+                        var _html = ``;
+                        for(var i=0; i<studentIds.length; i++){
+                            _html += '<div><p>学号：'+studentIds[i].stuNo+'</p><p>姓名：'+studentIds[i].name+'</p></div>';
+                        }
+                        _this.html(_html);
+                        $("input[name='studentId']").val(studentIds[0].id);　　//查到目标页面的内容赋给当前页面元素
+                    }
+                    layer.close(index);//这块是点击确定关闭这个弹出层
+                }
+            });
+        });
+        // 课程
+        var _courseIdEL = $("input[name='courseId']");
+        var _courseNames = _courseIdEL.attr('names');
+        var _courseId = _courseIdEL.val();
+        if(_stuNames && _stuId && _stuNo){
+            var _this = $(".course");
+            _this.html('');
+            var _html = '<div><p>课程名称：《'+_courseNames+'》</p></div>';
+            _this.html(_html);
+        }
+        $(".course").click(function(){
+            var _this = $(this);
+            var _dataUrl = '/system/course/show';
+            //通过这种方式弹出的层，每当它被选择，就会置顶。
+            layer.open({
+                title: '课程信息',
+                type: 2,
+                area: ['80%', '80%'],
+                maxmin: true,
+                content: _dataUrl,
+                btn: ['确定', '取消'],
+                zIndex: layer.zIndex,
+                success: function(layero, index){
+                    layer.setTop(layero);
+                },
+                yes: function (index, layero) {
+                    var body = layer.getChildFrame('body', index);  //此处我理解的是加载目标页面的内容
+                    var checkedEl = body.find("input[type='checkbox'][checked]");
+                    if(checkedEl.length>1){
+                        layer.close(index);//这块是点击确定关闭这个弹出层
+                        layer.msg('只能选择一门课程', {icon: 2});
+                        setTimeout(function(){
+
+                        }, 1500)
+                        return;
+                    }
+                    // 处理课程id
+                    if(checkedEl.length==1){
+                        _this.html('');
+                        var _html = '<div><p>课程名称：《'+checkedEl[0].name+'》</p></div>';
+                        _this.html(_html);
+                        $("input[name='courseId']").val(checkedEl[0].id);　　//查到目标页面的内容赋给当前页面元素
+                    }
+                    layer.close(index);//这块是点击确定关闭这个弹出层
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>

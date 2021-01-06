@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:mo="https://gitee.com/aun/alan">
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
 </head>
 <body>

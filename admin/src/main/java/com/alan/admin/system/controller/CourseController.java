@@ -7,6 +7,8 @@ import com.alan.common.utils.ResultVoUtil;
 import com.alan.common.utils.StatusUtil;
 import com.alan.common.vo.ResultVo;
 import com.alan.modules.system.domain.Course;
+import com.alan.modules.system.domain.Dept;
+import com.alan.modules.system.domain.Student;
 import com.alan.modules.system.service.CourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,5 +118,26 @@ public class CourseController {
         } else {
             return ResultVoUtil.error(statusEnum.getMessage() + "失败，请重新操作");
         }
+    }
+
+    /**
+     * 跳转到show页面
+     */
+    @GetMapping("/show")
+    @RequiresPermissions("system:course:show")
+    public String show(Model model, Course course) {
+
+        // 创建匹配器，进行动态查询匹配
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("names", match -> match.contains());
+
+        // 获取数据列表
+        Example<Course> example = Example.of(course, matcher);
+        Page<Course> list = courseService.getPageList(example);
+
+        // 封装数据
+        model.addAttribute("list", list.getContent());
+        model.addAttribute("page", list);
+        return "/system/course/show";
     }
 }

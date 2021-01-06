@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="pull-right screen-btn-group">
-                <button class="layui-btn open-popup" data-title="添加宿舍" th:attr="data-url=@{/system/dormitory/add}" data-size="auto">
+                <button class="layui-btn open-popup" data-title="添加宿舍" th:attr="data-url=@{/system/dormitory/add}" data-size="max">
                     <i class="fa fa-plus"></i> 添加</button>
                 <div class="btn-group">
                     <button class="layui-btn">操作<span class="caret"></span></button>
@@ -103,7 +103,7 @@
                     <td th:text="${#dates.format(item.updateDate, 'yyyy-MM-dd HH:mm:ss')}">更新时间</td>
                     <td th:text="${#dicts.dataStatus(item.status)}">数据状态</td>
                     <td>
-                        <a class="open-popup" data-title="编辑宿舍" th:attr="data-url=@{'/system/dormitory/edit/'+${item.id}}" data-size="auto" href="#">编辑</a>
+                        <a class="open-popup" data-title="编辑宿舍" th:attr="data-url=@{'/system/dormitory/edit/'+${item.id}}" data-size="max" href="#">编辑</a>
                         <a class="open-popup" data-title="详细信息" th:attr="data-url=@{'/system/dormitory/detail/'+${item.id}}" data-size="800,600" href="#">详细</a>
                         <a class="ajax-get" data-msg="您是否确认删除" th:href="@{/system/dormitory/status/delete(ids=${item.id})}">删除</a>
                     </td>
