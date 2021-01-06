@@ -743,7 +743,7 @@ a{
     color: #747474;
 }
 .alan-compile .layui-form-text{
-	padding-right: 20px;
+	/*padding-right: 20px;*/
 }
 .alan-compile .layui-form-text .layui-textarea{
 	/*max-width: 360px;*/
