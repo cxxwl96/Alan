@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+        .students div{
+            display: inline-block;
+            height: 30px;
+            line-height: 15px;
+            color: #FFF;
+            background: #7D32A7;
+            margin: 5px;
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div class="alan-detail-page">
+    <div class="alan-detail-title">我的寝室</div>
+    <table class="layui-table alan-detail-table">
+        <colgroup>
+            <col width="100px"><col>
+            <col width="100px"><col>
+        </colgroup>
+        <tbody>
+        <tr th:if="${!#lists.isEmpty(dormitorys)}" th:each="item:${dormitorys}">
+            <th>宿舍楼</th>
+            <td th:text="${#dicts.keyValue('DORMITORY_BUILDING', item.building)}"></td>
+            <th>宿舍名</th>
+            <td th:text="${item.name}"></td>
+            <th>入住学生</th>
+            <td class="students" th:value="${item.students}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(dormitorys)}">
+            <th style="text-align: center;">未查询到数据</th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script>
+    layui.use(['form', 'upload', 'laydate'], function () {
+        var $ = layui.jquery;
+        var _studentEls = $(".students");
+        _studentEls.each(function(){
+            var _this = $(this);
+            var _value = _this.attr('value');
+            if(_value){
+                var _students = JSON.parse(_value);
+                _this.html('');
+                var _html = ``;
+                for(var i=0; i<_students.length; i++){
+                    _html += '<div><p>学号：'+_students[i].stuNo+'</p><p>姓名：'+_students[i].name+'</p></div>';
+                }
+                _this.html(_html);
+            }
+        });
+    })
+</script>
+</body>
+</html>

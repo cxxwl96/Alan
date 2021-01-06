@@ -7,10 +7,8 @@ import com.alan.common.utils.ResultVoUtil;
 import com.alan.common.utils.StatusUtil;
 import com.alan.common.vo.ResultVo;
 import com.alan.component.shiro.ShiroUtil;
-import com.alan.modules.system.domain.Dept;
-import com.alan.modules.system.domain.Role;
-import com.alan.modules.system.domain.Student;
-import com.alan.modules.system.domain.User;
+import com.alan.modules.system.domain.*;
+import com.alan.modules.system.service.DormitoryService;
 import com.alan.modules.system.service.RoleService;
 import com.alan.modules.system.service.StudentService;
 import com.alan.modules.system.service.UserService;
@@ -50,6 +48,9 @@ public class StudentController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private DormitoryService dormitoryService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder, WebRequest request) {
@@ -303,4 +304,20 @@ public class StudentController {
         return "/system/student/show";
     }
 
+    /**
+     * 跳转到我的宿舍页面
+     */
+    @GetMapping("/MyDormitory")
+    @RequiresPermissions("system:student:MyDormitory")
+    public String toMyDormitory(Model model) {
+        // 获取当前登录用户
+        User subUser = ShiroUtil.getSubject();
+        Student student = studentService.getByUserId(subUser.getId());
+        List<Dormitory> dormitorys = null;
+        if(student!=null){
+            dormitorys = dormitoryService.getByStudentNo(student.getStuNo());
+        }
+        model.addAttribute("dormitorys", dormitorys);
+        return "/system/student/myDormitory";
+    }
 }

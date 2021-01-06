@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class DormitoryServiceImpl implements DormitoryService {
 
     /**
      * 根据ID查询数据
+     *
      * @param id 主键ID
      */
     @Override
@@ -36,6 +38,7 @@ public class DormitoryServiceImpl implements DormitoryService {
 
     /**
      * 获取分页列表数据
+     *
      * @param example 查询实例
      * @return 返回分页数据
      */
@@ -48,6 +51,7 @@ public class DormitoryServiceImpl implements DormitoryService {
 
     /**
      * 保存数据
+     *
      * @param dormitory 实体对象
      */
     @Override
@@ -62,5 +66,20 @@ public class DormitoryServiceImpl implements DormitoryService {
     @Transactional
     public Boolean updateStatus(StatusEnum statusEnum, List<Long> idList) {
         return dormitoryRepository.updateStatus(statusEnum.getCode(), idList) > 0;
+    }
+
+    /**
+     * 根据学号查找学生宿舍
+     *
+     * @param stuNo
+     * @return
+     */
+    @Override
+    public List<Dormitory> getByStudentNo(String stuNo) {
+        if(stuNo==null){
+            return new ArrayList<>();
+        }
+        stuNo = "\"stuNo\":\"" + stuNo + "\"";
+        return dormitoryRepository.findAllByStudents(stuNo);
     }
 }
