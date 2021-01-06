@@ -3,31 +3,31 @@
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
 </head>
 <body>
-    <div class="layui-form alan-compile">
+<div class="layui-form alan-compile">
     <form th:action="@{/system/course/save}" class="layui-form-pane alan-form-pane">
         <input type="hidden" name="id" th:if="${course}" th:value="${course.id}">
         <div class="layui-form-item">
-            <label class="layui-form-label">课程类型</label>
+            <label class="layui-form-label required">课程类型</label>
             <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="type" placeholder="请输入课程类型" th:value="${course?.type}">
+                <select name="type" mo:dict="COURSE_TYPE" mo-selected="${course?.type}" mo-empty="" lay-verify="type"></select>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">课程名称</label>
+            <label class="layui-form-label required">课程名称</label>
             <div class="layui-input-inline">
                 <input class="layui-input" type="text" name="names" placeholder="请输入课程名称" th:value="${course?.names}">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">课程学时</label>
+            <label class="layui-form-label required">课程学时</label>
             <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="hour" placeholder="请输入课程学时" th:value="${course?.hour}">
+                <input class="layui-input" type="number" name="hour" placeholder="请输入课程学时" th:value="${course?.hour}">
             </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">课程说明</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="description" placeholder="请输入课程说明" th:value="${course?.description}">
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="description">[[${course?.description}]]</textarea>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
