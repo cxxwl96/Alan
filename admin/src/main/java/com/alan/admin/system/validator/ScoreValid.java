@@ -3,11 +3,11 @@ package com.alan.admin.system.validator;
 import com.alan.modules.system.domain.Course;
 import com.alan.modules.system.domain.Student;
 import lombok.Data;
-import org.springframework.format.annotation.NumberFormat;
 
-import java.io.Serializable;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * @author cxxwl96@sina.com
@@ -24,5 +24,6 @@ public class ScoreValid implements Serializable {
     @NotNull(message = "课程不能为空")
     private Course courseId;
     @NotNull(message = "分数不能为空")
+    @Digits(integer = 12, fraction = 2, message = "只保留小数点后两位")
     private Double score;
 }
