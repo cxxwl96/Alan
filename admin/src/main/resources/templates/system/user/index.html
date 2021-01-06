@@ -110,7 +110,7 @@
                     <td th:text="${item.dept?.title}">用户昵称</td>
                     <td th:value="${item.roles}">
                         <div class="roles" th:each="role:${item.roles}">
-                            <a th:text="${role.title}" th:title="${role.name}" th:onclick="showRoleInfo([[${role.id}]], [[${role.title}]], [[${role.name}]])"></a>
+                            <a th:text="${role.title+'('+role.name+')'}" th:title="${role.name}" th:onclick="showRoleInfo([[${role.id}]], [[${role.title}]], [[${role.name}]])"></a>
                         </div>
                     </td>
                     <td th:text="${#dates.format(item.createDate, 'yyyy-MM-dd HH:mm:ss')}">创建时间</td>
