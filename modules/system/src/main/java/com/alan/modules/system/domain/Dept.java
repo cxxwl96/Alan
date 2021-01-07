@@ -1,5 +1,6 @@
 package com.alan.modules.system.domain;
 
+import com.alan.component.excel.annotation.Excel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.alan.common.enums.StatusEnum;
 import com.alan.common.utils.StatusUtil;
@@ -41,7 +42,8 @@ public class Dept implements Serializable {
     private String pids;
 
     /** 层级 */
-    private String level;
+    @Excel(value = "层级", dict = "DEPT_LEVEL")
+    private Byte level;
 
     /** 排序 */
     private Integer sort;

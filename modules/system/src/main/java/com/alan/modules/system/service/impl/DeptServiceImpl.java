@@ -175,11 +175,11 @@ public class DeptServiceImpl implements DeptService {
 
     private JSONArray getTreeCallback(Long id) {
         JSONArray jsonArray = new JSONArray();
-        JSONObject jsonObject = new JSONObject();
         // 查询子节点
         List<Dept> depts = deptRepository.findByPid(id);
         // 递归
         for (Dept dept : depts) {
+            JSONObject jsonObject = new JSONObject();
             JSONArray children = getTreeCallback(dept.getId());
             jsonObject.put("dept", dept);
             jsonObject.put("children", children);
