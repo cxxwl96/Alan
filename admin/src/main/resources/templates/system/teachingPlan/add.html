@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/alan">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+    <div class="layui-form alan-compile">
+    <form th:action="@{/system/teachingPlan/save}" class="layui-form-pane alan-form-pane">
+        <input type="hidden" name="id" th:if="${teachingPlan}" th:value="${teachingPlan.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">学年</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="academicYear" placeholder="请输入学年" th:value="${teachingPlan?.academicYear}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">学期</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="semester" placeholder="请输入学期" th:value="${teachingPlan?.semester}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">院系</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="collegeId" placeholder="请输入院系" th:value="${teachingPlan?.collegeId}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">专业</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="specialtyId" placeholder="请输入专业" th:value="${teachingPlan?.specialtyId}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">年级</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="gradeId" placeholder="请输入年级" th:value="${teachingPlan?.gradeId}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">班级</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="clazzId" placeholder="请输入班级" th:value="${teachingPlan?.clazzId}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">课程</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="courseId" placeholder="请输入课程" th:value="${teachingPlan?.courseId}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">教师</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="teacherId" placeholder="请输入教师" th:value="${teachingPlan?.teacherId}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">周</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="weeks" placeholder="请输入周" th:value="${teachingPlan?.weeks}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">时间段</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="periodOfTime" placeholder="请输入时间段" th:value="${teachingPlan?.periodOfTime}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开始时间</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="startTime" placeholder="请输入开始时间" th:value="${teachingPlan?.startTime}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="endTime" placeholder="请输入结束时间" th:value="${teachingPlan?.endTime}">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="remark">[[${teachingPlan?.remark}]]</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item alan-finally">
+            <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>

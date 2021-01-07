@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/alan">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body class="alan-layout-page">
+    <div class="layui-card">
+        <div class="layui-card-header alan-card-header">
+            <span><i class="fa fa-bars"></i> 教学计划管理</span>
+            <i class="layui-icon layui-icon-refresh refresh-btn"></i>
+        </div>
+        <div class="layui-card-body">
+            <div class="layui-row alan-card-screen">
+                <div class="pull-left layui-form-pane alan-search-box">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block alan-search-status">
+                            <select class="alan-search-select" name="status" mo:dict="SEARCH_STATUS" mo-selected="${param.status}"></select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">学年</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="academicYear" th:value="${param.academicYear}" placeholder="请输入学年" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">学期</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="semester" th:value="${param.semester}" placeholder="请输入学期" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">院系</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="collegeId" th:value="${param.collegeId}" placeholder="请输入院系" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">专业</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="specialtyId" th:value="${param.specialtyId}" placeholder="请输入专业" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">年级</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="gradeId" th:value="${param.gradeId}" placeholder="请输入年级" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">班级</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="clazzId" th:value="${param.clazzId}" placeholder="请输入班级" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">课程</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="courseId" th:value="${param.courseId}" placeholder="请输入课程" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">教师</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="teacherId" th:value="${param.teacherId}" placeholder="请输入教师" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">周</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="weeks" th:value="${param.weeks}" placeholder="请输入周" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">时间段</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="periodOfTime" th:value="${param.periodOfTime}" placeholder="请输入时间段" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn alan-search-btn">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="pull-right screen-btn-group">
+                    <button class="layui-btn open-popup" data-title="添加教学计划" th:attr="data-url=@{/system/teachingPlan/add}" data-size="auto">
+                        <i class="fa fa-plus"></i> 添加</button>
+                    <div class="btn-group">
+                        <button class="layui-btn">操作<span class="caret"></span></button>
+                        <dl class="layui-nav-child layui-anim layui-anim-upbit">
+                            <dd><a class="ajax-status" th:href="@{/system/teachingPlan/status/ok}">启用</a></dd>
+                            <dd><a class="ajax-status" th:href="@{/system/teachingPlan/status/freezed}">冻结</a></dd>
+                            <dd><a class="ajax-status" th:href="@{/system/teachingPlan/status/delete}">删除</a></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="alan-table-wrap">
+                <table class="layui-table alan-table">
+                    <thead>
+                    <tr>
+                        <th class="alan-table-checkbox">
+                            <label class="alan-checkbox"><input type="checkbox">
+                                <i class="layui-icon layui-icon-ok"></i></label>
+                        </th>
+                        <th>学年</th>
+                        <th>学期</th>
+                        <th>院系</th>
+                        <th>专业</th>
+                        <th>年级</th>
+                        <th>班级</th>
+                        <th>课程</th>
+                        <th>教师</th>
+                        <th>周</th>
+                        <th>时间段</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>数据状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item:${list}">
+                        <td><label class="alan-checkbox"><input type="checkbox" th:value="${item.id}">
+                            <i class="layui-icon layui-icon-ok"></i></label></td>
+                        <td th:text="${item.academicYear}">学年</td>
+                        <td th:text="${item.semester}">学期</td>
+                        <td th:text="${item.collegeId}">院系</td>
+                        <td th:text="${item.specialtyId}">专业</td>
+                        <td th:text="${item.gradeId}">年级</td>
+                        <td th:text="${item.clazzId}">班级</td>
+                        <td th:text="${item.courseId}">课程</td>
+                        <td th:text="${item.teacherId}">教师</td>
+                        <td th:text="${item.weeks}">周</td>
+                        <td th:text="${item.periodOfTime}">时间段</td>
+                        <td th:text="${item.startTime}">开始时间</td>
+                        <td th:text="${item.endTime}">结束时间</td>
+                        <td th:text="${#dicts.dataStatus(item.status)}">数据状态</td>
+                        <td>
+                            <a class="open-popup" data-title="编辑教学计划" th:attr="data-url=@{'/system/teachingPlan/edit/'+${item.id}}" data-size="auto" href="#">编辑</a>
+                            <a class="open-popup" data-title="详细信息" th:attr="data-url=@{'/system/teachingPlan/detail/'+${item.id}}" data-size="800,600" href="#">详细</a>
+                            <a class="ajax-get" data-msg="您是否确认删除" th:href="@{/system/teachingPlan/status/delete(ids=${item.id})}">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="/common/fragment :: page"></div>
+        </div>
+    </div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>

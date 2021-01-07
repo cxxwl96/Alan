@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+    <div class="alan-detail-page">
+        <div class="alan-detail-title">基本信息</div>
+        <table class="layui-table alan-detail-table">
+            <colgroup>
+                <col width="100px"><col>
+                <col width="100px"><col>
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th>主键ID</th>
+                    <td th:text="${teachingPlan.id}"></td>
+                    <th>学年</th>
+                    <td th:text="${teachingPlan.academicYear}"></td>
+                </tr>
+                <tr>
+                    <th>学期</th>
+                    <td th:text="${teachingPlan.semester}"></td>
+                    <th>院系</th>
+                    <td th:text="${teachingPlan.collegeId}"></td>
+                </tr>
+                <tr>
+                    <th>专业</th>
+                    <td th:text="${teachingPlan.specialtyId}"></td>
+                    <th>年级</th>
+                    <td th:text="${teachingPlan.gradeId}"></td>
+                </tr>
+                <tr>
+                    <th>班级</th>
+                    <td th:text="${teachingPlan.clazzId}"></td>
+                    <th>课程</th>
+                    <td th:text="${teachingPlan.courseId}"></td>
+                </tr>
+                <tr>
+                    <th>教师</th>
+                    <td th:text="${teachingPlan.teacherId}"></td>
+                    <th>周</th>
+                    <td th:text="${teachingPlan.weeks}"></td>
+                </tr>
+                <tr>
+                    <th>时间段</th>
+                    <td th:text="${teachingPlan.periodOfTime}"></td>
+                    <th>开始时间</th>
+                    <td th:text="${teachingPlan.startTime}"></td>
+                </tr>
+                <tr>
+                    <th>结束时间</th>
+                    <td th:text="${teachingPlan.endTime}" colspan="3"></td>
+                </tr>
+                <tr>
+                    <th>创建者</th>
+                    <td th:text="${teachingPlan.createBy?.nickname}"></td>
+                    <th>更新者</th>
+                    <td th:text="${teachingPlan.updateBy?.nickname}"></td>
+                </tr>
+                <tr>
+                    <th>创建时间</th>
+                    <td th:text="${#dates.format(teachingPlan.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <th>更新时间</th>
+                    <td th:text="${#dates.format(teachingPlan.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+                <tr>
+                    <th>备注</th>
+                    <td th:text="${teachingPlan.remark}" colspan="3"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>
