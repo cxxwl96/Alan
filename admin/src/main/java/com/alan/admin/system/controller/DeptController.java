@@ -11,9 +11,9 @@ import com.alan.component.actionLog.action.SaveAction;
 import com.alan.component.actionLog.action.StatusAction;
 import com.alan.component.actionLog.annotation.ActionLog;
 import com.alan.component.actionLog.annotation.EntityParam;
-import com.alan.devtools.generate.utils.jAngel.utils.StringUtil;
 import com.alan.modules.system.domain.Dept;
 import com.alan.modules.system.service.DeptService;
+import com.alibaba.fastjson.JSONArray;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,8 +194,9 @@ public class DeptController {
     /**
      * 获取子部门
      *
-     * @param pid
-     * @return
+     * @param pid 父级id
+     *            * @param isSelf 是否包含本身
+     *            * @return 树形结构部门
      */
     @PostMapping("/getChilds")
     @ResponseBody
@@ -205,5 +206,19 @@ public class DeptController {
         }
         List<Dept> depts = deptService.findByPid(pid);
         return ResultVoUtil.success("查询成功", depts);
+    }
+
+    /**
+     * 获取树形结构部门
+     *
+     * @param id     部门id
+     * @param isSelf 是否包含本身
+     * @return 树形结构部门
+     */
+    @GetMapping("/getTree")
+    @ResponseBody
+    public ResultVo getTree(Long id, Boolean isSelf) {
+        JSONArray jsonArray = deptService.getTree(id, isSelf);
+        return ResultVoUtil.success("查询成功", jsonArray);
     }
 }

@@ -2,6 +2,7 @@ package com.alan.modules.system.service;
 
 import com.alan.common.enums.StatusEnum;
 import com.alan.modules.system.domain.Dept;
+import com.alibaba.fastjson.JSONArray;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,9 +86,18 @@ public interface DeptService {
     /**
      * 获取子部门
      *
-     * @param pid
-     * @return
+     * @param pid 父级id
+     * @return 子部门
      */
     List<Dept> findByPid(Long pid);
+
+    /**
+     * 获取树形结构部门
+     *
+     * @param id     部门id
+     * @param isSelf 是否包含本身
+     * @return 树形结构部门
+     */
+    JSONArray getTree(Long id, Boolean isSelf);
 }
 

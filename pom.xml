@@ -135,5 +135,12 @@
             <artifactId>annotations</artifactId>
             <version>${google.findbugs.version}</version>
         </dependency>
+
+        <!--Json-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.73</version>
+        </dependency>
     </dependencies>
 </project>
