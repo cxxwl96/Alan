@@ -4,7 +4,6 @@
     <style>
         .students, .course{
             border: 1px solid #E6E6E6;
-            width: 190px;
             height: 36px;
             border-radius: 2px;
             text-align: left;
@@ -47,15 +46,13 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label required">课程</label>
-            <div class="layui-input-inline">
-                <input type="hidden" name="courseId" th:value="${score?.courseId?.id}" th:names="${score?.courseId?.names}"/>
-                <div class="course"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择课程</div>
-                <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 只能选择一门课程</p>
-            </div>
-        </div>
-        <div class="layui-form-item">
             <div class="layui-inline">
+                <label class="layui-form-label required">课程</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="courseId" th:value="${score?.courseId?.id}" th:names="${score?.courseId?.names}"/>
+                    <div class="course"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择课程</div>
+                    <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 只能选择一门课程</p>
+                </div>
                 <label class="layui-form-label required">分数</label>
                 <div class="layui-input-inline">
                     <input class="layui-input" type="number" name="fraction" placeholder="请输入分数" th:value="${score?.fraction}">
