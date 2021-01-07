@@ -215,7 +215,7 @@ public class DeptController {
      * @param isSelf 是否包含本身
      * @return 树形结构部门
      */
-    @GetMapping("/getTree")
+    @PostMapping("/getTree")
     @ResponseBody
     public ResultVo getTree(Long id, Boolean isSelf) {
         JSONArray jsonArray = deptService.getTree(id, isSelf);
