@@ -18,6 +18,7 @@
     <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/css/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"  media="all">
     <link rel="stylesheet" th:href="@{/lib/layui-v2.3.0/css/layui.css}"  media="all">
+    <link rel="stylesheet" th:href="@{/lib/layui-v2.5.7/css/layui.css}"  media="all">
     <link rel="stylesheet" th:href="@{/css/main.css}"  media="all">
     <th:block th:if="${link != null}">
         <th:block th:replace="${link}"></th:block>
@@ -30,6 +31,7 @@
 <body>
     <th:block th:fragment="script">
         <script th:src="@{/lib/layui-v2.3.0/layui.js}" charset="utf-8"></script>
+        <script th:src="@{/lib/layui-v2.5.7/layui.js}" charset="utf-8"></script>
         <script th:src="@{/js/main.js}" charset="utf-8"></script>
     </th:block>
 </body>

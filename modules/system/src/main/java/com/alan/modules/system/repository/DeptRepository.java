@@ -55,6 +55,7 @@ public interface DeptRepository extends BaseRepository<Dept, Long> {
      * @param pid
      * @return
      */
+    @Query(value = "SELECT * FROM sys_dept WHERE pid = ? ORDER BY sort ASC", nativeQuery = true)
     public List<Dept> findByPid(long pid);
 }
 

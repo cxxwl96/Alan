@@ -7,6 +7,7 @@ import com.alan.common.utils.ResultVoUtil;
 import com.alan.common.utils.StatusUtil;
 import com.alan.common.vo.ResultVo;
 import com.alan.modules.system.domain.TeachingPlan;
+import com.alan.modules.system.service.DeptService;
 import com.alan.modules.system.service.TeachingPlanService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,60 @@ public class TeachingPlanController {
     @Autowired
     private TeachingPlanService teachingPlanService;
 
+    @Autowired
+    private DeptService deptService;
+
+    /**
+     * 跳转首页
+     */
+    @GetMapping("/index")
+    @RequiresPermissions("system:teachingPlan:index")
+    public String toIndex() {
+        return "/system/teachingPlan/index";
+    }
+
+    /**
+     * 跳转到添加页面
+     */
+    @GetMapping("/add")
+    @RequiresPermissions("system:teachingPlan:add")
+    public String toAdd() {
+        return "/system/teachingPlan/add";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * 列表页面
-     */
+     *//*
     @GetMapping("/index")
     @RequiresPermissions("system:teachingPlan:index")
     public String index(Model model, TeachingPlan teachingPlan) {
@@ -51,18 +103,18 @@ public class TeachingPlanController {
         return "/system/teachingPlan/index";
     }
 
-    /**
+    *//**
      * 跳转到添加页面
-     */
+     *//*
     @GetMapping("/add")
     @RequiresPermissions("system:teachingPlan:add")
     public String toAdd() {
         return "/system/teachingPlan/add";
     }
 
-    /**
+    *//**
      * 跳转到编辑页面
-     */
+     *//*
     @GetMapping("/edit/{id}")
     @RequiresPermissions("system:teachingPlan:edit")
     public String toEdit(@PathVariable("id") TeachingPlan teachingPlan, Model model) {
@@ -70,10 +122,10 @@ public class TeachingPlanController {
         return "/system/teachingPlan/add";
     }
 
-    /**
+    *//**
      * 保存添加/修改的数据
      * @param valid 验证对象
-     */
+     *//*
     @PostMapping("/save")
     @RequiresPermissions({"system:teachingPlan:add", "system:teachingPlan:edit"})
     @ResponseBody
@@ -89,9 +141,9 @@ public class TeachingPlanController {
         return ResultVoUtil.SAVE_SUCCESS;
     }
 
-    /**
+    *//**
      * 跳转到详细页面
-     */
+     *//*
     @GetMapping("/detail/{id}")
     @RequiresPermissions("system:teachingPlan:detail")
     public String toDetail(@PathVariable("id") TeachingPlan teachingPlan, Model model) {
@@ -99,9 +151,9 @@ public class TeachingPlanController {
         return "/system/teachingPlan/detail";
     }
 
-    /**
+    *//**
      * 设置一条或者多条数据的状态
-     */
+     *//*
     @RequestMapping("/status/{param}")
     @RequiresPermissions("system:teachingPlan:status")
     @ResponseBody
@@ -115,5 +167,5 @@ public class TeachingPlanController {
         } else {
             return ResultVoUtil.error(statusEnum.getMessage() + "失败，请重新操作");
         }
-    }
+    }*/
 }

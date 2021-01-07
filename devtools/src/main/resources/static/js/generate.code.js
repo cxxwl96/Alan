@@ -115,7 +115,7 @@ layui.use(['element', 'form', 'layer', 'formSelects'], function () {
             $(field).css("color", "#666666");
         }
         if(field !== this){
-            $(this).css("background-color", "#5FB878");
+            $(this).css("background-color", "#7d32a7");
             $(this).css("color", "#FFFFFF");
             field = this;
         }else{

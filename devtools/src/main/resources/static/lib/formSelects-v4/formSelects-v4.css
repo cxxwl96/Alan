@@ -26,8 +26,8 @@ select[xm-select]{display: none !important;}
 .xm-unselect {-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none}
 
 .xm-form-checkbox {position: relative;display: block;vertical-align: middle;cursor: pointer;font-size: 0;-webkit-transition: .1s linear;transition: .1s linear;box-sizing: border-box;height: auto!important;line-height: normal!important;border: none!important;margin-right: 0;padding-right: 0;background: 0 0;}
-.xm-form-checkbox > i {color: #FFF; font-size: 16px; width: 16px; height: 16px; position: absolute; top: 9px; border: 1px solid #5FB878; border-radius: 3px; z-index: 2;}
-.xm-form-checkbox:hover > i {border-color: #5FB878;}
+.xm-form-checkbox > i {color: #FFF; font-size: 16px; width: 16px; height: 16px; position: absolute; top: 9px; border: 1px solid #7d32a7; border-radius: 3px; z-index: 2;}
+.xm-form-checkbox:hover > i {border-color: #7d32a7;}
 .xm-form-checkbox > span{display: block;position: relative;padding: 0 15px 0 30px;height: 100%;font-size: 14px;border-radius: 2px 0 0 2px;background-color: #d2d2d2;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;background: 0 0;color: #666;line-height: 36px;}
 
 .xm-select-parent dl{width: 100%;}
@@ -71,8 +71,8 @@ div[xm-select-skin] .xm-select-title div.xm-select-label>span i:hover {opacity: 
 div[xm-select-skin=default] .xm-select-title div.xm-select-label>span {background-color: #F0F2F5;color: #909399;border: 1px solid #F0F2F5}
 div[xm-select-skin=default] .xm-select-title div.xm-select-label>span i {color: #C0C4CC}
 div[xm-select-skin=default] .xm-select-title div.xm-select-label>span i:before {content: '\e60b'; font-size: 16px; margin-left: -3px;}
-div[xm-select-skin=default] dl dd:not(.xm-dis-disabled) i {border-color: #5FB878}
-div[xm-select-skin=default] dl dd.xm-select-this:not(.xm-dis-disabled) i {color: #5FB878}
+div[xm-select-skin=default] dl dd:not(.xm-dis-disabled) i {border-color: #7d32a7}
+div[xm-select-skin=default] dl dd.xm-select-this:not(.xm-dis-disabled) i {color: #7d32a7}
 div[xm-select-skin=default].xm-form-selected .xm-select,div[xm-select-skin=default].xm-form-selected .xm-select:hover {border-color: #C0C4CC!important}
 div[xm-select-skin=primary] .xm-select-title div.xm-select-label>span {background-color: #7d32a7;color: #FFF;border: 1px solid #7d32a7}
 div[xm-select-skin=primary] .xm-select-title div.xm-select-label>span i {background-color: #7d32a7; color: #FFF}
@@ -117,8 +117,8 @@ div[xm-select-skin=danger].xm-form-selected .xm-select,div[xm-select-skin=danger
 .xm-select-linkage-hide {display: none;}
 .xm-select-linkage-show {display: block;}
 
-div[xm-select-skin='default'] .xm-select-linkage li.xm-select-this span {border-left-color: #5FB878;color: #5FB878;}
-div[xm-select-skin='default'] .xm-select-linkage-group li:hover {border-left-color: #5FB878;}
+div[xm-select-skin='default'] .xm-select-linkage li.xm-select-this span {border-left-color: #7d32a7;color: #7d32a7;}
+div[xm-select-skin='default'] .xm-select-linkage-group li:hover {border-left-color: #7d32a7;}
 div[xm-select-skin='primary'] .xm-select-linkage li.xm-select-this span {border-left-color: #7d32a7;color: #7d32a7;}
 div[xm-select-skin='primary'] .xm-select-linkage-group li:hover {border-left-color: #7d32a7;}
 div[xm-select-skin='normal'] .xm-select-linkage li.xm-select-this span {border-left-color: #7d32a7;color: #7d32a7;}
