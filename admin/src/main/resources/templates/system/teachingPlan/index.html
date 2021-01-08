@@ -2,154 +2,342 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:mo="https://gitee.com/aun/alan">
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <link rel="stylesheet" th:href="@{/lib/Timetable/css/Timetables.min.css}"  media="all">
+    <style>
+        .layui-tree-txt{
+            moz-user-select: -moz-none;
+            -moz-user-select: none;
+            -o-user-select:none;
+            -khtml-user-select:none;
+            -webkit-user-select:none;
+            -ms-user-select:none;
+            user-select:none;
+        }
+    </style>
 </head>
 <body class="alan-layout-page">
-    <div class="layui-card">
-        <div class="layui-card-header alan-card-header">
-            <span><i class="fa fa-bars"></i> 教学计划管理</span>
-            <i class="layui-icon layui-icon-refresh refresh-btn"></i>
-        </div>
-        <div class="layui-card-body">
-            <div class="layui-row alan-card-screen">
-                <div class="pull-left layui-form-pane alan-search-box">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">状态</label>
-                        <div class="layui-input-block alan-search-status">
-                            <select class="alan-search-select" name="status" mo:dict="SEARCH_STATUS" mo-selected="${param.status}"></select>
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">学年</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="academicYear" th:value="${param.academicYear}" placeholder="请输入学年" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">学期</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="semester" th:value="${param.semester}" placeholder="请输入学期" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">院系</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="collegeId" th:value="${param.collegeId}" placeholder="请输入院系" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">专业</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="specialtyId" th:value="${param.specialtyId}" placeholder="请输入专业" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">年级</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="gradeId" th:value="${param.gradeId}" placeholder="请输入年级" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">班级</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="clazzId" th:value="${param.clazzId}" placeholder="请输入班级" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">课程</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="courseId" th:value="${param.courseId}" placeholder="请输入课程" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">教师</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="teacherId" th:value="${param.teacherId}" placeholder="请输入教师" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">周</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="weeks" th:value="${param.weeks}" placeholder="请输入周" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">时间段</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="periodOfTime" th:value="${param.periodOfTime}" placeholder="请输入时间段" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <button class="layui-btn alan-search-btn">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
+<div class="layui-card">
+    <div class="layui-card-header alan-card-header">
+        <span><i class="fa fa-bars"></i> 教学计划管理</span>
+        <i class="layui-icon layui-icon-refresh refresh-btn"></i>
+    </div>
+    <div class="layui-card-body layui-row">
+        <div class="layui-col-lg2 layui-col-sm3">
+            <div class="layui-card alan-nav-tree">
+                <div class="layui-card-header">部门结构</div>
+                <div class="layui-card-body">
+                    <div id="dept"></div>
                 </div>
+            </div>
+        </div>
+        <div class="layui-col-lg10 layui-col-sm9">
+            <div class="layui-row alan-card-screen">
+                <form class="layui-form" lay-filter="teachingPlanParam" action="#">
+                    <div class="pull-left layui-form-pane alan-search-box">
+                        <!-- 院系 -->
+                        <input type="hidden" name="collegeId" value="">
+                        <!-- 专业 -->
+                        <input type="hidden" name="specialtyId" value="">
+                        <!-- 年级 -->
+                        <input type="hidden" name="gradeId" value="">
+                        <!-- 班级 -->
+                        <input type="hidden" name="clazzId" value="">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">学年</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text" name="academicYear" id="academicYear" autocomplete="off" readonly>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">学期</label>
+                            <div class="layui-input-block">
+                                <select name="semester">
+                                    <option value="1">上学期</option>
+                                    <option value="2">下学期</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <a class="layui-btn">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
                 <div class="pull-right screen-btn-group">
-                    <button class="layui-btn open-popup" data-title="添加教学计划" th:attr="data-url=@{/system/teachingPlan/add}" data-size="auto">
-                        <i class="fa fa-plus"></i> 添加</button>
-                    <div class="btn-group">
-                        <button class="layui-btn">操作<span class="caret"></span></button>
+                    <button class="layui-btn alan-add">
+                        <i class="fa fa-plus"></i>
+                        添加
+                    </button>
+                    <div class="btn-group" shiro:hasPermission="system:teachingPlan:status">
+                        <button class="layui-btn">操作
+                            <span class="caret"></span>
+                        </button>
                         <dl class="layui-nav-child layui-anim layui-anim-upbit">
-                            <dd><a class="ajax-status" th:href="@{/system/teachingPlan/status/ok}">启用</a></dd>
-                            <dd><a class="ajax-status" th:href="@{/system/teachingPlan/status/freezed}">冻结</a></dd>
-                            <dd><a class="ajax-status" th:href="@{/system/teachingPlan/status/delete}">删除</a></dd>
+                            <dd>
+                                <a class="ajax-status" th:href="@{/system/teachingPlan/status/ok}">启用</a>
+                            </dd>
+                            <dd>
+                                <a class="ajax-status" th:href="@{/system/teachingPlan/status/freezed}">冻结</a>
+                            </dd>
+                            <dd>
+                                <a class="ajax-status" th:href="@{/system/teachingPlan/status/delete}">删除</a>
+                            </dd>
                         </dl>
                     </div>
                 </div>
             </div>
             <div class="alan-table-wrap">
-                <table class="layui-table alan-table">
-                    <thead>
-                    <tr>
-                        <th class="alan-table-checkbox">
-                            <label class="alan-checkbox"><input type="checkbox">
-                                <i class="layui-icon layui-icon-ok"></i></label>
-                        </th>
-                        <th>学年</th>
-                        <th>学期</th>
-                        <th>院系</th>
-                        <th>专业</th>
-                        <th>年级</th>
-                        <th>班级</th>
-                        <th>课程</th>
-                        <th>教师</th>
-                        <th>周</th>
-                        <th>时间段</th>
-                        <th>开始时间</th>
-                        <th>结束时间</th>
-                        <th>数据状态</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="item:${list}">
-                        <td><label class="alan-checkbox"><input type="checkbox" th:value="${item.id}">
-                            <i class="layui-icon layui-icon-ok"></i></label></td>
-                        <td th:text="${item.academicYear}">学年</td>
-                        <td th:text="${item.semester}">学期</td>
-                        <td th:text="${item.collegeId}">院系</td>
-                        <td th:text="${item.specialtyId}">专业</td>
-                        <td th:text="${item.gradeId}">年级</td>
-                        <td th:text="${item.clazzId}">班级</td>
-                        <td th:text="${item.courseId}">课程</td>
-                        <td th:text="${item.teacherId}">教师</td>
-                        <td th:text="${item.weeks}">周</td>
-                        <td th:text="${item.periodOfTime}">时间段</td>
-                        <td th:text="${item.startTime}">开始时间</td>
-                        <td th:text="${item.endTime}">结束时间</td>
-                        <td th:text="${#dicts.dataStatus(item.status)}">数据状态</td>
-                        <td>
-                            <a class="open-popup" data-title="编辑教学计划" th:attr="data-url=@{'/system/teachingPlan/edit/'+${item.id}}" data-size="auto" href="#">编辑</a>
-                            <a class="open-popup" data-title="详细信息" th:attr="data-url=@{'/system/teachingPlan/detail/'+${item.id}}" data-size="800,600" href="#">详细</a>
-                            <a class="ajax-get" data-msg="您是否确认删除" th:href="@{/system/teachingPlan/status/delete(ids=${item.id})}">删除</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <!-- 请在<span style="color:red;">部门结构</span>中选择<span style="color:red;">班级</span>，选择<span style="color:red;">学年</span>以及<span style="color:red;">学期</span>进行教学计划管理。 -->
+                <div id="coursesTable"></div>
             </div>
-            <div th:replace="/common/fragment :: page"></div>
         </div>
     </div>
+</div>
 <script th:replace="/common/template :: script"></script>
+<script th:src="@{/lib/Timetable/js/Timetables.min.js}" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'upload', 'laydate', "tree"], function(){
+        var $ = layui.jquery;
+        var form = layui.form;
+        var upload = layui.upload;
+        var laydate = layui.laydate;
+        var tree = layui.tree;
+        // 学年
+        laydate.render({
+            elem: '#academicYear' //指定元素
+            ,type: 'year'
+            ,trigger: 'click' //采用click弹出
+            ,format: 'yyyy年'
+            ,max: 0
+            ,value: new Date() // 初始值
+        });
+        // 渲染部门
+        var renderTree = function(){
+            var treeEl = "#dept";
+            var url = "/system/dept/getTree"
+            var param = {"id": 1, "isSelf": false};
+            var jsonArray = [];
+            var index = layer.load();
+            /* TODO */
+            var result = {"code":200,"msg":"查询成功","data":[{"children":[{"children":[{"children":[{"children":[],"dept":{"id":81,"title":"一班","pid":80,"pids":"[0],[1],[6],[7],[80]","level":5,"sort":1,"remark":"","createDate":"2020-12-27T22:01:10.000+0800","updateDate":"2020-12-27T22:01:10.000+0800","status":1}},{"children":[],"dept":{"id":82,"title":"二班","pid":80,"pids":"[0],[1],[6],[7],[80]","level":5,"sort":2,"remark":"","createDate":"2020-12-27T22:01:31.000+0800","updateDate":"2020-12-27T22:01:31.000+0800","status":1}}],"dept":{"id":80,"title":"2019级","pid":7,"pids":"[0],[1],[6],[7]","level":4,"sort":3,"remark":"","createDate":"2020-12-27T21:59:54.000+0800","updateDate":"2020-12-27T21:59:54.000+0800","status":1}}],"dept":{"id":7,"title":"汉语言文学","pid":6,"pids":"[0],[1],[6]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:01:51.000+0800","updateDate":"2020-12-27T14:04:16.000+0800","status":1}},{"children":[{"children":[{"children":[],"dept":{"id":84,"title":"一班","pid":83,"pids":"[0],[1],[6],[8],[83]","level":5,"sort":1,"remark":"","createDate":"2021-01-04T13:14:34.000+0800","updateDate":"2021-01-04T13:14:34.000+0800","status":1}}],"dept":{"id":83,"title":"2019级","pid":8,"pids":"[0],[1],[6],[8]","level":4,"sort":1,"remark":"","createDate":"2020-12-27T22:02:18.000+0800","updateDate":"2021-01-04T13:14:06.000+0800","status":1}}],"dept":{"id":8,"title":"播音与主持艺术","pid":6,"pids":"[0],[1],[6]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:01:59.000+0800","updateDate":"2020-12-27T14:01:59.000+0800","status":1}}],"dept":{"id":6,"title":"人文与传媒学院","pid":1,"pids":"[0],[1]","level":2,"sort":1,"remark":null,"createDate":"2020-12-27T14:01:31.000+0800","updateDate":"2020-12-27T14:20:50.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":10,"title":"历史学","pid":9,"pids":"[0],[1],[9]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:02:24.000+0800","updateDate":"2020-12-27T14:04:25.000+0800","status":1}},{"children":[],"dept":{"id":11,"title":"旅游管理","pid":9,"pids":"[0],[1],[9]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:02:32.000+0800","updateDate":"2020-12-27T14:02:32.000+0800","status":1}},{"children":[],"dept":{"id":12,"title":"旅游管理（旅游规划和景区管理方向）","pid":9,"pids":"[0],[1],[9]","level":3,"sort":3,"remark":null,"createDate":"2020-12-27T14:02:39.000+0800","updateDate":"2020-12-27T14:02:39.000+0800","status":1}},{"children":[],"dept":{"id":13,"title":"酒店管理","pid":9,"pids":"[0],[1],[9]","level":3,"sort":4,"remark":null,"createDate":"2020-12-27T14:02:50.000+0800","updateDate":"2020-12-27T14:02:50.000+0800","status":1}}],"dept":{"id":9,"title":"历史文化与旅游管理学院","pid":1,"pids":"[0],[1]","level":2,"sort":2,"remark":null,"createDate":"2020-12-27T14:02:10.000+0800","updateDate":"2020-12-27T14:02:10.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":15,"title":"计算机科学与技术","pid":14,"pids":"[0],[1],[14]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:03:11.000+0800","updateDate":"2020-12-27T14:03:11.000+0800","status":1}},{"children":[],"dept":{"id":16,"title":"通信工程","pid":14,"pids":"[0],[1],[14]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:03:18.000+0800","updateDate":"2020-12-27T14:04:42.000+0800","status":1}},{"children":[],"dept":{"id":17,"title":"网络工程","pid":14,"pids":"[0],[1],[14]","level":3,"sort":3,"remark":null,"createDate":"2020-12-27T14:03:24.000+0800","updateDate":"2020-12-27T14:03:24.000+0800","status":1}},{"children":[],"dept":{"id":18,"title":"物联网工程","pid":14,"pids":"[0],[1],[14]","level":3,"sort":4,"remark":null,"createDate":"2020-12-27T14:03:29.000+0800","updateDate":"2020-12-27T14:04:50.000+0800","status":1}}],"dept":{"id":14,"title":"计算机与信息科学学院","pid":1,"pids":"[0],[1]","level":2,"sort":3,"remark":null,"createDate":"2020-12-27T14:03:05.000+0800","updateDate":"2020-12-27T14:03:05.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":20,"title":"思想政治教育","pid":19,"pids":"[0],[1],[19]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:03:43.000+0800","updateDate":"2020-12-27T14:04:59.000+0800","status":1}},{"children":[],"dept":{"id":21,"title":"社会工作","pid":19,"pids":"[0],[1],[19]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:03:48.000+0800","updateDate":"2020-12-27T14:03:48.000+0800","status":1}}],"dept":{"id":19,"title":"政治经济与管理学院","pid":1,"pids":"[0],[1]","level":2,"sort":4,"remark":null,"createDate":"2020-12-27T14:03:37.000+0800","updateDate":"2020-12-27T14:03:37.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":23,"title":"学前教育","pid":22,"pids":"[0],[1],[22]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:04:07.000+0800","updateDate":"2020-12-27T14:04:07.000+0800","status":1}},{"children":[],"dept":{"id":24,"title":"小学教育","pid":22,"pids":"[0],[1],[22]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:05:23.000+0800","updateDate":"2020-12-27T14:05:23.000+0800","status":1}}],"dept":{"id":22,"title":"初等教育学院","pid":1,"pids":"[0],[1]","level":2,"sort":5,"remark":null,"createDate":"2020-12-27T14:03:57.000+0800","updateDate":"2020-12-27T14:03:57.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":26,"title":"体育教育","pid":25,"pids":"[0],[1],[25]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:05:37.000+0800","updateDate":"2020-12-27T14:05:37.000+0800","status":1}},{"children":[],"dept":{"id":27,"title":"社会体育指导与管理","pid":25,"pids":"[0],[1],[25]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:05:44.000+0800","updateDate":"2020-12-27T14:05:44.000+0800","status":1}}],"dept":{"id":25,"title":"体育学院","pid":1,"pids":"[0],[1]","level":2,"sort":6,"remark":null,"createDate":"2020-12-27T14:05:30.000+0800","updateDate":"2020-12-27T14:05:30.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":29,"title":"音乐学","pid":28,"pids":"[0],[1],[28]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:06:03.000+0800","updateDate":"2020-12-27T14:06:03.000+0800","status":1}},{"children":[],"dept":{"id":30,"title":"音乐表演","pid":28,"pids":"[0],[1],[28]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:06:08.000+0800","updateDate":"2020-12-27T14:06:08.000+0800","status":1}},{"children":[],"dept":{"id":31,"title":"舞蹈编导","pid":28,"pids":"[0],[1],[28]","level":3,"sort":3,"remark":null,"createDate":"2020-12-27T14:06:17.000+0800","updateDate":"2020-12-27T14:06:17.000+0800","status":1}}],"dept":{"id":28,"title":"音乐与舞蹈学院","pid":1,"pids":"[0],[1]","level":2,"sort":7,"remark":null,"createDate":"2020-12-27T14:05:56.000+0800","updateDate":"2020-12-27T14:05:56.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":33,"title":"物理学","pid":32,"pids":"[0],[1],[32]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:06:28.000+0800","updateDate":"2020-12-27T14:06:28.000+0800","status":1}},{"children":[],"dept":{"id":34,"title":"科学教育","pid":32,"pids":"[0],[1],[32]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:06:34.000+0800","updateDate":"2020-12-27T14:06:34.000+0800","status":1}},{"children":[],"dept":{"id":35,"title":"电子信息科学与技术","pid":32,"pids":"[0],[1],[32]","level":3,"sort":3,"remark":null,"createDate":"2020-12-27T14:06:39.000+0800","updateDate":"2020-12-27T14:06:39.000+0800","status":1}},{"children":[],"dept":{"id":36,"title":"材料物理","pid":32,"pids":"[0],[1],[32]","level":3,"sort":4,"remark":null,"createDate":"2020-12-27T14:06:44.000+0800","updateDate":"2020-12-27T14:06:44.000+0800","status":1}}],"dept":{"id":32,"title":"物理与机电工程学院","pid":1,"pids":"[0],[1]","level":2,"sort":8,"remark":null,"createDate":"2020-12-27T14:06:23.000+0800","updateDate":"2020-12-27T14:06:23.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":38,"title":"数学与应用数学","pid":37,"pids":"[0],[1],[37]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:07:00.000+0800","updateDate":"2020-12-27T14:07:00.000+0800","status":1}},{"children":[],"dept":{"id":39,"title":"统计学","pid":37,"pids":"[0],[1],[37]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:07:06.000+0800","updateDate":"2020-12-27T14:07:25.000+0800","status":1}}],"dept":{"id":37,"title":"数学与计算科学学院","pid":1,"pids":"[0],[1]","level":2,"sort":9,"remark":null,"createDate":"2020-12-27T14:06:53.000+0800","updateDate":"2020-12-27T14:06:53.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":41,"title":"应用化学","pid":40,"pids":"[0],[1],[40]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:07:37.000+0800","updateDate":"2020-12-27T14:07:37.000+0800","status":1}},{"children":[],"dept":{"id":42,"title":"化学","pid":40,"pids":"[0],[1],[40]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:07:45.000+0800","updateDate":"2020-12-27T14:07:45.000+0800","status":1}},{"children":[],"dept":{"id":43,"title":"材料化学","pid":40,"pids":"[0],[1],[40]","level":3,"sort":3,"remark":null,"createDate":"2020-12-27T14:07:52.000+0800","updateDate":"2020-12-27T14:07:52.000+0800","status":1}}],"dept":{"id":40,"title":"化学化工学院","pid":1,"pids":"[0],[1]","level":2,"sort":10,"remark":null,"createDate":"2020-12-27T14:07:31.000+0800","updateDate":"2020-12-27T14:07:31.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":45,"title":"应用心理学","pid":44,"pids":"[0],[1],[44]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:08:12.000+0800","updateDate":"2020-12-27T14:08:12.000+0800","status":1}},{"children":[],"dept":{"id":46,"title":"教育学","pid":44,"pids":"[0],[1],[44]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:08:17.000+0800","updateDate":"2020-12-27T14:08:17.000+0800","status":1}}],"dept":{"id":44,"title":"教育科学学院","pid":1,"pids":"[0],[1]","level":2,"sort":11,"remark":null,"createDate":"2020-12-27T14:08:06.000+0800","updateDate":"2020-12-27T14:08:06.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":48,"title":"生物科学","pid":47,"pids":"[0],[1],[47]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:14:59.000+0800","updateDate":"2020-12-27T14:14:59.000+0800","status":1}},{"children":[],"dept":{"id":49,"title":"植物生物技术","pid":47,"pids":"[0],[1],[47]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:15:04.000+0800","updateDate":"2020-12-27T14:15:04.000+0800","status":1}}],"dept":{"id":47,"title":"生命科学学院","pid":1,"pids":"[0],[1]","level":2,"sort":12,"remark":null,"createDate":"2020-12-27T14:14:52.000+0800","updateDate":"2020-12-27T14:14:52.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":51,"title":"美术学","pid":50,"pids":"[0],[1],[50]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:15:19.000+0800","updateDate":"2020-12-27T14:15:19.000+0800","status":1}},{"children":[],"dept":{"id":52,"title":"视觉传达","pid":50,"pids":"[0],[1],[50]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:15:24.000+0800","updateDate":"2020-12-27T14:15:24.000+0800","status":1}}],"dept":{"id":50,"title":"美术学院","pid":1,"pids":"[0],[1]","level":2,"sort":13,"remark":null,"createDate":"2020-12-27T14:15:13.000+0800","updateDate":"2020-12-27T14:15:13.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":55,"title":"英语","pid":53,"pids":"[0],[1],[53]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:16:00.000+0800","updateDate":"2020-12-27T14:16:00.000+0800","status":1}},{"children":[],"dept":{"id":56,"title":"翻译","pid":53,"pids":"[0],[1],[53]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:16:07.000+0800","updateDate":"2020-12-27T14:16:07.000+0800","status":1}},{"children":[],"dept":{"id":57,"title":"汉语国际教育","pid":53,"pids":"[0],[1],[53]","level":3,"sort":3,"remark":null,"createDate":"2020-12-27T14:16:15.000+0800","updateDate":"2020-12-27T14:16:15.000+0800","status":1}}],"dept":{"id":53,"title":"外国语学院","pid":1,"pids":"[0],[1]","level":2,"sort":14,"remark":null,"createDate":"2020-12-27T14:15:42.000+0800","updateDate":"2020-12-27T14:15:42.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":58,"title":"电气工程与自动化","pid":54,"pids":"[0],[1],[54]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:16:41.000+0800","updateDate":"2020-12-27T14:16:41.000+0800","status":1}},{"children":[],"dept":{"id":59,"title":"土木工程","pid":54,"pids":"[0],[1],[54]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:16:49.000+0800","updateDate":"2020-12-27T14:16:49.000+0800","status":1}},{"children":[],"dept":{"id":60,"title":"机械设计制造及其自动化","pid":54,"pids":"[0],[1],[54]","level":3,"sort":3,"remark":null,"createDate":"2020-12-27T14:16:55.000+0800","updateDate":"2020-12-27T14:16:55.000+0800","status":1}},{"children":[],"dept":{"id":61,"title":"工程造价","pid":54,"pids":"[0],[1],[54]","level":3,"sort":4,"remark":null,"createDate":"2020-12-27T14:17:00.000+0800","updateDate":"2020-12-27T14:17:00.000+0800","status":1}}],"dept":{"id":54,"title":"工学院","pid":1,"pids":"[0],[1]","level":2,"sort":15,"remark":null,"createDate":"2020-12-27T14:15:50.000+0800","updateDate":"2020-12-27T14:16:35.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":63,"title":"植物科学与技术","pid":62,"pids":"[0],[1],[62]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:17:16.000+0800","updateDate":"2020-12-27T14:17:16.000+0800","status":1}},{"children":[],"dept":{"id":64,"title":"食品营养与检验教育","pid":62,"pids":"[0],[1],[62]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:17:24.000+0800","updateDate":"2020-12-27T14:17:24.000+0800","status":1}}],"dept":{"id":62,"title":"农业科技学院","pid":1,"pids":"[0],[1]","level":2,"sort":16,"remark":null,"createDate":"2020-12-27T14:17:10.000+0800","updateDate":"2020-12-27T14:17:10.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":66,"title":"环境科学与工程","pid":65,"pids":"[0],[1],[65]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:17:39.000+0800","updateDate":"2020-12-27T14:17:39.000+0800","status":1}},{"children":[],"dept":{"id":67,"title":"应用化学","pid":65,"pids":"[0],[1],[65]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:17:45.000+0800","updateDate":"2020-12-27T14:17:45.000+0800","status":1}}],"dept":{"id":65,"title":"资源与环境学院","pid":1,"pids":"[0],[1]","level":2,"sort":17,"remark":null,"createDate":"2020-12-27T14:17:33.000+0800","updateDate":"2020-12-27T14:17:33.000+0800","status":1}},{"children":[{"children":[],"dept":{"id":69,"title":"社会工作专业","pid":68,"pids":"[0],[1],[68]","level":3,"sort":1,"remark":null,"createDate":"2020-12-27T14:18:01.000+0800","updateDate":"2020-12-27T14:18:01.000+0800","status":1}},{"children":[],"dept":{"id":70,"title":"物流管理","pid":68,"pids":"[0],[1],[68]","level":3,"sort":2,"remark":null,"createDate":"2020-12-27T14:18:06.000+0800","updateDate":"2020-12-27T14:18:06.000+0800","status":1}}],"dept":{"id":68,"title":"公共管理学院","pid":1,"pids":"[0],[1]","level":2,"sort":18,"remark":null,"createDate":"2020-12-27T14:17:55.000+0800","updateDate":"2020-12-27T14:17:55.000+0800","status":1}}]};
+            //渲染
+            var dept = tree.render({
+                elem: treeEl  // 绑定元素
+                ,accordion: false // 关闭手风琴模式
+                ,click: function(obj){ // 节点点击事件
+                    treeNodeClick(obj, treeEl);
+                }
+                ,data: getTreeCallback(result.data)
+            });
+            layer.close(index);
+            /**
+             $.post(url, param, function(result){
+				layer.close(index);
+				if(result && result.data && result.data.length>0){
+					//渲染
+					var dept = tree.render({
+						elem: treeEl  // 绑定元素
+						,accordion: false // 关闭手风琴模式
+						,click: function(obj){ // 节点点击事件
+							treeNodeClick(obj, treeEl);
+						}
+						,data: getTreeCallback(result.data)
+					});
+				}
+			});
+             */
+        }
+        // 递归处理树
+        var getTreeCallback = function(treeData){
+            var jsonArray = [];
+            for(var i=0; i<treeData.length; i++){
+                var jsonObject = {};
+                var children = getTreeCallback(treeData[i].children);
+                jsonObject = treeData[i].dept;
+                jsonObject.children = children;
+                jsonArray.push(jsonObject);
+            }
+            return jsonArray;
+        }
+        // 节点点击事件
+        var treeNodeClick = function(obj, treeEl){
+            // 得到当前点击的节点数据
+            var _data = obj.data;
+            // 得到当前节点元素
+            var _el = obj.elem;
+            // 是否是班级
+            if(_data.level===5){
+                // 清除所有样式
+                $(treeEl).find(".layui-tree-set .layui-tree-main").css({
+                    "border": "none",
+                    "background-color": "rgba(0,0,0,0)"
+                })
+                // 设置选中样式
+                $(_el).find(".layui-tree-main").css({
+                    "border": "1px solid #7D32A7",
+                    "background-color": "#7d32a742"
+                })
+                // 得到pids
+                var pids = _data.pids.replace(/\[/g,"").replace(/\]/g,"").split(",");
+                // 设置隐藏框值
+                $("input[name='collegeId']").val(pids[2]);
+                $("input[name='specialtyId']").val(pids[3]);
+                $("input[name='gradeId']").val(pids[4]);
+                $("input[name='clazzId']").val(_data.id);
+            }
+        }
+        renderTree();
+    });
+</script>
+<script>
+    layui.use(['form'], function(){
+        var $ = layui.jquery;
+        var courseList = [
+            ['大学英语(Ⅳ)@10203sadfasdf', '大学英语(Ⅳ)@10203sadfasdf', '', '', '', '', '毛概@14208', '毛概@14208', '', '', '', '选修'],
+            ['', '', '信号与系统@11302', '信号与系统@11302', '模拟电子技术基础@16204', '模拟电子技术基础@16204', '', '', '', '', '', ''],
+            ['大学体育(Ⅳ)', '大学体育(Ⅳ)', '形势与政策(Ⅳ)@15208', '形势与政策(Ⅳ)@15208', '', '', '电路、信号与系统实验', '电路、信号与系统实验', '', '', '', ''],
+            ['', '', '', '', '电装实习@11301', '电装实习@11301', '', '', '', '大学体育', '大学体育', ''],
+            ['', '', '数据结构与算法分析', '数据结构与算法分析', '', '', '', '', '信号与系统', '信号与系统', '', ''],
+        ];
+        var week = window.innerWidth > 360 ? ['周一', '周二', '周三', '周四', '周五', '周六', '周日'] : ['一', '二', '三', '四', '五', '六', '日'];
+        var day = new Date().getDay();
+        var courseType = [
+            [{
+                index: '1',
+                name: '8:30-9:15'
+            }, 1],
+            [{
+                index: '2',
+                name: '9:25-10:10'
+            }, 1],
+            [{
+                index: '3',
+                name: '10:30-11:15'
+            }, 1],
+            [{
+                index: '4',
+                name: '11:25-12:10'
+            }, 1],
+            [{
+                index: '',
+                name: ''
+            }, 1],
+            [{
+                index: '5',
+                name: '14:00-14:45'
+            }, 1],
+            [{
+                index: '6',
+                name: '14:55-15:40'
+            }, 1],
+            [{
+                index: '7',
+                name: '15:50-16:35'
+            }, 1],
+            [{
+                index: '8',
+                name: '16:35-17:20'
+            }, 1],
+            [{
+                index: '',
+                name: ''
+            }, 1],
+            [{
+                index: '9',
+                name: '19:00-19:45'
+            }, 1],
+            [{
+                index: '10',
+                name: '19:55-20:40'
+            }, 1],
+            [{
+                index: '11',
+                name: '20:50-21:35'
+            }, 1]
+        ];
+        // 实例化(初始化课表)
+        var Timetable = new Timetables({
+            el: '#coursesTable',
+            timetables: courseList,
+            week: week,
+            timetableType: courseType,
+            highlightWeek: day,
+            gridOnClick: function(e) {
+                alert(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
+                console.log(e);
+            },
+            styles: {
+                Gheight: 50
+            }
+        });
+        // 事件
+        $(".Courses-content ul li").on("mouseon", function(){
+            var _this = $(this);
+            console.log("sdfs")
+        })
+    });
+
+</script>
+<script>
+    layui.use(['form'], function(){
+        var $ = layui.jquery;
+        var form = layui.form;
+
+
+
+        // 获取参数
+        var getParam = function(){
+            var formData = form.val("teachingPlanParam");
+            if(formData.clazzId==null || formData.clazzId==""){
+                layer.msg('请在<span style="color:red;">部门结构</span>中选择<span style="color:red;">班级</span>', {icon: 2});
+                return null;
+            }
+            if(formData.academicYear==null || formData.academicYear==""){
+                layer.msg('请选择<span style="color:red;">学年</span>', {icon: 2});
+                return null;
+            }
+            if(formData.semester==null || formData.semester==""){
+                layer.msg('请选择<span style="color:red;">学期</span>', {icon: 2});
+                return null;
+            }
+            return formData;
+        }
+        // 序列化参数为路径参数
+        var serializeParam = function(data) {
+            if(!data){
+                return "";
+            }
+            var param = "";
+            for(var key in data){
+                param += key + "=" + data[key] + "&";
+            }
+            return param.substring(0, param.length-1);
+        }
+        // 监听添加事件
+        $(".alan-add").click(function(){
+            var _this = $(this);
+            var _dataUrl = '/system/teachingPlan/add';
+            var formData = getParam();
+            if(!formData){
+                return;
+            }
+            _dataUrl += "?" + serializeParam(formData);
+            // 打开添加
+            layer.open({
+                title: '添加教学计划',
+                type: 2,
+                area: ['80%', '80%'],
+                shadeClose: true,
+                maxmin: true,
+                content: _dataUrl,
+                zIndex: layer.zIndex,
+                success: function(layero, index){
+                    layer.setTop(layero);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

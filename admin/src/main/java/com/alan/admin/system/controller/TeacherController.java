@@ -219,4 +219,32 @@ public class TeacherController {
         model.addAttribute("teacher", teacher);
         return "/system/teacher/me";
     }
+
+    /**
+     * 跳转到show页面
+     */
+    @GetMapping("/show")
+    @RequiresPermissions("system:teacher:show")
+    public String show(Model model, Teacher teacher, String college) {
+        // 院系
+        if (college != null) {
+            Dept dept = new Dept();
+            dept.setId(Long.valueOf(college));
+            teacher.setCollegeId(dept);
+        }
+        // 创建匹配器，进行动态查询匹配
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("names", match -> match.contains())
+                .withMatcher("phone", match -> match.contains())
+                .withMatcher("email", match -> match.contains());
+
+        // 获取数据列表
+        Example<Teacher> example = Example.of(teacher, matcher);
+        Page<Teacher> list = teacherService.getPageList(example);
+
+        // 封装数据
+        model.addAttribute("list", list.getContent());
+        model.addAttribute("page", list);
+        return "/system/teacher/show";
+    }
 }

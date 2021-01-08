@@ -2,83 +2,74 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:mo="https://gitee.com/aun/alan">
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+        .teacher, .course{
+            border: 1px solid #E6E6E6;
+            height: 36px;
+            border-radius: 2px;
+            text-align: left;
+            color: -internal-light-dark(black, white);
+            line-height: 36px;
+            padding-left: 10px;
+            transition: all .3s;
+            transition-property: all;
+            transition-duration: 0.3s;
+            transition-timing-function: ease;
+            transition-delay: 0s;
+            -webkit-transition: all .3s;
+        }
+        .teacher:hover, .course:hover{
+            border: 1px solid #7D32A7;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div class="layui-form alan-compile">
+<div class="layui-form alan-compile">
     <form th:action="@{/system/teachingPlan/save}" class="layui-form-pane alan-form-pane">
         <input type="hidden" name="id" th:if="${teachingPlan}" th:value="${teachingPlan.id}">
+        <!-- 院系 -->
+        <input type="text" name="collegeId" th:value="${teachingPlan?.collegeId?.id}">
+        <!-- 专业 -->
+        <input type="text" name="specialtyId" th:value="${teachingPlan?.specialtyId?.id}">
+        <!-- 年级 -->
+        <input type="text" name="gradeId" th:value="${teachingPlan?.gradeId?.id}">
+        <!-- 班级 -->
+        <input type="text" name="clazzId" th:value="${teachingPlan?.clazzId?.id}">
+        <!-- 学年 -->
+        <input type="text" name="academicYear" th:value="${teachingPlan?.academicYear}">
+        <!-- 学期 -->
+        <input type="text" name="semester" th:value="${teachingPlan?.semester}">
+
         <div class="layui-form-item">
-            <label class="layui-form-label">学年</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="academicYear" placeholder="请输入学年" th:value="${teachingPlan?.academicYear}">
+            <div class="layui-inline">
+                <label class="layui-form-label required">课程</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="courseId" th:value="${teachingPlan?.courseId?.id}" th:names="${teachingPlan?.courseId?.names}"/>
+                    <div class="course"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择课程</div>
+                    <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 只能选择一门课程</p>
+                </div>
+                <label class="layui-form-label required">授课教师</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="teacherId" th:value="${teachingPlan?.teacherId?.id}" th:names="${teachingPlan?.teacherId?.names}" th:no="${teachingPlan?.teacherId?.no}"/>
+                    <div class="teacher"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择授课教师</div>
+                    <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 只能选择一名授课教师</p>
+                </div>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">学期</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="semester" placeholder="请输入学期" th:value="${teachingPlan?.semester}">
+            <div class="layui-inline">
+                <label class="layui-form-label">周几上课？</label>
+                <div class="layui-input-inline">
+                    <select name="weeks" mo:dict="WEEKS" mo-selected="${teachingPlan?.weeks}" mo-empty="" lay-verify="weeks"></select>
+                </div>
+                <label class="layui-form-label">第几节课？</label>
+                <div class="layui-input-inline">
+                    <select name="periodOfTime" mo:dict="PERIOD_OF_TIME" mo-selected="${teachingPlan?.periodOfTime}" mo-empty="" lay-verify="periodOfTime"></select>
+                </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">院系</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="collegeId" placeholder="请输入院系" th:value="${teachingPlan?.collegeId}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">专业</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="specialtyId" placeholder="请输入专业" th:value="${teachingPlan?.specialtyId}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">年级</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="gradeId" placeholder="请输入年级" th:value="${teachingPlan?.gradeId}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">班级</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="clazzId" placeholder="请输入班级" th:value="${teachingPlan?.clazzId}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">课程</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="courseId" placeholder="请输入课程" th:value="${teachingPlan?.courseId}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">教师</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="teacherId" placeholder="请输入教师" th:value="${teachingPlan?.teacherId}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">周</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="weeks" placeholder="请输入周" th:value="${teachingPlan?.weeks}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">时间段</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="periodOfTime" placeholder="请输入时间段" th:value="${teachingPlan?.periodOfTime}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">开始时间</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="startTime" placeholder="请输入开始时间" th:value="${teachingPlan?.startTime}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">结束时间</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="endTime" placeholder="请输入结束时间" th:value="${teachingPlan?.endTime}">
-            </div>
-        </div>
+
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
@@ -92,5 +83,107 @@
     </form>
 </div>
 <script th:replace="/common/template :: script"></script>
+<script>
+    layui.use(['form', 'upload', 'laydate'], function () {
+        var $ = layui.jquery;
+        var form = layui.form;
+        var upload = layui.upload;
+        var laydate = layui.laydate;
+        // 课程
+        var _courseIdEL = $("input[name='courseId']");
+        var _courseNames = _courseIdEL.attr('names');
+        var _courseId = _courseIdEL.val();
+        if(_courseNames && _courseId){
+            var _this = $(".course");
+            _this.html('');
+            var _html = '《'+_courseNames+'》';
+            _this.html(_html);
+        }
+        $(".course").click(function(){
+            var _this = $(this);
+            var _dataUrl = '/system/course/show';
+            layer.open({
+                title: '课程信息',
+                type: 2,
+                area: ['80%', '80%'],
+                maxmin: true,
+                content: _dataUrl,
+                btn: ['确定', '取消'],
+                zIndex: layer.zIndex,
+                success: function(layero, index){
+                    layer.setTop(layero);
+                },
+                yes: function (index, layero) {
+                    var body = layer.getChildFrame('body', index);  //此处我理解的是加载目标页面的内容
+                    var checkedEl = body.find("input[type='checkbox'][checked]");
+                    if(checkedEl.length>1){
+                        layer.close(index);//这块是点击确定关闭这个弹出层
+                        layer.msg('只能选择一门课程', {icon: 2});
+                        setTimeout(function(){
+
+                        }, 1500)
+                        return;
+                    }
+                    // 处理课程id
+                    if(checkedEl.length==1){
+                        _this.html('');
+                        var _html = '《'+checkedEl[0].name+'》';
+                        _this.html(_html);
+                        $("input[name='courseId']").val(checkedEl[0].id);　　//查到目标页面的内容赋给当前页面元素
+                    }
+                    layer.close(index);//这块是点击确定关闭这个弹出层
+                }
+            });
+        });
+        // 教师
+        var _teacherIdEL = $("input[name='teacherId']");
+        var _teacherNames = _teacherIdEL.attr('names');
+        var _teacherNo = _teacherIdEL.attr('no');
+        var _teacherId = _teacherIdEL.val();
+        if(_teacherNames && _teacherId && _teacherNo){
+            var _this = $(".course");
+            _this.html('');
+            var _html = _teacherNames+'('+_teacherNo+')';;
+            _this.html(_html);
+        }
+        $(".teacher").click(function(){
+            var _this = $(this);
+            var _dataUrl = '/system/teacher/show';
+            layer.open({
+                title: '教师信息',
+                type: 2,
+                area: ['80%', '80%'],
+                maxmin: true,
+                content: _dataUrl,
+                btn: ['确定', '取消'],
+                zIndex: layer.zIndex,
+                success: function(layero, index){
+                    layer.setTop(layero);
+                },
+                yes: function (index, layero) {
+
+                    var body = layer.getChildFrame('body', index);  //此处我理解的是加载目标页面的内容
+                    var checkedEl = body.find("input[type='checkbox'][checked]");
+                    if(checkedEl.length>1){
+                        layer.close(index);//这块是点击确定关闭这个弹出层
+                        layer.msg('只能选择一名授课教师', {icon: 2});
+                        setTimeout(function(){
+
+                        }, 1500)
+                        return;
+                    }
+                    // 处理教师id
+                    if(checkedEl.length==1){
+                        _this.html('');
+                        var _html = checkedEl[0].name+'('+checkedEl[0].attributes['no'].value+')';;
+                        _this.html(_html);
+                        $("input[name='teacherId']").val(checkedEl[0].id);　　//查到目标页面的内容赋给当前页面元素
+                    }
+                    layer.close(index);//这块是点击确定关闭这个弹出层
+                }
+            });
+        });
+    })
+</script>
 </body>
 </html>

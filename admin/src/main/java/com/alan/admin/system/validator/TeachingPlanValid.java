@@ -31,12 +31,8 @@ public class TeachingPlanValid implements Serializable {
     private Course courseId;
     @NotNull(message = "教师不能为空")
     private Teacher teacherId;
-    @NotNull(message = "周不能为空")
+    @NotNull(message = "周几上课？")
     private Byte weeks;
-    @NotNull(message = "时间段不能为空")
+    @NotNull(message = "第几节课？")
     private Byte periodOfTime;
-    @NotEmpty(message = "开始时间不能为空")
-    private String startTime;
-    @NotEmpty(message = "结束时间不能为空")
-    private String endTime;
 }

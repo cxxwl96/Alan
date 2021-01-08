@@ -143,7 +143,7 @@
                         _this.html('');
                         var _html = ``;
                         for(var i=0; i<studentIds.length; i++){
-                            _html += _stuNames+'('+_stuNo+')';
+                            _html += studentIds[0].name+'('+studentIds[0].stuNo+')';
                         }
                         _this.html(_html);
                         $("input[name='studentId']").val(studentIds[0].id);　　//查到目标页面的内容赋给当前页面元素

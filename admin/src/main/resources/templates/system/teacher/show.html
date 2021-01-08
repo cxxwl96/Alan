@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/alan">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body class="alan-layout-page">
+<div class="layui-card">
+    <div class="layui-card-header alan-card-header">
+        <span><i class="fa fa-bars"></i> 教师信息管理</span>
+        <i class="layui-icon layui-icon-refresh refresh-btn"></i>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-row alan-card-screen">
+            <div class="pull-left layui-form-pane alan-search-box">
+                <div class="layui-inline">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-block alan-search-status">
+                        <select class="alan-search-select" name="status" mo:dict="SEARCH_STATUS" mo-selected="${param.status}"></select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">院系</label>
+                    <div class="layui-input-block">
+                        <select class="layui-input select-dept" name="college" th:value="${param.college}" data-url="/system/dept/getChilds" parend-id="1"></select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">教职工号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="no" th:value="${param.no}" placeholder="请输入教职工号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">教师名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="names" th:value="${param.names}" placeholder="请输入教师名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">职称</label>
+                    <div class="layui-input-block">
+                        <select class="layui-input" name="professionalTitle" mo:dict="PROFESSIONAL_TITLE" mo-selected="${teacher?.professionalTitle}" mo-empty="" lay-verify="professionalTitle"></select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">学位</label>
+                    <div class="layui-input-block">
+                        <select class="layui-input" name="academicDegree" mo:dict="ACADEMIC_DEGREE" mo-selected="${teacher?.academicDegree}" mo-empty="" lay-verify="academicDegree"></select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">联系电话</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="phone" th:value="${param.phone}" placeholder="请输入联系电话" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">电子信箱</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="email" th:value="${param.email}" placeholder="请输入电子信箱" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">证件号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="idNo" th:value="${param.idNo}" placeholder="请输入证件号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn alan-search-btn">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <!--<div class="pull-right screen-btn-group">
+                <button class="layui-btn open-popup" data-title="添加教师信息" th:attr="data-url=@{/system/teacher/add}" data-size="634,600">
+                    <i class="fa fa-plus"></i> 添加</button>
+                <div class="btn-group">
+                    <button class="layui-btn">操作<span class="caret"></span></button>
+                    <dl class="layui-nav-child layui-anim layui-anim-upbit">
+                        <dd><a class="ajax-status" th:href="@{/system/teacher/status/ok}">启用</a></dd>
+                        <dd><a class="ajax-status" th:href="@{/system/teacher/status/freezed}">冻结</a></dd>
+                        <dd><a class="ajax-status" th:href="@{/system/teacher/status/delete}">删除</a></dd>
+                    </dl>
+                </div>
+            </div>-->
+        </div>
+        <div class="alan-table-wrap">
+            <table class="layui-table alan-table">
+                <thead>
+                <tr>
+                    <th class="alan-table-checkbox">
+                        <label class="alan-checkbox"><input type="checkbox">
+                            <i class="layui-icon layui-icon-ok"></i></label>
+                    </th>
+                    <th>照片</th>
+                    <th>院系</th>
+                    <th>教职工号</th>
+                    <th>教师名称</th>
+                    <th>性别</th>
+                    <th>职称</th>
+                    <th>学位</th>
+                    <th>数据状态</th>
+                    <!--<th>操作</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item:${list}">
+                    <td><label class="alan-checkbox"><input type="checkbox" th:id="${item.id}" th:name="${item.names}" th:no="${item.no}">
+                        <i class="layui-icon layui-icon-ok"></i></label></td>
+                    <td><img th:src="${item.photo}" height="100px"></td>
+                    <td th:text="${item.collegeId?.title}">院系</td>
+                    <td th:text="${item.no}">教职工号</td>
+                    <td th:text="${item.names}">教师名称</td>
+                    <td th:text="${#dicts.keyValue('USER_SEX', item.sex)}">性别</td>
+                    <td th:text="${#dicts.keyValue('PROFESSIONAL_TITLE', item.professionalTitle)}">职称</td>
+                    <td th:text="${#dicts.keyValue('ACADEMIC_DEGREE', item.academicDegree)}">学位</td>
+                    <td th:text="${#dicts.dataStatus(item.status)}">数据状态</td>
+                    <!--<td>
+                        <a class="open-popup" data-title="编辑教师信息" th:attr="data-url=@{'/system/teacher/edit/'+${item.id}}" data-size="634,600" href="#">编辑</a>
+                        <a class="open-popup" data-title="详细信息" th:attr="data-url=@{'/system/teacher/detail/'+${item.id}}" data-size="800,600" href="#">详细</a>
+                        <a class="ajax-get" data-msg="您是否确认删除" th:href="@{/system/teacher/status/delete(ids=${item.id})}">删除</a>
+                    </td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:replace="/common/fragment :: page"></div>
+    </div>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script>
+    layui.use(['tree', 'util'], function(){
+        var $ = layui.jquery;
+        $(".select-dept").css("min-width", "100px");
+        // 院系
+        var selectDept = function(el){
+            var _this = $(el);
+            var _name = _this.attr('name');
+            var _dataUrl = _this.attr('data-url');
+            var _parendId = null;
+            var _val = _this.attr('value');
+            if(_name=='college'){
+                _parendId = _this.attr('parend-id');
+            }
+            if(_parendId==null){
+                return;
+            }
+            $.post(_dataUrl, {'pid': _parendId}, function(data, status){
+                var _data = data.data;
+                if(data && data.code==200){
+                    _this.html('<option></option>');
+                    _this.attr('parend-id', _parendId);
+                    for(var i=0; i<_data.length; i++){
+                        _this.append('<option value='+_data[i].id+'>'+_data[i].title+'</option>')
+                    }
+                    if(_val){
+                        _this.find("option[value='"+_val+"']").attr("selected",true);
+                    }
+                }else{
+                    layer.msg(data.msg, {icon: 2});
+                }
+            });
+        }
+        selectDept(".select-dept");
+        // show
+        $("input[type='checkbox']").click(function(){
+            if($(this).prop('checked')){
+                $(this).attr('checked','checked');
+            }
+        });
+    })
+</script>
+</body>
+</html>

@@ -1,25 +1,21 @@
 package com.alan.admin.system.controller;
 
 import com.alan.admin.system.validator.TeachingPlanValid;
-import com.alan.common.enums.StatusEnum;
 import com.alan.common.utils.EntityBeanUtil;
 import com.alan.common.utils.ResultVoUtil;
-import com.alan.common.utils.StatusUtil;
 import com.alan.common.vo.ResultVo;
 import com.alan.modules.system.domain.TeachingPlan;
 import com.alan.modules.system.service.DeptService;
 import com.alan.modules.system.service.TeachingPlanService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author cxxwl96@sina.com
@@ -49,38 +45,30 @@ public class TeachingPlanController {
      */
     @GetMapping("/add")
     @RequiresPermissions("system:teachingPlan:add")
-    public String toAdd() {
+    public String toAdd(Model model, TeachingPlan teachingPlan) {
+        model.addAttribute("teachingPlan", teachingPlan);
         return "/system/teachingPlan/add";
     }
 
+    /**
+     * 保存添加/修改的数据
+     *
+     * @param valid 验证对象
+     */
+    @PostMapping("/save")
+    @RequiresPermissions({"system:teachingPlan:add", "system:teachingPlan:edit"})
+    @ResponseBody
+    public ResultVo save(@Validated TeachingPlanValid valid, TeachingPlan teachingPlan) {
+        // 复制保留无需修改的数据
+        if (teachingPlan.getId() != null) {
+            TeachingPlan beTeachingPlan = teachingPlanService.getById(teachingPlan.getId());
+            EntityBeanUtil.copyProperties(beTeachingPlan, teachingPlan);
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // 保存数据
+        teachingPlanService.save(teachingPlan);
+        return ResultVoUtil.SAVE_SUCCESS;
+    }
 
 
     /**
