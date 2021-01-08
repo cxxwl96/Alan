@@ -4,7 +4,7 @@
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
     <link rel="stylesheet" th:href="@{/lib/Timetable/css/Timetables.min.css}"  media="all">
     <style>
-        .layui-tree-txt{
+        .layui-tree-txt, #coursesTable{
             moz-user-select: -moz-none;
             -moz-user-select: none;
             -o-user-select:none;
@@ -42,6 +42,12 @@
                         <input type="hidden" name="gradeId" value="">
                         <!-- 班级 -->
                         <input type="hidden" name="clazzId" value="">
+                        <!-- 周几上课 -->
+                        <input type="hidden" name="weeks" value="">
+                        <!-- 第几节课 -->
+                        <input type="hidden" name="periodOfTime" value="">
+                        <!-- 日程选中类型 -->
+                        <input type="hidden" name="selectType" value="">
                         <div class="layui-inline">
                             <label class="layui-form-label">学年</label>
                             <div class="layui-input-block">
@@ -194,11 +200,13 @@
     layui.use(['form'], function(){
         var $ = layui.jquery;
         var courseList = [
-            ['大学英语(Ⅳ)@10203sadfasdf', '大学英语(Ⅳ)@10203sadfasdf', '', '', '', '', '毛概@14208', '毛概@14208', '', '', '', '选修'],
-            ['', '', '信号与系统@11302', '信号与系统@11302', '模拟电子技术基础@16204', '模拟电子技术基础@16204', '', '', '', '', '', ''],
-            ['大学体育(Ⅳ)', '大学体育(Ⅳ)', '形势与政策(Ⅳ)@15208', '形势与政策(Ⅳ)@15208', '', '', '电路、信号与系统实验', '电路、信号与系统实验', '', '', '', ''],
-            ['', '', '', '', '电装实习@11301', '电装实习@11301', '', '', '', '大学体育', '大学体育', ''],
-            ['', '', '数据结构与算法分析', '数据结构与算法分析', '', '', '', '', '信号与系统', '信号与系统', '', ''],
+            ['大学英语(Ⅳ)@10203sadfasdf', '大学英语(Ⅳ)@10203sadfasdf', '', '', '', '', '毛概@14208', '毛概@14208', '', '', '', '选修', ''],
+            ['', '', '信号与系统@11302', '信号与系统@11302', '', '模拟电子技术基础@16204', '', '', '', '', '', '', ''],
+            ['大学体育(Ⅳ)', '大学体育(Ⅳ)', '形势与政策(Ⅳ)@15208', '形势与政策(Ⅳ)@15208', '', '', '电路、信号与系统实验', '电路、信号与系统实验', '', '', '', '', ''],
+            ['', '', '', '', '', '电装实习@11301', '', '', '', '大学体育', '大学体育', '', ''],
+            ['', '', '数据结构与算法分析', '数据结构与算法分析', '', '', '', '', '信号与系统', '信号与系统', '', '', ''],
+            ['','','','','','','','','','','','',''],
+            ['','','','','','','','','','','','','']
         ];
         var week = window.innerWidth > 360 ? ['周一', '周二', '周三', '周四', '周五', '周六', '周日'] : ['一', '二', '三', '四', '五', '六', '日'];
         var day = new Date().getDay();
@@ -256,26 +264,64 @@
                 name: '20:50-21:35'
             }, 1]
         ];
-        // 实例化(初始化课表)
-        var Timetable = new Timetables({
+        var option = {
             el: '#coursesTable',
             timetables: courseList,
             week: week,
             timetableType: courseType,
             highlightWeek: day,
-            gridOnClick: function(e) {
-                alert(e.name + '  ' + e.week + ', 第' + e.index + '节课, 课长' + e.length + '节');
-                console.log(e);
+            gridOnClick: function(info, el) {
+                var _this = $(el);
+                var yes = _this.hasClass("grid-active");
+                if(yes && _this.find("span").html()==""){ // 选中未占用的格子
+                    console.log("未占用");
+                    $("input[name='selectType']").val("未占用");
+                } else if(yes && _this.find("span").html()!="") { // 选中占用的格子
+                    console.log("占用");
+                    $("input[name='selectType']").val("占用");
+                }
+                // 设置周几、第几节课
+                console.log(info);
+                if(info.index!=5 && info.index!=10){
+                    $("input[name='weeks']").val(getWeeks(info.week));
+                    $("input[name='periodOfTime']").val(info.index);
+                } else {
+                    $("input[name='weeks']").val("");
+                    $("input[name='periodOfTime']").val("");
+                    $("input[name='selectType']").val("");
+                }
+
             },
             styles: {
                 Gheight: 50
             }
-        });
-        // 事件
-        $(".Courses-content ul li").on("mouseon", function(){
-            var _this = $(this);
-            console.log("sdfs")
-        })
+        };
+        var getWeeks = function(week){
+            if(!week){
+                return "";
+            }
+            week = week.replace(/周/g, '');
+            switch(week){
+                case '一':
+                    return 1;
+                case '二':
+                    return 2;
+                case '三':
+                    return 3;
+                case '四':
+                    return 4;
+                case '五':
+                    return 5;
+                case '六':
+                    return 6;
+                case '日':
+                    return 7;
+            }
+            return "";
+        }
+        // 实例化(初始化课表)
+        var Timetable = new Timetables(option);
+
     });
 
 </script>
@@ -289,16 +335,20 @@
         // 获取参数
         var getParam = function(){
             var formData = form.val("teachingPlanParam");
-            if(formData.clazzId==null || formData.clazzId==""){
+            if(!formData.clazzId){
                 layer.msg('请在<span style="color:red;">部门结构</span>中选择<span style="color:red;">班级</span>', {icon: 2});
                 return null;
             }
-            if(formData.academicYear==null || formData.academicYear==""){
+            if(!formData.academicYear){
                 layer.msg('请选择<span style="color:red;">学年</span>', {icon: 2});
                 return null;
             }
-            if(formData.semester==null || formData.semester==""){
+            if(!formData.semester){
                 layer.msg('请选择<span style="color:red;">学期</span>', {icon: 2});
+                return null;
+            }
+            if(!formData.selectType){
+                layer.msg('请选择<span style="color:red;">日程</span>', {icon: 2});
                 return null;
             }
             return formData;
@@ -320,6 +370,10 @@
             var _dataUrl = '/system/teachingPlan/add';
             var formData = getParam();
             if(!formData){
+                return;
+            }
+            if(form.val("teachingPlanParam").selectType=="占用"){
+                layer.msg('请选择空白日程', {icon: 2});
                 return;
             }
             _dataUrl += "?" + serializeParam(formData);
