@@ -29,43 +29,35 @@
     <form th:action="@{/system/teachingPlan/save}" class="layui-form-pane alan-form-pane">
         <input type="hidden" name="id" th:if="${teachingPlan}" th:value="${teachingPlan.id}">
         <!-- 院系 -->
-        <input type="text" name="collegeId" th:value="${teachingPlan?.collegeId?.id}">
+        <input type="hidden" name="collegeId" th:value="${teachingPlan?.collegeId?.id}">
         <!-- 专业 -->
-        <input type="text" name="specialtyId" th:value="${teachingPlan?.specialtyId?.id}">
+        <input type="hidden" name="specialtyId" th:value="${teachingPlan?.specialtyId?.id}">
         <!-- 年级 -->
-        <input type="text" name="gradeId" th:value="${teachingPlan?.gradeId?.id}">
+        <input type="hidden" name="gradeId" th:value="${teachingPlan?.gradeId?.id}">
         <!-- 班级 -->
-        <input type="text" name="clazzId" th:value="${teachingPlan?.clazzId?.id}">
+        <input type="hidden" name="clazzId" th:value="${teachingPlan?.clazzId?.id}">
+        <!-- 周几上课 -->
+        <input type="hidden" name="weeks" th:value="${teachingPlan?.weeks}">
+        <!-- 第几节课 -->
+        <input type="hidden" name="periodOfTime" th:value="${teachingPlan?.periodOfTime}">
         <!-- 学年 -->
-        <input type="text" name="academicYear" th:value="${teachingPlan?.academicYear}">
+        <input type="hidden" name="academicYear" th:value="${teachingPlan?.academicYear}">
         <!-- 学期 -->
-        <input type="text" name="semester" th:value="${teachingPlan?.semester}">
+        <input type="hidden" name="semester" th:value="${teachingPlan?.semester}">
 
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label required">课程</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="courseId" th:value="${teachingPlan?.courseId?.id}" th:names="${teachingPlan?.courseId?.names}"/>
+                    <input type="hidden" name="courseId" th:value="${teachingPlan?.courseId?.id}" th:names="${teachingPlan?.courseId?.names}"/>
                     <div class="course"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择课程</div>
                     <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 只能选择一门课程</p>
                 </div>
                 <label class="layui-form-label required">授课教师</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="teacherId" th:value="${teachingPlan?.teacherId?.id}" th:names="${teachingPlan?.teacherId?.names}" th:no="${teachingPlan?.teacherId?.no}"/>
+                    <input type="hidden" name="teacherId" th:value="${teachingPlan?.teacherId?.id}" th:names="${teachingPlan?.teacherId?.names}" th:no="${teachingPlan?.teacherId?.no}"/>
                     <div class="teacher"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择授课教师</div>
                     <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 只能选择一名授课教师</p>
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">周几上课？</label>
-                <div class="layui-input-inline">
-                    <select name="weeks" mo:dict="WEEKS" mo-selected="${teachingPlan?.weeks}" mo-empty="" lay-verify="weeks"></select>
-                </div>
-                <label class="layui-form-label">第几节课？</label>
-                <div class="layui-input-inline">
-                    <select name="periodOfTime" mo:dict="PERIOD_OF_TIME" mo-selected="${teachingPlan?.periodOfTime}" mo-empty="" lay-verify="periodOfTime"></select>
                 </div>
             </div>
         </div>
