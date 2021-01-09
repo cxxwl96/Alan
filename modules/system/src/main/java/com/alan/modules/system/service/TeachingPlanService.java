@@ -16,6 +16,7 @@ public interface TeachingPlanService {
 
     /**
      * 获取分页列表数据
+     *
      * @param example 查询实例
      * @return 返回分页数据
      */
@@ -23,12 +24,14 @@ public interface TeachingPlanService {
 
     /**
      * 根据ID查询数据
+     *
      * @param id 主键ID
      */
     TeachingPlan getById(Long id);
 
     /**
      * 保存数据
+     *
      * @param teachingPlan 实体对象
      */
     TeachingPlan save(TeachingPlan teachingPlan);
@@ -38,4 +41,12 @@ public interface TeachingPlanService {
      */
     @Transactional
     Boolean updateStatus(StatusEnum statusEnum, List<Long> idList);
+
+    /**
+     * 查询列表
+     *
+     * @param example
+     * @return
+     */
+    List<TeachingPlan> getList(Example<TeachingPlan> example);
 }

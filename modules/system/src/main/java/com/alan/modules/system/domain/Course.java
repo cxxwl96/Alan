@@ -5,6 +5,7 @@ import com.alan.common.utils.StatusUtil;
 import com.alan.component.excel.annotation.Excel;
 import com.alan.modules.system.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -35,13 +36,14 @@ import javax.persistence.Table;
  */
 @Data
 @Entity
-@Table(name="sims_course")
+@Table(name = "sims_course")
 @EntityListeners(AuditingEntityListener.class)
 @Where(clause = StatusUtil.NOT_DELETE)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class Course implements Serializable {
     // 主键ID
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     // 课程类型
     @Excel(value = "课程类型", dict = "COURSE_TYPE")
@@ -62,16 +64,16 @@ public class Course implements Serializable {
     private Date updateDate;
     // 创建者
     @CreatedBy
-    @ManyToOne(fetch=FetchType.LAZY)
-    @NotFound(action=NotFoundAction.IGNORE)
-    @JoinColumn(name="create_by")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "create_by")
     @JsonIgnore
     private User createBy;
     // 更新者
     @LastModifiedBy
-    @ManyToOne(fetch=FetchType.LAZY)
-    @NotFound(action=NotFoundAction.IGNORE)
-    @JoinColumn(name="update_by")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "update_by")
     @JsonIgnore
     private User updateBy;
     // 数据状态

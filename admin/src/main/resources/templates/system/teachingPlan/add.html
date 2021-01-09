@@ -59,6 +59,10 @@
                     <div class="teacher"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择授课教师</div>
                     <p style="color: #7D32A7; line-height: 2rem;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 只能选择一名授课教师</p>
                 </div>
+                <label class="layui-form-label required">上课地点</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" name="address" th:value="${teachingPlan?.address}">
+                </div>
             </div>
         </div>
 

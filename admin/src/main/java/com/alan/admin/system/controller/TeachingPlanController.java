@@ -4,11 +4,17 @@ import com.alan.admin.system.validator.TeachingPlanValid;
 import com.alan.common.utils.EntityBeanUtil;
 import com.alan.common.utils.ResultVoUtil;
 import com.alan.common.vo.ResultVo;
+import com.alan.modules.system.domain.Dept;
 import com.alan.modules.system.domain.TeachingPlan;
 import com.alan.modules.system.service.DeptService;
 import com.alan.modules.system.service.TeachingPlanService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +22,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * @author cxxwl96@sina.com
@@ -68,6 +76,50 @@ public class TeachingPlanController {
         // 保存数据
         teachingPlanService.save(teachingPlan);
         return ResultVoUtil.SAVE_SUCCESS;
+    }
+
+    /**
+     * 查询
+     *
+     * @param teachingPlan 查询对象
+     */
+    @PostMapping("/getList")
+    @RequiresPermissions({"system:teachingPlan:getList"})
+    @ResponseBody
+    public ResultVo getList(TeachingPlan teachingPlan) {
+        // 院系
+        if (teachingPlan.getCollegeId() != null && teachingPlan.getCollegeId().getId() != null) {
+            Dept dept = new Dept();
+            dept.setId(teachingPlan.getCollegeId().getId());
+            teachingPlan.setCollegeId(dept);
+        }
+        // 专业
+        if (teachingPlan.getSpecialtyId() != null && teachingPlan.getSpecialtyId().getId() != null) {
+            Dept dept = new Dept();
+            dept.setId(teachingPlan.getSpecialtyId().getId());
+            teachingPlan.setSpecialtyId(dept);
+        }
+        // 年级
+        if (teachingPlan.getGradeId() != null && teachingPlan.getGradeId().getId() != null) {
+            Dept dept = new Dept();
+            dept.setId(teachingPlan.getGradeId().getId());
+            teachingPlan.setGradeId(dept);
+        }
+        // 班级
+        if (teachingPlan.getClazzId() != null && teachingPlan.getClazzId().getId() != null) {
+            Dept dept = new Dept();
+            dept.setId(teachingPlan.getClazzId().getId());
+            teachingPlan.setClazzId(dept);
+        }
+
+        // 创建匹配器，进行动态查询匹配
+        ExampleMatcher matcher = ExampleMatcher.matching();
+
+        // 获取数据列表
+        Example<TeachingPlan> example = Example.of(teachingPlan, matcher);
+        List<TeachingPlan> list = teachingPlanService.getList(example);
+
+        return ResultVoUtil.success("查询成功", list);
     }
 
 

@@ -5,6 +5,7 @@ import com.alan.common.utils.StatusUtil;
 import com.alan.component.excel.annotation.Excel;
 import com.alan.modules.system.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -34,13 +35,14 @@ import javax.persistence.Table;
  */
 @Data
 @Entity
-@Table(name="sims_teacher")
+@Table(name = "sims_teacher")
 @EntityListeners(AuditingEntityListener.class)
 @Where(clause = StatusUtil.NOT_DELETE)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class Teacher implements Serializable {
     // 主键ID
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -74,7 +76,7 @@ public class Teacher implements Serializable {
     @Excel(value = "性别", dict = "USER_SEX")
     private Byte sex;
     // 出生年月
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date birthday;
     // 身份证类型
     @Excel(value = "身份证类型", dict = "ID_TYPE")
@@ -85,7 +87,7 @@ public class Teacher implements Serializable {
     @Excel(value = "民族", dict = "NATION")
     private Byte nation;
     // 入校年月
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date enrollmentTime;
     // 补充信息
     private String additionalInfo;
@@ -99,16 +101,16 @@ public class Teacher implements Serializable {
     private Date updateDate;
     // 创建者
     @CreatedBy
-    @ManyToOne(fetch=FetchType.LAZY)
-    @NotFound(action=NotFoundAction.IGNORE)
-    @JoinColumn(name="create_by")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "create_by")
     @JsonIgnore
     private User createBy;
     // 更新者
     @LastModifiedBy
-    @ManyToOne(fetch=FetchType.LAZY)
-    @NotFound(action=NotFoundAction.IGNORE)
-    @JoinColumn(name="update_by")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "update_by")
     @JsonIgnore
     private User updateBy;
     // 数据状态

@@ -16,7 +16,7 @@
     </style>
 </head>
 <body class="alan-layout-page">
-<div class="layui-card">
+<div class="layui-card" style="height: calc(100vh - 36px);margin: 0px;">
     <div class="layui-card-header alan-card-header">
         <span><i class="fa fa-bars"></i> 教学计划管理</span>
         <i class="layui-icon layui-icon-refresh refresh-btn"></i>
@@ -24,7 +24,7 @@
     <div class="layui-card-body layui-row">
         <div class="layui-col-lg2 layui-col-sm3">
             <div class="layui-card alan-nav-tree">
-                <div class="layui-card-header">部门结构</div>
+                <div class="layui-card-header"><i class="fa fa-sitemap"></i> 部门结构</div>
                 <div class="layui-card-body">
                     <div id="dept"></div>
                 </div>
@@ -35,19 +35,19 @@
                 <form class="layui-form" lay-filter="teachingPlanParam" action="#">
                     <div class="pull-left layui-form-pane alan-search-box">
                         <!-- 院系 -->
-                        <input type="hidden" name="collegeId" value="">
+                        <input type="hidden" name="collegeId" value="" id="collegeId">
                         <!-- 专业 -->
-                        <input type="hidden" name="specialtyId" value="">
+                        <input type="hidden" name="specialtyId" value="" id="specialtyId">
                         <!-- 年级 -->
-                        <input type="hidden" name="gradeId" value="">
+                        <input type="hidden" name="gradeId" value="" id="gradeId">
                         <!-- 班级 -->
-                        <input type="hidden" name="clazzId" value="">
+                        <input type="hidden" name="clazzId" value="" id="clazzId">
                         <!-- 周几上课 -->
-                        <input type="hidden" name="weeks" value="">
+                        <input type="hidden" name="weeks" value="" id="weeks">
                         <!-- 第几节课 -->
-                        <input type="hidden" name="periodOfTime" value="">
-                        <!-- 日程选中类型 -->
-                        <input type="hidden" name="selectType" value="">
+                        <input type="hidden" name="periodOfTime" value="" id="periodOfTime">
+                        <!-- 教学选中类型 -->
+                        <input type="hidden" name="selectType" value="" id="selectType">
                         <div class="layui-inline">
                             <label class="layui-form-label">学年</label>
                             <div class="layui-input-block">
@@ -57,14 +57,14 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">学期</label>
                             <div class="layui-input-block">
-                                <select name="semester">
+                                <select name="semester" id="semester" lay-filter="semester">
                                     <option value="1">上学期</option>
                                     <option value="2">下学期</option>
                                 </select>
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <a class="layui-btn">
+                            <a class="layui-btn alan-refresh">
                                 <i class="fa fa-refresh"></i>
                             </a>
                         </div>
@@ -75,27 +75,20 @@
                         <i class="fa fa-plus"></i>
                         添加
                     </button>
-                    <div class="btn-group" shiro:hasPermission="system:teachingPlan:status">
-                        <button class="layui-btn">操作
-                            <span class="caret"></span>
-                        </button>
-                        <dl class="layui-nav-child layui-anim layui-anim-upbit">
-                            <dd>
-                                <a class="ajax-status" th:href="@{/system/teachingPlan/status/ok}">启用</a>
-                            </dd>
-                            <dd>
-                                <a class="ajax-status" th:href="@{/system/teachingPlan/status/freezed}">冻结</a>
-                            </dd>
-                            <dd>
-                                <a class="ajax-status" th:href="@{/system/teachingPlan/status/delete}">删除</a>
-                            </dd>
-                        </dl>
-                    </div>
+                    <button class="layui-btn alan-delete">
+                        <i class="fa fa-trash"></i>
+                        删除
+                    </button>
                 </div>
             </div>
             <div class="alan-table-wrap">
                 <!-- 请在<span style="color:red;">部门结构</span>中选择<span style="color:red;">班级</span>，选择<span style="color:red;">学年</span>以及<span style="color:red;">学期</span>进行教学计划管理。 -->
-                <div id="coursesTable"></div>
+                <div class="layui-card alan-nav-tree">
+                    <div class="layui-card-header"><i class="fa fa-calendar"></i> 教学日程</div>
+                    <div class="layui-card-body" style="padding: 0px;margin: 0px;">
+                        <div id="coursesTable"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -117,6 +110,10 @@
             ,format: 'yyyy年'
             ,max: 0
             ,value: new Date() // 初始值
+            ,done: function(value, date, endDate){
+                // 点击渲染教学日程
+                renderTeachingPlan(false);
+            }
         });
         // 渲染部门
         var renderTree = function(){
@@ -191,78 +188,134 @@
                 $("input[name='specialtyId']").val(pids[3]);
                 $("input[name='gradeId']").val(pids[4]);
                 $("input[name='clazzId']").val(_data.id);
+                // 点击渲染教学日程
+                renderTeachingPlan(false);
             }
         }
         renderTree();
-    });
-</script>
-<script>
-    layui.use(['form'], function(){
-        var $ = layui.jquery;
+
+        /*
+        教学日程
+        */
+        var formFilter = "teachingPlanParam";
+        var paramKeys = ["collegeId","specialtyId","gradeId","clazzId","academicYear","semester","weeks","periodOfTime","selectType"];
+        var paramNullMessage = [
+            '请在<span style="color:red;">部门结构</span>中选择<span style="color:red;">班级</span>',
+            '请选择<span style="color:red;">学年</span>',
+            '请选择<span style="color:red;">学期</span>',
+            '请<span style="color:red;">教学计划</span>中选择<span style="color:red;">教学日程</span>'
+        ];
+        /*
+        Common Function
+        */
+        // 获取参数
+        var getParam = function(){
+            return form.val(formFilter)
+        }
+        // 序列化参数为路径参数
+        var serializeParam = function(data) {
+            if(!data){
+                return "";
+            }
+            var param = "";
+            for(var key in data){
+                param += key + "=" + data[key] + "&";
+            }
+            return param.substring(0, param.length-1);
+        }
+        // 转换周
+        var getWeeks = function(week){
+            if(!week){
+                return "";
+            }
+            week = week.replace(/周/g, '');
+            switch(week){
+                case '一':
+                    return 1;
+                case '二':
+                    return 2;
+                case '三':
+                    return 3;
+                case '四':
+                    return 4;
+                case '五':
+                    return 5;
+                case '六':
+                    return 6;
+                case '日':
+                    return 7;
+            }
+            return "";
+        }
+        // 检查添加参数
+        var checkAddParam = function(){
+            var formData = getParam();
+            if(!formData.clazzId){
+                layer.msg('请在<span style="color:red;">部门结构</span>中选择<span style="color:red;">班级</span>', {icon: 2});
+                return null;
+            }
+            if(!formData.academicYear){
+                layer.msg('请选择<span style="color:red;">学年</span>', {icon: 2});
+                return null;
+            }
+            if(!formData.semester){
+                layer.msg('请选择<span style="color:red;">学期</span>', {icon: 2});
+                return null;
+            }
+            if(!formData.selectType){
+                layer.msg('请<span style="color:red;">教学计划</span>中选择<span style="color:red;">教学日程</span>', {icon: 2});
+                return null;
+            }
+            return formData;
+        }
+        // 检查查询参数
+        var checkSelectParam = function(tips){
+            var formData = getParam();
+            var _paramKeys = ["clazzId","academicYear","semester"];
+            var _paramNullMessage = [
+                '请在<span style="color:red;">部门结构</span>中选择<span style="color:red;">班级</span>',
+                '请选择<span style="color:red;">学年</span>',
+                '请选择<span style="color:red;">学期</span>'
+            ];
+            for(var key in _paramKeys){
+                if(!formData[paramKeys[key]]){
+                    if(tips){
+                        layer.msg(_paramNullMessage[key], {icon: 2});
+                    }
+                    return null;
+                }
+            }
+            return formData;
+        }
+
+        /*
+        教学计划
+        */
         var courseList = [
-            ['大学英语(Ⅳ)@10203sadfasdf', '大学英语(Ⅳ)@10203sadfasdf', '', '', '', '', '毛概@14208', '毛概@14208', '', '', '', '选修', ''],
-            ['', '', '信号与系统@11302', '信号与系统@11302', '', '模拟电子技术基础@16204', '', '', '', '', '', '', ''],
-            ['大学体育(Ⅳ)', '大学体育(Ⅳ)', '形势与政策(Ⅳ)@15208', '形势与政策(Ⅳ)@15208', '', '', '电路、信号与系统实验', '电路、信号与系统实验', '', '', '', '', ''],
-            ['', '', '', '', '', '电装实习@11301', '', '', '', '大学体育', '大学体育', '', ''],
-            ['', '', '数据结构与算法分析', '数据结构与算法分析', '', '', '', '', '信号与系统', '信号与系统', '', '', ''],
+            ['','','','','','','','','','','','',''],
+            ['','','','','','','','','','','','',''],
+            ['','','','','','','','','','','','',''],
+            ['','','','','','','','','','','','',''],
+            ['','','','','','','','','','','','',''],
             ['','','','','','','','','','','','',''],
             ['','','','','','','','','','','','','']
         ];
         var week = window.innerWidth > 360 ? ['周一', '周二', '周三', '周四', '周五', '周六', '周日'] : ['一', '二', '三', '四', '五', '六', '日'];
         var day = new Date().getDay();
         var courseType = [
-            [{
-                index: '1',
-                name: '8:30-9:15'
-            }, 1],
-            [{
-                index: '2',
-                name: '9:25-10:10'
-            }, 1],
-            [{
-                index: '3',
-                name: '10:30-11:15'
-            }, 1],
-            [{
-                index: '4',
-                name: '11:25-12:10'
-            }, 1],
-            [{
-                index: '',
-                name: ''
-            }, 1],
-            [{
-                index: '5',
-                name: '14:00-14:45'
-            }, 1],
-            [{
-                index: '6',
-                name: '14:55-15:40'
-            }, 1],
-            [{
-                index: '7',
-                name: '15:50-16:35'
-            }, 1],
-            [{
-                index: '8',
-                name: '16:35-17:20'
-            }, 1],
-            [{
-                index: '',
-                name: ''
-            }, 1],
-            [{
-                index: '9',
-                name: '19:00-19:45'
-            }, 1],
-            [{
-                index: '10',
-                name: '19:55-20:40'
-            }, 1],
-            [{
-                index: '11',
-                name: '20:50-21:35'
-            }, 1]
+            [{index: '1',name: '8:30-9:15'}, 1],
+            [{index: '2',name: '9:25-10:10'}, 1],
+            [{index: '3',name: '10:30-11:15'}, 1],
+            [{index: '4',name: '11:25-12:10'}, 1],
+            [{index: '',name: ''}, 1],
+            [{index: '5',name: '14:00-14:45'}, 1],
+            [{index: '6',name: '14:55-15:40'}, 1],
+            [{index: '7',name: '15:50-16:35'}, 1],
+            [{index: '8',name: '16:35-17:20'}, 1],
+            [{index: '',name: ''}, 1],
+            [{index: '9',name: '19:00-19:45'}, 1],
+            [{index: '10',name: '19:55-20:40'}, 1],
+            [{index: '11',name: '20:50-21:35'}, 1]
         ];
         var option = {
             el: '#coursesTable',
@@ -288,87 +341,84 @@
                     $("input[name='periodOfTime']").val("");
                     $("input[name='selectType']").val("");
                 }
-
             },
             styles: {
                 Gheight: 50
             }
         };
-        var getWeeks = function(week){
-            if(!week){
-                return "";
+        // 渲染教学日程
+        var renderTeachingPlan = function(tips){
+            var url = "/system/teachingPlan/getList"
+            var fromData = checkSelectParam(tips);
+            if(!fromData){
+                return;
             }
-            week = week.replace(/周/g, '');
-            switch(week){
-                case '一':
-                    return 1;
-                case '二':
-                    return 2;
-                case '三':
-                    return 3;
-                case '四':
-                    return 4;
-                case '五':
-                    return 5;
-                case '六':
-                    return 6;
-                case '日':
-                    return 7;
+            var index = layer.load();
+            $.post(url, fromData, function(result){
+                layer.close(index);
+                if(result && result.data){
+                    layer.msg(result.msg, {icon: 1});
+                    // 处理教学计划courseList
+                    // result.data =  JSON.parse(result.data);
+                    setCourseList(result.data)
+                    console.log(result.data)
+                    // 渲染教学日程
+                    Timetable.setOption(option);
+                }else{
+                    layer.msg(result.msg, {icon: 2});
+                }
+            });
+        }
+        // 处理教学计划courseList
+        var setCourseList = function(data){
+            if(!data){
+                return;
             }
-            return "";
+            if(data.length==0){
+                courseList = [
+                    ['','','','','','','','','','','','',''],
+                    ['','','','','','','','','','','','',''],
+                    ['','','','','','','','','','','','',''],
+                    ['','','','','','','','','','','','',''],
+                    ['','','','','','','','','','','','',''],
+                    ['','','','','','','','','','','','',''],
+                    ['','','','','','','','','','','','','']
+                ];
+                option.timetables = courseList;
+                return;
+            }
+            for(var i in data){
+                var week = data[i].weeks;
+                var index = data[i].periodOfTime;
+                var course = data[i].courseId;
+                var teacher = data[i].teacherId;
+                var address = data[i].address==null?"":data[i].address;
+                if(week && index && course && teacher) {
+                    courseList[week-1][index-1] = "《"+course.names+"》- "+teacher.names;
+                    if(address){
+                        courseList[week-1][index-1] += " ["+address+"]";
+                    }
+                }
+            }
+            option.timetables = courseList;
         }
         // 实例化(初始化课表)
         var Timetable = new Timetables(option);
 
-    });
 
-</script>
-<script>
-    layui.use(['form'], function(){
-        var $ = layui.jquery;
-        var form = layui.form;
-        // 获取参数
-        var getParam = function(){
-            var formData = form.val("teachingPlanParam");
-            if(!formData.clazzId){
-                layer.msg('请在<span style="color:red;">部门结构</span>中选择<span style="color:red;">班级</span>', {icon: 2});
-                return null;
-            }
-            if(!formData.academicYear){
-                layer.msg('请选择<span style="color:red;">学年</span>', {icon: 2});
-                return null;
-            }
-            if(!formData.semester){
-                layer.msg('请选择<span style="color:red;">学期</span>', {icon: 2});
-                return null;
-            }
-            if(!formData.selectType){
-                layer.msg('请选择<span style="color:red;">日程</span>', {icon: 2});
-                return null;
-            }
-            return formData;
-        }
-        // 序列化参数为路径参数
-        var serializeParam = function(data) {
-            if(!data){
-                return "";
-            }
-            var param = "";
-            for(var key in data){
-                param += key + "=" + data[key] + "&";
-            }
-            return param.substring(0, param.length-1);
-        }
+        /*
+		添加、删除事件监听
+		*/
         // 监听添加事件
         $(".alan-add").click(function(){
             var _this = $(this);
             var _dataUrl = '/system/teachingPlan/add';
-            var formData = getParam();
+            var formData = checkAddParam();
             if(!formData){
                 return;
             }
-            if(form.val("teachingPlanParam").selectType=="占用"){
-                layer.msg('请选择空白日程', {icon: 2});
+            if(form.val(formFilter).selectType=="占用"){
+                layer.msg('请选择空位<span style="color:red;">教学日程</span>', {icon: 2});
                 return;
             }
             _dataUrl += "?" + serializeParam(formData);
@@ -382,9 +432,19 @@
                 content: _dataUrl,
                 zIndex: layer.zIndex,
                 success: function(layero, index){
-                    layer.setTop(layero);
+                    // layer.setTop(layero);
                 }
             });
+        });
+        // 监听删除事件
+        // 监听刷新事件
+        $(".alan-refresh").click(function(){
+            renderTeachingPlan(true);
+        });
+        // 监听点击学期事件
+        form.on('select(semester)', function(data){
+            // 点击渲染教学日程
+            renderTeachingPlan(false);
         });
     });
 </script>

@@ -63,4 +63,15 @@ public class TeachingPlanServiceImpl implements TeachingPlanService {
     public Boolean updateStatus(StatusEnum statusEnum, List<Long> idList) {
         return teachingPlanRepository.updateStatus(statusEnum.getCode(), idList) > 0;
     }
+
+    /**
+     * 查询列表
+     *
+     * @param example
+     * @return
+     */
+    @Override
+    public List<TeachingPlan> getList(Example<TeachingPlan> example) {
+        return teachingPlanRepository.findAll(example);
+    }
 }
