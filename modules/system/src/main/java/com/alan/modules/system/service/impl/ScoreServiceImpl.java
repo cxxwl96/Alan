@@ -63,4 +63,15 @@ public class ScoreServiceImpl implements ScoreService {
     public Boolean updateStatus(StatusEnum statusEnum, List<Long> idList) {
         return scoreRepository.updateStatus(statusEnum.getCode(), idList) > 0;
     }
+
+    /**
+     * 获取数据列表
+     *
+     * @param example
+     * @return
+     */
+    @Override
+    public List<Score> getList(Example<Score> example) {
+        return scoreRepository.findAll(example);
+    }
 }

@@ -16,6 +16,7 @@ public interface ScoreService {
 
     /**
      * 获取分页列表数据
+     *
      * @param example 查询实例
      * @return 返回分页数据
      */
@@ -23,12 +24,14 @@ public interface ScoreService {
 
     /**
      * 根据ID查询数据
+     *
      * @param id 主键ID
      */
     Score getById(Long id);
 
     /**
      * 保存数据
+     *
      * @param score 实体对象
      */
     Score save(Score score);
@@ -38,4 +41,12 @@ public interface ScoreService {
      */
     @Transactional
     Boolean updateStatus(StatusEnum statusEnum, List<Long> idList);
+
+    /**
+     * 获取数据列表
+     *
+     * @param example
+     * @return
+     */
+    List<Score> getList(Example<Score> example);
 }

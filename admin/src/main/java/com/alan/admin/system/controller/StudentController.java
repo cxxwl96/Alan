@@ -8,10 +8,7 @@ import com.alan.common.utils.StatusUtil;
 import com.alan.common.vo.ResultVo;
 import com.alan.component.shiro.ShiroUtil;
 import com.alan.modules.system.domain.*;
-import com.alan.modules.system.service.DormitoryService;
-import com.alan.modules.system.service.RoleService;
-import com.alan.modules.system.service.StudentService;
-import com.alan.modules.system.service.UserService;
+import com.alan.modules.system.service.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -51,6 +48,9 @@ public class StudentController {
 
     @Autowired
     private DormitoryService dormitoryService;
+
+    @Autowired
+    private ScoreService scoreService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder, WebRequest request) {
@@ -319,5 +319,51 @@ public class StudentController {
         }
         model.addAttribute("dormitorys", dormitorys);
         return "/system/student/myDormitory";
+    }
+
+    /**
+     * 跳转到我的课程
+     */
+    @GetMapping("/MyTeachingPlan")
+    @RequiresPermissions("system:student:MyTeachingPlan")
+    public String toMyTeachingPlan(Model model) {
+        // 获取当前登录用户
+        User subUser = ShiroUtil.getSubject();
+        Student student = studentService.getByUserId(subUser.getId());
+        model.addAttribute("student", student);
+        return "/system/student/myTeachingPlan";
+    }
+
+    /**
+     * 跳转到成绩查询
+     */
+    @GetMapping("/MyScore")
+    @RequiresPermissions("system:student:MyScore")
+    public String toMyScore(Model model, Score score) {
+        return "/system/student/myScore";
+    }
+    /**
+     * 成绩查询
+     */
+    @PostMapping("/GetMyScore")
+    @RequiresPermissions("system:student:GetMyScore")
+    @ResponseBody
+    public ResultVo GetMyScore(Model model, Score score) {
+        // 获取当前登录用户
+        User subUser = ShiroUtil.getSubject();
+        Student student = studentService.getByUserId(subUser.getId());
+        if(student!=null){
+            Long stuId = student.getId();
+            student = new Student();
+            student.setId(stuId);
+            score.setStudentId(student);
+        }
+        // 创建匹配器，进行动态查询匹配
+        ExampleMatcher matcher = ExampleMatcher.matching();
+
+        // 获取数据列表
+        Example<Score> example = Example.of(score, matcher);
+        List<Score> list = scoreService.getList(example);
+        return ResultVoUtil.success("查询成功", list);
     }
 }

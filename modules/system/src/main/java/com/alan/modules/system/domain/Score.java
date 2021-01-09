@@ -4,6 +4,7 @@ import com.alan.common.enums.StatusEnum;
 import com.alan.common.utils.StatusUtil;
 import com.alan.component.excel.annotation.Excel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -27,6 +28,7 @@ import java.util.Date;
 @Table(name = "sims_score")
 @EntityListeners(AuditingEntityListener.class)
 @Where(clause = StatusUtil.NOT_DELETE)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class Score implements Serializable {
     // 主键ID
     @Id
@@ -45,7 +47,6 @@ public class Score implements Serializable {
     // 课程
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
-    @JsonIgnore
     private Course courseId;
     // 分数
     private Double fraction;
