@@ -63,7 +63,7 @@ public class TeachingPlanController {
      * @param valid 验证对象
      */
     @PostMapping("/save")
-    @RequiresPermissions({"system:teachingPlan:add", "system:teachingPlan:edit"})
+    @RequiresPermissions({"system:teachingPlan:add"})
     @ResponseBody
     public ResultVo save(@Validated TeachingPlanValid valid, TeachingPlan teachingPlan) {
         // 复制保留无需修改的数据
@@ -135,90 +135,4 @@ public class TeachingPlanController {
             return ResultVoUtil.error(statusEnum.getMessage() + "失败，请重新操作");
         }
     }
-
-    /**
-     * 列表页面
-     *//*
-    @GetMapping("/index")
-    @RequiresPermissions("system:teachingPlan:index")
-    public String index(Model model, TeachingPlan teachingPlan) {
-
-        // 创建匹配器，进行动态查询匹配
-        ExampleMatcher matcher = ExampleMatcher.matching();
-
-        // 获取数据列表
-        Example<TeachingPlan> example = Example.of(teachingPlan, matcher);
-        Page<TeachingPlan> list = teachingPlanService.getPageList(example);
-
-        // 封装数据
-        model.addAttribute("list", list.getContent());
-        model.addAttribute("page", list);
-        return "/system/teachingPlan/index";
-    }
-
-    *//**
-     * 跳转到添加页面
-     *//*
-    @GetMapping("/add")
-    @RequiresPermissions("system:teachingPlan:add")
-    public String toAdd() {
-        return "/system/teachingPlan/add";
-    }
-
-    *//**
-     * 跳转到编辑页面
-     *//*
-    @GetMapping("/edit/{id}")
-    @RequiresPermissions("system:teachingPlan:edit")
-    public String toEdit(@PathVariable("id") TeachingPlan teachingPlan, Model model) {
-        model.addAttribute("teachingPlan", teachingPlan);
-        return "/system/teachingPlan/add";
-    }
-
-    *//**
-     * 保存添加/修改的数据
-     * @param valid 验证对象
-     *//*
-    @PostMapping("/save")
-    @RequiresPermissions({"system:teachingPlan:add", "system:teachingPlan:edit"})
-    @ResponseBody
-    public ResultVo save(@Validated TeachingPlanValid valid, TeachingPlan teachingPlan) {
-        // 复制保留无需修改的数据
-        if (teachingPlan.getId() != null) {
-            TeachingPlan beTeachingPlan = teachingPlanService.getById(teachingPlan.getId());
-            EntityBeanUtil.copyProperties(beTeachingPlan, teachingPlan);
-        }
-
-        // 保存数据
-        teachingPlanService.save(teachingPlan);
-        return ResultVoUtil.SAVE_SUCCESS;
-    }
-
-    *//**
-     * 跳转到详细页面
-     *//*
-    @GetMapping("/detail/{id}")
-    @RequiresPermissions("system:teachingPlan:detail")
-    public String toDetail(@PathVariable("id") TeachingPlan teachingPlan, Model model) {
-        model.addAttribute("teachingPlan",teachingPlan);
-        return "/system/teachingPlan/detail";
-    }
-
-    *//**
-     * 设置一条或者多条数据的状态
-     *//*
-    @RequestMapping("/status/{param}")
-    @RequiresPermissions("system:teachingPlan:status")
-    @ResponseBody
-    public ResultVo status(
-            @PathVariable("param") String param,
-            @RequestParam(value = "ids", required = false) List<Long> ids) {
-        // 更新状态
-        StatusEnum statusEnum = StatusUtil.getStatusEnum(param);
-        if (teachingPlanService.updateStatus(statusEnum, ids)) {
-            return ResultVoUtil.success(statusEnum.getMessage() + "成功");
-        } else {
-            return ResultVoUtil.error(statusEnum.getMessage() + "失败，请重新操作");
-        }
-    }*/
 }
