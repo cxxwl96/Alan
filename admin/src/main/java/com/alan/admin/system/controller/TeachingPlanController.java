@@ -1,8 +1,10 @@
 package com.alan.admin.system.controller;
 
 import com.alan.admin.system.validator.TeachingPlanValid;
+import com.alan.common.enums.StatusEnum;
 import com.alan.common.utils.EntityBeanUtil;
 import com.alan.common.utils.ResultVoUtil;
+import com.alan.common.utils.StatusUtil;
 import com.alan.common.vo.ResultVo;
 import com.alan.modules.system.domain.Dept;
 import com.alan.modules.system.domain.TeachingPlan;
@@ -18,10 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -122,6 +121,20 @@ public class TeachingPlanController {
         return ResultVoUtil.success("查询成功", list);
     }
 
+    @RequestMapping("/status/{param}")
+    @RequiresPermissions("system:teachingPlan:status")
+    @ResponseBody
+    public ResultVo status(
+            @PathVariable("param") String param,
+            @RequestParam(value = "ids", required = false) List<Long> ids) {
+        // 更新状态
+        StatusEnum statusEnum = StatusUtil.getStatusEnum(param);
+        if (teachingPlanService.updateStatus(statusEnum, ids)) {
+            return ResultVoUtil.success(statusEnum.getMessage() + "成功");
+        } else {
+            return ResultVoUtil.error(statusEnum.getMessage() + "失败，请重新操作");
+        }
+    }
 
     /**
      * 列表页面

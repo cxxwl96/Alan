@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="layui-form-item alan-finally">
-            <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn alan-submit"><i class="fa fa-check-circle"></i> 保存</button>
             <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
         </div>
     </form>
@@ -176,6 +176,24 @@
                         $("input[name='teacherId']").val(checkedEl[0].id);　　//查到目标页面的内容赋给当前页面元素
                     }
                     layer.close(index);//这块是点击确定关闭这个弹出层
+                }
+            });
+        });
+        /* 提交表单数据 */
+        $(document).on("click", ".alan-submit", function (e) {
+            e.preventDefault();
+            var form = $(this).parents("form");
+            var url = form.attr("action");
+            var serializeArray = form.serializeArray();
+            $.post(url, serializeArray, function (result) {
+                if (result.code === 200) {
+                    layer.msg(result.msg, {offset: '15px', time: 3000, icon: 1});
+                    setTimeout(function () {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    }, 2000);
+                } else {
+                    layer.msg(result.msg, {offset: '15px', time: 3000, icon: 2});
                 }
             });
         });
