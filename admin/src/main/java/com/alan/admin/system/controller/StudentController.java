@@ -357,6 +357,8 @@ public class StudentController {
             student = new Student();
             student.setId(stuId);
             score.setStudentId(student);
+        }else{
+            return ResultVoUtil.error(404,"请联系管理员为您分配<span style=\"color:red;\">学院</span>、<span style=\"color:red;\">专业</span>、<span style=\"color:red;\">年级</span>、<span style=\"color:red;\">班级</span>");
         }
         // 创建匹配器，进行动态查询匹配
         ExampleMatcher matcher = ExampleMatcher.matching();

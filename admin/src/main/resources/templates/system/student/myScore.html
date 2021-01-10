@@ -134,6 +134,8 @@
             $.post("/system/student/GetMyScore", formData, function(result){
                 if(result.code==200 && result.data && result.data.length>0){
                     layer.msg(result.msg, {icon: 1});
+                } else if(result.code==404){
+                    layer.msg(result.msg, {icon: 2});
                 } else {
                     layer.msg("未查询到数据", {icon: 2});
                 }
@@ -143,6 +145,8 @@
         });
         // 打印
         $(".alan-print").click(function(){
+            //document.body.innerHTML = document.getElementById("print").innerHTML;
+
             window.print();
         });
     })
