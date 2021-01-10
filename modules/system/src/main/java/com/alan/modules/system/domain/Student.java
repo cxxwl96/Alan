@@ -5,6 +5,7 @@ import com.alan.common.utils.StatusUtil;
 import com.alan.component.excel.annotation.Excel;
 import com.alan.modules.system.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -37,6 +38,7 @@ import javax.persistence.Table;
 @Table(name="sims_student")
 @EntityListeners(AuditingEntityListener.class)
 @Where(clause = StatusUtil.NOT_DELETE)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class Student implements Serializable {
     // 主键ID
     @Id

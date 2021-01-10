@@ -8,6 +8,7 @@ import com.alan.modules.system.repository.UserRepository;
 import com.alan.modules.system.service.DeptService;
 import com.alan.modules.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -144,5 +145,16 @@ public class UserServiceImpl implements UserService {
             return userRepository.deleteByIdIn(ids) > 0;
         }
         return userRepository.updateStatus(statusEnum.getCode(), ids) > 0;
+    }
+
+    /**
+     * 获取数据列表
+     *
+     * @param example
+     * @return
+     */
+    @Override
+    public List<User> getList(Example<User> example) {
+        return userRepository.findAll(example);
     }
 }

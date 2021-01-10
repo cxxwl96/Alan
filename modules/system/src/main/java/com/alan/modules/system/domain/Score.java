@@ -42,7 +42,6 @@ public class Score implements Serializable {
     // 学生
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
-    @JsonIgnore
     private Student studentId;
     // 课程
     @ManyToOne(fetch = FetchType.LAZY)

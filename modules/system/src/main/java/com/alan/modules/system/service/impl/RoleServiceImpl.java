@@ -129,4 +129,15 @@ public class RoleServiceImpl implements RoleService {
         Page<Role> list = getPageList(example);*/
         return roleRepository.findByName(name);
     }
+
+    /**
+     * 查询数据列表
+     *
+     * @param example
+     * @return
+     */
+    @Override
+    public List<Role> getList(Example<Role> example) {
+        return roleRepository.findAll(example);
+    }
 }
