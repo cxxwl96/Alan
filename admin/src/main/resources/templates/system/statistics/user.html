@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/alan">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+        .echars{
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body class="alan-layout-page">
+<div class="layui-card">
+    <div class="layui-card-header alan-card-header">
+        <span><i class="fa fa-bars"></i> 用户统计</span>
+        <i class="layui-icon layui-icon-refresh refresh-btn"></i>
+    </div>
+    <div class="layui-card-body layui-row">
+        <div class="layui-col-lg6 layui-col-sm6">
+            <div id="pieChar" class="echars"></div>
+        </div>
+        <div class="layui-col-lg6 layui-col-sm6">
+            <div id="histogramChar" class="echars"></div>
+        </div>
+    </div>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script th:src="@{/lib/echarts-v4.7.0/js/echarts.min.js}" charset="utf-8"></script>
+<script>
+    // 饼图渲染
+    var pieCharRender = function(data){
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('pieChar'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '用户统计',
+                subtext: '用户占比',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+            },
+            series: [
+                {
+                    name: '用户统计',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        // 处理data
+        for(var i in data){
+            var obj = {
+                value: data[i].count,
+                name: data[i].role.title
+            }
+            option.series[0].data.push(obj)
+        }
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+    // 柱状图渲染
+    var histogramCharRender = function(data){
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('histogramChar'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '用户统计',
+                subtext: '',
+                left: 'center'
+            },
+            xAxis: {
+                type: 'category',
+                data: []
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [],
+                type: 'bar',
+                showBackground: true,
+                backgroundStyle: {
+                    color: 'rgba(180, 180, 180, 0.2)'
+                }
+            }]
+        };
+        // 处理data
+        for(var i in data){
+            option.xAxis.data.push(data[i].role.title);
+            option.series[0].data.push(data[i].count);
+        }
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+</script>
+<script>
+    layui.use(['form', 'upload', 'laydate', "tree"], function(){
+        var $ = layui.jquery;
+        // 用户统计
+        var userStatistics = function(){
+            // 获取用户
+            var index = layer.load();
+            $.get("/system/statistics/user/count", function(result){
+                layer.close(index);
+                if(result.code==200){
+                    // 饼图渲染
+                    pieCharRender(result.data);
+                    // 柱状图渲染
+                    histogramCharRender(result.data);
+                }else{
+                    layer.msg(result.msg, {icon: 2});
+                }
+            })
+        }
+        userStatistics();
+    })
+
+
+</script>
+</body>
+</html>

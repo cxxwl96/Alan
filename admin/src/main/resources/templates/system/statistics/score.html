@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/alan">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+        .echars{
+            width: 100%;
+            height: 600px;
+        }
+        .students, .course{
+            border: 1px solid #7D32A7;
+            width: 190px;
+            height: 36px;
+            border-radius: 2px;
+            text-align: left;
+            color: -internal-light-dark(black, white);
+            line-height: 36px;
+            padding-left: 10px;
+            transition: all .3s;
+            transition-property: all;
+            transition-duration: 0.3s;
+            transition-timing-function: ease;
+            transition-delay: 0s;
+            -webkit-transition: all .3s;
+        }
+        .students:hover, .course:hover{
+            border: 1px solid #7D32A7;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="alan-layout-page">
+<div class="layui-card">
+    <div class="layui-card-header alan-card-header">
+        <span><i class="fa fa-bars"></i> 分数统计</span>
+        <i class="layui-icon layui-icon-refresh refresh-btn"></i>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-row alan-card-screen">
+            <div class="pull-left layui-form-pane alan-search-box">
+                <form class="layui-form" lay-filter="searchForm">
+                    <div class="layui-inline layui-hide">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block alan-search-status">
+                            <select class="alan-search-select" name="status" mo:dict="SEARCH_STATUS" mo-selected="${param.status}"></select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">学年</label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" type="text" name="academicYear" th:value="${param.academicYear}" id="academicYear" autocomplete="off" readonly>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">学期</label>
+                        <div class="layui-input-block">
+                            <select name="semester" lay-verify="semester">
+                                <option value=""></option>
+                                <option value="1">上学期</option>
+                                <option value="2">下学期</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">学生</label>
+                        <div class="layui-input-block">
+                            <input type="hidden" name="studentId" th:value="${param.studentId}"/>
+                            <input type="hidden" name="stuNo" th:value="${param.stuNo}"/>
+                            <input type="hidden" name="stuNames" th:value="${param.stuNames}"/>
+                            <div class="students"><i class="fa fa-user-plus" aria-hidden="true"></i> 点击选择学生</div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <a class="layui-btn alan-search">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="alan-table-wrap layui-row">
+            <div class="layui-col-lg12 layui-col-sm12">
+                <div id="histogramChar" class="echars"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script th:src="@{/lib/echarts-v4.7.0/js/echarts.min.js}" charset="utf-8"></script>
+<script type="text/javascript">
+    var showStudent = function(id, names, stuNo){
+        layui.use('layer', function(){
+            var $ = layui.jquery, layer = layui.layer;
+            layer.msg('<div style="text-align: left;"><font color="red">ID：</font>'+id+'<br /><font color="red">姓名：</font>'+names+'<br /><font color="red">学号：</font>'+stuNo+'</div>', {
+                time: 0,
+                btn: ['关闭', '知道了', '哦']
+            });
+        })
+    }
+    var showScore = function(id, names){
+        layui.use('layer', function(){
+            var $ = layui.jquery, layer = layui.layer;
+            layer.msg('<div style="text-align: left;"><font color="red">ID：</font>'+id+'<br /><font color="red">课程名称：</font>《'+names+'》</div>', {
+                time: 0,
+                btn: ['关闭', '知道了', '哦']
+            });
+        })
+    }
+    layui.use(['form', 'upload', 'laydate'], function () {
+        var $ = layui.jquery;
+        var form = layui.form;
+        var upload = layui.upload;
+        var laydate = layui.laydate;
+        // 学年
+        laydate.render({
+            elem: '#academicYear' //指定元素
+            ,type: 'year'
+            ,trigger: 'click' //采用click弹出
+            ,format: 'yyyy年'
+            ,max: 0
+        });
+        // 学生
+        var _stuNames = $("input[name='studentId']").val();
+        var _stuId = $("input[name='stuNames']").val();
+        var _stuNo = $("input[name='stuNo']").val();
+        if(_stuNames && _stuId && _stuNo){
+            var _this = $(".students");
+            _this.html('');
+            var _html = _stuNames+'('+_stuNo+')';
+            _this.html(_html);
+        }
+        $(".students").click(function(){
+            var _this = $(this);
+            var _dataUrl = '/system/student/show';
+            //通过这种方式弹出的层，每当它被选择，就会置顶。
+            layer.open({
+                title: '学生信息',
+                type: 2,
+                area: ['80%', '80%'],
+                maxmin: true,
+                content: _dataUrl,
+                btn: ['确定', '取消'],
+                zIndex: layer.zIndex,
+                success: function(layero, index){
+                    layer.setTop(layero);
+                },
+                yes: function (index, layero) {
+                    var body = layer.getChildFrame('body', index);  //此处我理解的是加载目标页面的内容
+                    var checkedEl = body.find("input[type='checkbox'][checked]");
+                    if(checkedEl.length>1){
+                        layer.close(index);//这块是点击确定关闭这个弹出层
+                        layer.msg('只能选择一个学生', {icon: 2});
+                        setTimeout(function(){}, 1500)
+                        return;
+                    }
+                    // 处理学生id
+                    if(checkedEl.length==1){
+                        _this.html('');
+                        var _html = checkedEl[0].name+'('+checkedEl[0].attributes['stuno'].value+')';
+                        _this.html(_html);
+                        $("input[name='studentId']").val(checkedEl[0].value);　　//查到目标页面的内容赋给当前页面元素
+                        $("input[name='stuNames']").val(checkedEl[0].name);
+                        $("input[name='stuNo']").val(checkedEl[0].attributes['stuno'].value);
+                    }
+                    layer.close(index);//这块是点击确定关闭这个弹出层
+                }
+            });
+        });
+        // 课程
+        var _courseNames = $("input[name='courseNames']").val();
+        var _courseId = $("input[name='courseId']").val();
+        if(_courseNames && _courseId){
+            var _this = $(".course");
+            _this.html('');
+            var _html = '《'+_courseNames+'》';
+            _this.html(_html);
+        }
+        $(".course").click(function(){
+            var _this = $(this);
+            var _dataUrl = '/system/course/show';
+            //通过这种方式弹出的层，每当它被选择，就会置顶。
+            layer.open({
+                title: '课程信息',
+                type: 2,
+                area: ['80%', '80%'],
+                maxmin: true,
+                content: _dataUrl,
+                btn: ['确定', '取消'],
+                zIndex: layer.zIndex,
+                success: function(layero, index){
+                    layer.setTop(layero);
+                },
+                yes: function (index, layero) {
+                    var body = layer.getChildFrame('body', index);  //此处我理解的是加载目标页面的内容
+                    var checkedEl = body.find("input[type='checkbox'][checked]");
+                    if(checkedEl.length>1){
+                        layer.close(index);//这块是点击确定关闭这个弹出层
+                        layer.msg('只能选择一门课程', {icon: 2});
+                        setTimeout(function(){
+
+                        }, 1500)
+                        return;
+                    }
+                    // 处理课程id
+                    if(checkedEl.length==1){
+                        _this.html('');
+                        var _html = '《'+checkedEl[0].name+'》';
+                        _this.html(_html);
+                        $("input[name='courseId']").val(checkedEl[0].id);　　//查到目标页面的内容赋给当前页面元素
+                        $("input[name='courseNames']").val(checkedEl[0].name);
+                    }
+                    layer.close(index);//这块是点击确定关闭这个弹出层
+                }
+            });
+        });
+    })
+</script>
+<script>
+    // 柱状图渲染
+    var histogramCharRender = function(data, formData){
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('histogramChar'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '分数统计',
+                subtext: '',
+                left: 'center'
+            },
+            xAxis: {
+                type: 'category',
+                data: []
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [],
+                type: 'bar',
+                showBackground: true,
+                backgroundStyle: {
+                    color: 'rgba(180, 180, 180, 0.2)'
+                }
+            }]
+        };
+        var semester = formData.semester=="1" ? "上学期" : "下学期";
+        option.title.text = formData.academicYear+semester+formData.stuNames+"分数统计";
+        // 处理data
+        for(var i in data){
+            option.xAxis.data.push("《"+data[i].courseId.names+"》");
+            option.series[0].data.push(data[i].fraction);
+        }
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+</script>
+<script>
+    layui.use(['form', 'upload', 'laydate', "tree"], function(){
+        var $ = layui.jquery;
+        var form = layui.form;
+        // 分数统计
+        $(".alan-search").click(function(){
+            var formData = form.val("searchForm");
+            // 检查formData
+            if(!formData.academicYear){
+                layer.msg('请选择<span style="color:red;">学年</span>', {icon: 2});
+                return null;
+            }
+            if(!formData.semester){
+                layer.msg('请选择<span style="color:red;">学期</span>', {icon: 2});
+                return null;
+            }
+            if(!formData.studentId){
+                layer.msg('请选择<span style="color:red;">学生</span>', {icon: 2});
+                return null;
+            }
+            var index = layer.load();
+            $.get("/system/statistics/score/count", formData, function(result){
+                layer.close(index);
+                if(result.code==200){
+                    // 柱状图渲染
+                    histogramCharRender(result.data, formData);
+                }else{
+                    layer.msg(result.msg, {icon: 2});
+                }
+            })
+        });
+    })
+
+
+</script>
+</body>
+</html>
