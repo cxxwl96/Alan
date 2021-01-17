@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class DeptValid implements Serializable {
 	@NotEmpty(message = "部门名称不能为空")
 	private String title;
-    @NotEmpty(message = "部门层级不能为空")
+    @NotNull(message = "部门层级不能为空")
     private Byte level;
     @NotNull(message = "父级部门不能为空")
     private Long pid;
