@@ -17,9 +17,9 @@ spring:
   ## 数据库配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://cxxwl96.cn:8002/alan_sims?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true
-    username: alan
-    password: alan
+    url: jdbc:mysql://cxxwl96.cn:3306/alan_sims?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true
+    username: root
+    password: cxxwl96@sina.com
 
   ## jpa配置
   jpa:
