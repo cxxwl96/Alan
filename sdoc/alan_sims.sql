@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 本地-MySQL
+ Source Server         : 本地MySQL
  Source Server Type    : MySQL
  Source Server Version : 80022
- Source Host           : localhost:3306
+ Source Host           : 192.168.0.2:3306
  Source Schema         : alan_sims
 
  Target Server Type    : MySQL
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 10/01/2021 23:04:34
+ Date: 11/03/2021 17:22:50
 */
 
 SET NAMES utf8mb4;
@@ -25,7 +25,8 @@ CREATE TABLE `sims_course`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程说明',
-  `hour` double NULL DEFAULT NULL COMMENT '课程学时',
+  `hour` double UNSIGNED ZEROFILL NULL DEFAULT NULL COMMENT '课程学时',
+  `credits` double UNSIGNED ZEROFILL NULL DEFAULT NULL COMMENT '课程学分',
   `names` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程名称',
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   `status` tinyint(0) NULL DEFAULT NULL COMMENT '状态',
@@ -43,21 +44,21 @@ CREATE TABLE `sims_course`  (
 -- ----------------------------
 -- Records of sims_course
 -- ----------------------------
-INSERT INTO `sims_course` VALUES (1, '2021-01-06 13:24:59', '', 2280, 'JAVA程序设计', '', 1, 1, '2021-01-06 13:24:59', 1, 1);
-INSERT INTO `sims_course` VALUES (2, '2021-01-06 13:57:59', '', 2280, 'C语言程序设计', '', 1, 1, '2021-01-06 13:57:59', 1, 1);
-INSERT INTO `sims_course` VALUES (3, '2021-01-06 13:58:15', '', 2280, '计算机组成原理', '', 1, 1, '2021-01-06 13:58:15', 1, 1);
-INSERT INTO `sims_course` VALUES (4, '2021-01-06 13:58:28', '', 2280, '数据结构', '', 1, 1, '2021-01-06 13:58:28', 1, 1);
-INSERT INTO `sims_course` VALUES (5, '2021-01-06 13:59:10', '', 2280, '操作系统', '', 1, 1, '2021-01-06 13:59:10', 1, 1);
-INSERT INTO `sims_course` VALUES (6, '2021-01-06 13:59:22', '', 2280, '微机原理及汇编语言', '', 1, 1, '2021-01-06 13:59:22', 1, 1);
-INSERT INTO `sims_course` VALUES (7, '2021-01-06 13:59:34', '', 1140, '计算机网络', '', 1, 1, '2021-01-06 13:59:34', 1, 1);
-INSERT INTO `sims_course` VALUES (8, '2021-01-06 13:59:48', '', 1140, '计算机系统结构', '', 1, 1, '2021-01-06 13:59:48', 1, 1);
-INSERT INTO `sims_course` VALUES (9, '2021-01-06 14:00:08', '', 1140, '软件工程', '', 1, 1, '2021-01-06 14:00:08', 1, 1);
-INSERT INTO `sims_course` VALUES (10, '2021-01-06 14:00:19', '', 1140, '面向对象程序设计', '', 1, 1, '2021-01-06 14:00:19', 1, 1);
-INSERT INTO `sims_course` VALUES (11, '2021-01-06 14:00:39', '', 1140, '操作系统', '', 1, 1, '2021-01-06 14:00:39', 1, 1);
-INSERT INTO `sims_course` VALUES (12, '2021-01-06 14:01:00', '', 1140, '编译原理', '', 1, 1, '2021-01-06 14:01:00', 1, 1);
-INSERT INTO `sims_course` VALUES (13, '2021-01-06 14:01:22', '', 570, '分布式系统', '', 1, 1, '2021-01-06 14:01:22', 1, 1);
-INSERT INTO `sims_course` VALUES (14, '2021-01-06 14:01:39', '', 570, '软件项目管理', '', 1, 1, '2021-01-06 14:01:39', 1, 1);
-INSERT INTO `sims_course` VALUES (15, '2021-01-06 14:02:34', '', 570, '中国语言文学', '', 1, 2, '2021-01-06 14:02:34', 1, 1);
+INSERT INTO `sims_course` VALUES (1, '2021-01-06 13:24:59', '', 0000000000000000002280, 000000000000000002.222, 'JAVA程序设计', '', 1, 1, '2021-01-06 13:24:59', 1, 1);
+INSERT INTO `sims_course` VALUES (2, '2021-01-06 13:57:59', '', 0000000000000000002280, 0000000000000000000000, 'C语言程序设计', '', 1, 1, '2021-01-06 13:57:59', 1, 1);
+INSERT INTO `sims_course` VALUES (3, '2021-01-06 13:58:15', '', 0000000000000000002280, 0000000000000000000000, '计算机组成原理', '', 1, 1, '2021-01-06 13:58:15', 1, 1);
+INSERT INTO `sims_course` VALUES (4, '2021-01-06 13:58:28', '', 0000000000000000002280, 0000000000000000000000, '数据结构', '', 1, 1, '2021-01-06 13:58:28', 1, 1);
+INSERT INTO `sims_course` VALUES (5, '2021-01-06 13:59:10', '', 0000000000000000002280, 0000000000000000000000, '操作系统', '', 1, 1, '2021-01-06 13:59:10', 1, 1);
+INSERT INTO `sims_course` VALUES (6, '2021-01-06 13:59:22', '', 0000000000000000002280, 0000000000000000000000, '微机原理及汇编语言', '', 1, 1, '2021-01-06 13:59:22', 1, 1);
+INSERT INTO `sims_course` VALUES (7, '2021-01-06 13:59:34', '', 0000000000000000001140, 0000000000000000000000, '计算机网络', '', 1, 1, '2021-01-06 13:59:34', 1, 1);
+INSERT INTO `sims_course` VALUES (8, '2021-01-06 13:59:48', '', 0000000000000000001140, 0000000000000000000000, '计算机系统结构', '', 1, 1, '2021-01-06 13:59:48', 1, 1);
+INSERT INTO `sims_course` VALUES (9, '2021-01-06 14:00:08', '', 0000000000000000001140, 0000000000000000000000, '软件工程', '', 1, 1, '2021-01-06 14:00:08', 1, 1);
+INSERT INTO `sims_course` VALUES (10, '2021-01-06 14:00:19', '', 0000000000000000001140, 0000000000000000000000, '面向对象程序设计', '', 1, 1, '2021-01-06 14:00:19', 1, 1);
+INSERT INTO `sims_course` VALUES (11, '2021-01-06 14:00:39', '', 0000000000000000001140, 0000000000000000000000, '操作系统', '', 1, 1, '2021-01-06 14:00:39', 1, 1);
+INSERT INTO `sims_course` VALUES (12, '2021-01-06 14:01:00', '', 0000000000000000001140, 0000000000000000000000, '编译原理', '', 1, 1, '2021-01-06 14:01:00', 1, 1);
+INSERT INTO `sims_course` VALUES (13, '2021-01-06 14:01:22', '', 0000000000000000000570, 0000000000000000000000, '分布式系统', '', 1, 1, '2021-01-06 14:01:22', 1, 1);
+INSERT INTO `sims_course` VALUES (14, '2021-01-06 14:01:39', '', 0000000000000000000570, 0000000000000000000000, '软件项目管理', '', 1, 1, '2021-01-06 14:01:39', 1, 1);
+INSERT INTO `sims_course` VALUES (15, '2021-01-06 14:02:34', '', 0000000000000000000570, 0000000000000000000000, '中国语言文学', '', 1, 2, '2021-01-06 14:02:34', 1, 1);
 
 -- ----------------------------
 -- Table structure for sims_dormitory
@@ -115,7 +116,7 @@ CREATE TABLE `sims_score`  (
   CONSTRAINT `FK9nw6u47iim0j3tjlul2g02pfn` FOREIGN KEY (`course_id`) REFERENCES `sims_course` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FKen1rrex27l4lkuh07v45ygyg7` FOREIGN KEY (`create_by`) REFERENCES `sys_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FKkm8qhhsjkh80ty52i4al9i0t8` FOREIGN KEY (`update_by`) REFERENCES `sys_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sims_score
@@ -292,7 +293,7 @@ CREATE TABLE `sims_teaching_plan`  (
   CONSTRAINT `FKq4obft2asxtsaj78scctfcl88` FOREIGN KEY (`college_id`) REFERENCES `sys_dept` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FKqht2p60se8r35qdpwql90qn8c` FOREIGN KEY (`create_by`) REFERENCES `sys_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FKsdku78bjjbovsfixnswsh30tq` FOREIGN KEY (`teacher_id`) REFERENCES `sims_teacher` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sims_teaching_plan
@@ -326,7 +327,7 @@ CREATE TABLE `sys_action_log`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `FK32gm4dja0jetx58r9dc2uljiu`(`oper_by`) USING BTREE,
   CONSTRAINT `FK32gm4dja0jetx58r9dc2uljiu` FOREIGN KEY (`oper_by`) REFERENCES `sys_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 783 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 851 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_action_log
@@ -521,6 +522,30 @@ INSERT INTO `sys_action_log` VALUES (824, '用户登录', 2, '192.168.0.2', 'com
 INSERT INTO `sys_action_log` VALUES (825, '用户登录', 2, '192.168.0.2', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-01-10 22:56:42', '管理员', 2);
 INSERT INTO `sys_action_log` VALUES (826, '菜单管理', 1, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.MenuController', 'save', 'sys_menu', 203, '更新菜单：个人信息', '2021-01-10 22:58:33', '超级管理员', 1);
 INSERT INTO `sys_action_log` VALUES (827, '菜单管理', 1, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.MenuController', 'save', 'sys_menu', 235, '更新菜单：图表统计', '2021-01-10 22:59:28', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (828, '用户登录', 2, '192.168.200.32', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-01-21 01:42:32', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (829, '用户登录', 2, '114.55.143.66', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-01-21 02:02:17', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (830, '用户登录', 2, '114.55.143.66', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录失败：[admin]用户名或密码错误', '2021-01-21 08:48:47', 'admin', NULL);
+INSERT INTO `sys_action_log` VALUES (831, '用户登录', 2, '114.55.143.66', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-01-21 08:48:56', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (832, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-01-30 20:58:33', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (833, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-01-30 21:09:49', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (834, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录失败：[administrator]用户名或密码错误', '2021-02-28 14:37:47', 'administrator', NULL);
+INSERT INTO `sys_action_log` VALUES (835, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录失败：[administrator]用户名或密码错误', '2021-02-28 14:37:54', 'administrator', NULL);
+INSERT INTO `sys_action_log` VALUES (836, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录失败：[administrator]用户名或密码错误', '2021-02-28 14:38:02', 'administrator', NULL);
+INSERT INTO `sys_action_log` VALUES (837, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录失败：[administrator]用户名或密码错误', '2021-02-28 14:38:11', 'administrator', NULL);
+INSERT INTO `sys_action_log` VALUES (838, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-02-28 14:38:15', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (839, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-03-09 22:44:05', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (840, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-03-11 16:03:59', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (841, '角色授权', 1, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.RoleController', 'auth', 'sys_role', 4, '角色授权成功：教师', '2021-03-11 16:48:12', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (842, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-03-11 16:49:02', '赵文卓', 23);
+INSERT INTO `sys_action_log` VALUES (843, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-03-11 16:49:34', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (844, '角色状态', 1, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.RoleController', 'status', NULL, NULL, '冻结ID：[3]', '2021-03-11 16:50:11', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (845, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录失败：[10657510018]您不是后台管理员！', '2021-03-11 16:50:28', '10657510018', NULL);
+INSERT INTO `sys_action_log` VALUES (846, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录失败：[10657510018]您不是后台管理员！', '2021-03-11 16:50:35', '10657510018', NULL);
+INSERT INTO `sys_action_log` VALUES (847, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录失败：[10657510018]您暂时不能登录系统！', '2021-03-11 16:52:32', '10657510018', NULL);
+INSERT INTO `sys_action_log` VALUES (848, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-03-11 16:52:40', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (849, '菜单管理', 1, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.MenuController', 'save', 'sys_menu', 240, '更新菜单：3D分数统计', '2021-03-11 16:53:46', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (850, '用户登录', 2, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.LoginController', 'login', NULL, NULL, '后台登录成功', '2021-03-11 16:57:46', '超级管理员', 1);
+INSERT INTO `sys_action_log` VALUES (851, '角色状态', 1, '0:0:0:0:0:0:0:1', 'com.alan.admin.system.controller.RoleController', 'status', NULL, NULL, '正常ID：[3]', '2021-03-11 17:10:13', '超级管理员', 1);
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -732,7 +757,7 @@ CREATE TABLE `sys_menu`  (
   INDEX `FKsiko0qcr8ddamvrxf1tk4opgc`(`update_by`) USING BTREE,
   CONSTRAINT `FKoxg2hi96yr9pf2m0stjomr3we` FOREIGN KEY (`create_by`) REFERENCES `sys_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FKsiko0qcr8ddamvrxf1tk4opgc` FOREIGN KEY (`update_by`) REFERENCES `sys_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 231 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 241 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -830,7 +855,7 @@ INSERT INTO `sys_menu` VALUES (236, '用户统计', 235, '[0],[235]', '/system/s
 INSERT INTO `sys_menu` VALUES (237, '分数统计', 235, '[0],[235]', '/system/statistics/score', 'system:statistics:score', '', 1, 2, '', '2021-01-10 19:58:42', '2021-01-10 19:58:42', 1, 1, 1, NULL, NULL);
 INSERT INTO `sys_menu` VALUES (238, '查询', 236, '[0],[235],[236]', '/system/statistics/user/count', 'system:statistics:user:count', '', 3, 1, '', '2021-01-10 20:08:39', '2021-01-10 20:08:39', 1, 1, 1, NULL, NULL);
 INSERT INTO `sys_menu` VALUES (239, '查询', 237, '[0],[235],[237]', '/system/statistics/score/count', 'system:statistics:score:count', '', 3, 1, '', '2021-01-10 20:09:32', '2021-01-10 20:09:32', 1, 1, 1, NULL, NULL);
-INSERT INTO `sys_menu` VALUES (240, '3D分数统计', 235, '[0],[235]', '/system/statistics/score3D', 'system:statistics:score3D', '', 1, 3, '', '2021-01-10 21:40:18', '2021-01-10 21:40:18', 1, 1, 1, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (240, '3D分数统计', 235, '[0],[235]', '/system/statistics/score3D', 'system:statistics:score3D', '', 3, 3, '', '2021-01-10 21:40:18', '2021-03-11 16:53:45', 1, 1, 1, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -859,7 +884,7 @@ CREATE TABLE `sys_role`  (
 INSERT INTO `sys_role` VALUES (1, '超级管理员', 'administrator', '', '2018-09-29 00:12:40', '2021-01-05 09:45:09', 1, 1, 1);
 INSERT INTO `sys_role` VALUES (2, '管理员', 'admin', '', '2020-12-29 13:04:19', '2021-01-10 22:54:57', 1, 1, 1);
 INSERT INTO `sys_role` VALUES (3, '学生', 'student', '', '2020-12-31 17:44:06', '2021-01-10 22:50:58', 1, 1, 1);
-INSERT INTO `sys_role` VALUES (4, '教师', 'teacher', '', '2020-12-31 17:44:24', '2021-01-10 22:50:05', 1, 1, 1);
+INSERT INTO `sys_role` VALUES (4, '教师', 'teacher', '', '2020-12-31 17:44:24', '2021-03-11 16:48:08', 1, 1, 1);
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -963,7 +988,6 @@ INSERT INTO `sys_role_menu` VALUES (2, 185);
 INSERT INTO `sys_role_menu` VALUES (4, 185);
 INSERT INTO `sys_role_menu` VALUES (1, 186);
 INSERT INTO `sys_role_menu` VALUES (2, 186);
-INSERT INTO `sys_role_menu` VALUES (4, 186);
 INSERT INTO `sys_role_menu` VALUES (1, 187);
 INSERT INTO `sys_role_menu` VALUES (2, 187);
 INSERT INTO `sys_role_menu` VALUES (4, 187);
