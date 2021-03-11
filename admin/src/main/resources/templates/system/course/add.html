@@ -24,6 +24,12 @@
                 <input class="layui-input" type="number" name="hour" placeholder="请输入课程学时" th:value="${course?.hour}">
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">课程学分</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="number" name="credits" placeholder="请输入课程学分" th:value="${course?.credits}">
+            </div>
+        </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">课程说明</label>
             <div class="layui-input-block">

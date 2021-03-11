@@ -12,7 +12,7 @@
         </colgroup>
         <tbody>
         <tr>
-            <th>主键ID</th>
+            <th>课程ID</th>
             <td th:text="${course.id}"></td>
             <th>课程类型</th>
             <td th:text="${#dicts.keyValue('COURSE_TYPE', course.type)}"></td>
@@ -25,7 +25,9 @@
         </tr>
         <tr>
             <th>课程说明</th>
-            <td th:text="${course.description}" colspan="3"></td>
+            <td th:text="${course.description}"></td>
+            <th>课程学分</th>
+            <td th:text="${course.credits}"></td>
         </tr>
         <tr>
             <th>创建者</th>

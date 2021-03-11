@@ -100,7 +100,7 @@ public class LoginController implements ErrorController {
                 return ResultVoUtil.success("登录成功", new URL("/"));
             } else {
                 SecurityUtils.getSubject().logout();
-                return ResultVoUtil.error("您不是后台管理员！");
+                return ResultVoUtil.error("您暂时不能登录系统！");
             }
         } catch (LockedAccountException e) {
             return ResultVoUtil.error("该账号已被冻结");

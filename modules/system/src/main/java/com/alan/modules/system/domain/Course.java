@@ -52,6 +52,8 @@ public class Course implements Serializable {
     private String names;
     // 课程学时
     private Double hour;
+    // 课程学分
+    private Double credits;
     // 课程说明
     private String description;
     // 备注

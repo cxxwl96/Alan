@@ -19,6 +19,12 @@
                     </div>
                 </div>
                 <div class="layui-inline">
+                    <label class="layui-form-label">课程ID</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id" th:value="${param.id}" placeholder="请输入课程名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
                     <label class="layui-form-label">课程类型</label>
                     <div class="layui-input-block alan-search-status">
                         <select class="alan-search-select" name="type" mo:dict="COURSE_TYPE" mo-selected="${course?.type}" mo-empty="" lay-verify="type"></select>
@@ -57,9 +63,11 @@
                         <label class="alan-checkbox"><input type="checkbox">
                             <i class="layui-icon layui-icon-ok"></i></label>
                     </th>
+                    <th>课程ID</th>
                     <th>课程类型</th>
                     <th>课程名称</th>
                     <th>课程学时</th>
+                    <th>课程学分</th>
                     <th>课程说明</th>
                     <!--<th>操作</th>-->
                 </tr>
@@ -68,9 +76,11 @@
                 <tr th:each="item:${list}">
                     <td><label class="alan-checkbox"><input type="checkbox" th:id="${item.id}" th:name="${item.names}">
                         <i class="layui-icon layui-icon-ok"></i></label></td>
+                    <td th:text="${item.id}">课程ID</td>
                     <td th:text="${#dicts.keyValue('COURSE_TYPE', item.type)}">课程类型</td>
                     <td th:text="'《'+${item.names}+'》'">课程名称</td>
                     <td th:text="${item.hour}+'小时'">课程学时</td>
+                    <td th:text="${item.credits}">课程学分</td>
                     <td th:text="${item.description}">课程说明</td>
                     <!--<td>
                         <a class="open-popup" data-title="编辑课程信息" th:attr="data-url=@{'/system/course/edit/'+${item.id}}" data-size="449,628" href="#">编辑</a>

@@ -18,4 +18,6 @@ public class CourseValid implements Serializable {
     private String names;
     @NotNull(message = "课程学时不能为空")
     private Double hour;
+    @NotNull(message = "课程学分不能为空")
+    private Double credits;
 }
